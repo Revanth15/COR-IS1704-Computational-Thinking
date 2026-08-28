@@ -10,12 +10,12 @@ def compute_phone_bill(base, data_limit, amount_data=0.0, num_extra_sms=0, num_m
 
 print(compute_phone_bill(35.5, 2, 800)) # Answer: 35.5
 print(compute_phone_bill(35.5, 3)) # Answer: 35.5
-compute_phone_bill(22.5) # Answer: Error
+compute_phone_bill(22.5) # Answer: TypeError: missing data_limit argument
 print(compute_phone_bill(35.5, data_limit=2, amount_data=800)) # Answer: 35.5
 print(compute_phone_bill(base=35.5, data_limit=2, amount_data=800)) # Answer: 35.5
 print(compute_phone_bill(data_limit=2, amount_data=800, base=20)) # Answer: 20.0
 print(compute_phone_bill(35.5, amount_data=800, data_limit=2)) # Answer: 35.5
-compute_phone_bill(amount_data=800, data_limit=2) # Answer: Error
+compute_phone_bill(amount_data=800, data_limit=2) # Answer: TypeError: missing base argument
 print(compute_phone_bill(32, 2, 800)) # Answer: 32.0
 print(compute_phone_bill(35.5, 2, 2050)) # Answer: 44.5
 print(compute_phone_bill(35.5, 2, 1900, 10, 20)) # Answer: 39.0
