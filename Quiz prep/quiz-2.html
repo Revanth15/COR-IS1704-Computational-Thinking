@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A second, harder 40-question Python quiz for COR-IS1704 Weeks 1 and 2.">
+  <title>Python quiz prep 2 | Weeks 1 and 2</title>
+  <style>
+    :root {
+      --ink: #1f2440;
+      --muted: #6a6e86;
+      --paper: #ffffff;
+      --page: #f4f6fb;
+      --line: #e4e7f0;
+      --purple: #6957d8;
+      --purple-dark: #5142bb;
+      --purple-soft: #eeecff;
+      --teal: #168d8b;
+      --teal-dark: #0d716f;
+      --teal-soft: #e6f7f5;
+      --gold: #b97412;
+      --gold-soft: #fff5df;
+      --green: #23845f;
+      --green-soft: #eaf8f1;
+      --red: #b63f55;
+      --red-soft: #fff0f3;
+      --shadow: 0 24px 64px rgba(36, 39, 83, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(105, 87, 216, 0.13), transparent 28rem),
+        radial-gradient(circle at 93% 12%, rgba(22, 141, 139, 0.12), transparent 24rem),
+        var(--page);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 3rem;
+      align-items: center;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem 6rem;
+    }
+
+    .eyebrow,
+    .section-kicker {
+      margin: 0 0 0.75rem;
+      color: var(--purple);
+      font-size: 0.75rem;
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 750px;
+      margin-bottom: 1.15rem;
+      font-size: clamp(2.5rem, 7vw, 4.8rem);
+      letter-spacing: -0.065em;
+      line-height: 0.98;
+    }
+
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 700px;
+      margin-bottom: 1.75rem;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+
+    .stat {
+      display: grid;
+      min-width: 116px;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(105, 87, 216, 0.15);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .stat strong {
+      font-size: 1.12rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .code-window {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 22px;
+      background: #191b35;
+      box-shadow: 0 24px 52px rgba(26, 27, 61, 0.24);
+      transform: rotate(-2deg);
+    }
+
+    .window-bar {
+      display: flex;
+      gap: 0.45rem;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .window-bar span {
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 50%;
+      background: #ff747d;
+    }
+
+    .window-bar span:nth-child(2) {
+      background: #f3ca65;
+    }
+
+    .window-bar span:nth-child(3) {
+      background: #54c993;
+    }
+
+    .code-window pre {
+      margin: 0;
+      padding: 1.5rem 1.3rem 1.8rem;
+      color: #d8d9f0;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.89rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .code-keyword {
+      color: #c8adff;
+    }
+
+    .code-string {
+      color: #8ed8b5;
+    }
+
+    .quiz-shell {
+      max-width: 1040px;
+      margin: -2.7rem auto 4rem;
+      padding: 0 1.25rem;
+    }
+
+    .quiz-panel {
+      padding: clamp(1.2rem, 4vw, 2.35rem);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .quiz-intro {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quiz-intro h2 {
+      margin-bottom: 0.45rem;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .quiz-intro p:not(.section-kicker) {
+      max-width: 690px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .legend {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .topic-pill,
+    .type-pill,
+    .difficulty-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.71rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .topic-pill.topic-one {
+      color: var(--purple-dark);
+      background: var(--purple-soft);
+    }
+
+    .topic-pill.topic-two {
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+    }
+
+    .type-pill {
+      color: #87570b;
+      background: var(--gold-soft);
+    }
+
+    .difficulty-pill.difficulty-easy {
+      color: #2c7b5b;
+      background: var(--green-soft);
+    }
+
+    .difficulty-pill.difficulty-medium {
+      color: #8a5a0b;
+      background: var(--gold-soft);
+    }
+
+    .difficulty-pill.difficulty-hard {
+      color: #9e354c;
+      background: var(--red-soft);
+    }
+
+    .progress-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+      margin: 1.7rem 0 1.9rem;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7e7f2;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--purple), #9b8dff);
+      transition: width 180ms ease;
+    }
+
+    .progress-text {
+      min-width: 135px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: right;
+    }
+
+    #quiz {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .question-card {
+      padding: 1.3rem;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--purple);
+      border-radius: 18px;
+      background: var(--paper);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .question-card.topic-two {
+      border-left-color: var(--teal);
+    }
+
+    .question-card.is-correct {
+      border-color: #a4dcc5;
+      border-left-color: var(--green);
+      box-shadow: 0 8px 24px rgba(35, 132, 95, 0.1);
+    }
+
+    .question-card.is-incorrect {
+      border-color: #f0b9c4;
+      border-left-color: var(--red);
+      box-shadow: 0 8px 24px rgba(182, 63, 85, 0.08);
+    }
+
+    .question-head {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .question-number {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .question-text {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 680;
+    }
+
+    code,
+    .inline-code {
+      padding: 0.12em 0.36em;
+      border: 1px solid #e5e2f5;
+      border-radius: 5px;
+      background: #f6f4ff;
+      color: #4f3eab;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.9em;
+    }
+
+    .code-block {
+      overflow-x: auto;
+      margin: 0 0 1rem;
+      padding: 1rem;
+      border: 1px solid #e5e7ef;
+      border-radius: 12px;
+      background: #f8f9fc;
+      color: #30344f;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.87rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .option {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: #3d4058;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+    }
+
+    .option:hover {
+      border-color: #b9b2f2;
+      background: #fbfaff;
+      transform: translateX(2px);
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      color: var(--ink);
+    }
+
+    .option input {
+      width: 1rem;
+      height: 1rem;
+      margin: 0;
+      accent-color: var(--purple);
+      flex: 0 0 auto;
+    }
+
+    .option-letter {
+      display: inline-grid;
+      width: 1.5rem;
+      height: 1.5rem;
+      place-items: center;
+      border: 1px solid #d8dae6;
+      border-radius: 50%;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 850;
+    }
+
+    .option:has(input:checked) .option-letter {
+      border-color: var(--purple);
+      color: var(--purple-dark);
+      background: #fff;
+    }
+
+    .fill-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 750;
+    }
+
+    .fill-input {
+      width: 100%;
+      padding: 0.78rem 0.9rem;
+      border: 1px solid #d9dce8;
+      border-radius: 11px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .fill-input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(105, 87, 216, 0.13);
+    }
+
+    .feedback {
+      display: grid;
+      gap: 0.3rem;
+      margin-top: 1rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 11px;
+      font-size: 0.88rem;
+    }
+
+    .feedback[hidden] {
+      display: none;
+    }
+
+    .feedback-correct {
+      color: #176746;
+      background: var(--green-soft);
+    }
+
+    .feedback-incorrect {
+      color: #8d3044;
+      background: var(--red-soft);
+    }
+
+    .feedback strong {
+      font-size: 0.9rem;
+    }
+
+    .answer-line {
+      color: inherit;
+      opacity: 0.9;
+    }
+
+    .answer-line code {
+      border-color: currentColor;
+      background: transparent;
+      color: inherit;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.6rem;
+    }
+
+    .button {
+      min-height: 48px;
+      padding: 0.75rem 1.15rem;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 850;
+      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:focus-visible,
+    .option:has(input:focus-visible),
+    .fill-input:focus-visible {
+      outline: 3px solid rgba(105, 87, 216, 0.28);
+      outline-offset: 2px;
+    }
+
+    .button-primary {
+      color: #fff;
+      background: var(--purple);
+      box-shadow: 0 8px 18px rgba(105, 87, 216, 0.2);
+    }
+
+    .button-primary:hover {
+      background: var(--purple-dark);
+    }
+
+    .button-secondary {
+      border-color: #d9dce8;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .button-secondary:hover {
+      border-color: #b9b2f2;
+      background: #fbfaff;
+    }
+
+    .result-panel {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 1.2rem;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border: 1px solid #c9c4fa;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f6f4ff, #f1fbfa);
+    }
+
+    .result-panel[hidden] {
+      display: none;
+    }
+
+    .score-circle {
+      display: grid;
+      width: 86px;
+      height: 86px;
+      place-items: center;
+      border: 7px solid #c6c1f8;
+      border-radius: 50%;
+      color: var(--purple-dark);
+      background: #fff;
+      font-size: 1.05rem;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .result-panel h2 {
+      margin-bottom: 0.3rem;
+      font-size: 1.35rem;
+      letter-spacing: -0.025em;
+    }
+
+    .result-panel p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 0 1.5rem 3rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 3.2rem;
+        padding-bottom: 5rem;
+      }
+
+      .code-window {
+        max-width: 430px;
+        transform: rotate(0deg);
+      }
+
+      .quiz-shell {
+        margin-top: -2.2rem;
+      }
+
+      .quiz-intro {
+        display: grid;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.75rem;
+      }
+
+      .progress-wrap {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .progress-text {
+        text-align: left;
+      }
+
+      .question-card {
+        padding: 1rem;
+      }
+
+      .question-head {
+        align-items: flex-start;
+      }
+
+      .result-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">COR-IS1704 · Week 1 and Week 2</p>
+      <h1>Python quiz prep 2</h1>
+      <p>This second set is longer and more demanding. It mixes fresh code traces, calculations, function calls, modules, and application questions across the material in the main project folders.</p>
+      <div class="hero-stats" aria-label="Quiz details">
+        <div class="stat"><strong>40</strong><span>questions</span></div>
+        <div class="stat"><strong>20 + 20</strong><span>Topics 1 and 2</span></div>
+        <div class="stat"><strong>10 / 20 / 10</strong><span>easy / medium / hard</span></div>
+      </div>
+    </div>
+
+    <div class="code-window" aria-hidden="true">
+      <div class="window-bar"><span></span><span></span><span></span></div>
+      <pre><span class="code-keyword">def</span> trace_the_code(values):
+    answer = <span class="code-string">"check every line"</span>
+    <span class="code-keyword">return</span> answer</pre>
+    </div>
+  </header>
+
+  <main class="quiz-shell">
+    <section class="quiz-panel" aria-labelledby="quiz-heading">
+      <div class="quiz-intro">
+        <div>
+          <p class="section-kicker">Source-grounded practice</p>
+          <h2 id="quiz-heading">Weeks 1 and 2 comprehensive test</h2>
+          <p>Every question has all the context needed to solve it. Try each one before checking the quiz. Fill-in answers ignore case and extra spaces, but punctuation and values still matter.</p>
+        </div>
+        <div class="legend" aria-label="Question labels">
+          <span class="topic-pill topic-one">Topic 1</span>
+          <span class="topic-pill topic-two">Topic 2</span>
+          <span class="type-pill" id="formatStats">MCQ + fill-in</span>
+        </div>
+      </div>
+
+      <div class="progress-wrap" aria-label="Quiz progress">
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">0 of 40 answered</div>
+      </div>
+
+      <form id="quizForm">
+        <div id="quiz"></div>
+
+        <div class="actions">
+          <button class="button button-primary" type="submit">Check all answers</button>
+          <button class="button button-secondary" type="button" id="resetButton">Reset quiz</button>
+        </div>
+      </form>
+
+      <section class="result-panel" id="resultPanel" aria-live="polite" aria-labelledby="resultTitle" tabindex="-1" hidden>
+        <div class="score-circle" id="scoreCircle">0%</div>
+        <div>
+          <h2 id="resultTitle">Your result</h2>
+          <p id="resultText"></p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>Built from the main project folders <code>Week_1</code> and <code>Week_2</code>. Python 3 syntax.</footer>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        topic: 1,
+        difficulty: "easy",
+        type: "mcq",
+        question: "What is displayed by this code?",
+        code: "x = 4\nx = x + 3\nx = 2 * x\nprint(x)",
+        options: ["7", "10", "14", "24"],
+        answer: 2,
+        answerText: "14",
+        explanation: "The assignments happen in order. x becomes 7, then 2 * 7 makes it 14."
+      },
+      {
+        id: 2,
+        topic: 1,
+        difficulty: "easy",
+        type: "mcq",
+        question: "Which name follows Python's naming rules and the usual lowercase-with-underscores convention?",
+        options: ["student-name", "3scores", "student_scores", "class"],
+        answer: 2,
+        answerText: "student_scores",
+        explanation: "Hyphens are not allowed in a name, names cannot start with a digit, and <code>class</code> is a Python keyword."
+      },
+      {
+        id: 3,
+        topic: 1,
+        difficulty: "easy",
+        type: "fill",
+        question: "Write the three data types in order for <code>items</code>, <code>price</code>, and <code>label</code>. Separate them with commas.",
+        code: "items = 7\nprice = 2.5\nlabel = \"pen\"",
+        answers: ["int, float, str", "int,float,str"],
+        answerText: "int, float, str",
+        placeholder: "Example: int, float, str",
+        explanation: "7 is an integer, 2.5 is a float, and text inside quotes is a string."
+      },
+      {
+        id: 4,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this line?",
+        code: "print(23 // 5, 23 % 5, 23 / 5)",
+        options: ["4 3 4.6", "4.6 3 4", "4 4.6 3", "5 3 4.6"],
+        answer: 0,
+        answerText: "4 3 4.6",
+        explanation: "Floor division gives 4, modulo gives the remainder 3, and ordinary division gives the float 4.6."
+      },
+      {
+        id: 5,
+        topic: 1,
+        difficulty: "medium",
+        type: "fill",
+        question: "Type the value displayed by this expression.",
+        code: "print(2 + 3 ** 2 ** 2 % 10)",
+        answers: ["3"],
+        answerText: "3",
+        placeholder: "Type the value",
+        explanation: "Exponentiation groups from the right, so 3 ** (2 ** 2) is 81. Then 81 % 10 is 1, and 2 + 1 is 3."
+      },
+      {
+        id: 6,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by <code>print(7 - 2 + 5 * 2)</code>?",
+        options: ["15", "17", "20", "25"],
+        answer: 0,
+        answerText: "15",
+        explanation: "Multiplication happens first: 5 * 2 is 10. Addition and subtraction then run from left to right, giving 7 - 2 + 10 = 15."
+      },
+      {
+        id: 7,
+        topic: 1,
+        difficulty: "easy",
+        type: "fill",
+        question: "What type is produced by <code>5 / 2</code>? Type the complete result from <code>type()</code>.",
+        code: "print(type(5 / 2))",
+        answers: ["<class 'float'>"],
+        answerText: "<class 'float'>",
+        placeholder: "Type the complete type result",
+        explanation: "The / operator always produces a floating-point result, even when both operands are integers."
+      },
+      {
+        id: 8,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this code?",
+        code: "word = \"na\"\nprint(word * 2 + \"!\")",
+        options: ["na2!", "nana!", "na na!", "Error"],
+        answer: 1,
+        answerText: "nana!",
+        explanation: "String multiplication repeats <code>na</code> twice. The plus sign then adds the exclamation mark."
+      },
+      {
+        id: 9,
+        topic: 1,
+        difficulty: "medium",
+        type: "fill",
+        question: "Fill the blank so that the program prints <code>Room 4</code>.",
+        code: "room = 4\nmessage = \"Room \" + ________\nprint(message)",
+        answers: ["str(room)"],
+        answerText: "str(room)",
+        placeholder: "Type the missing expression",
+        explanation: "The number must be converted to a string before it can be concatenated with the text."
+      },
+      {
+        id: 10,
+        topic: 1,
+        difficulty: "easy",
+        type: "mcq",
+        question: "What is the value of <code>int(9.8)</code>?",
+        options: ["9", "9.8", "10", "Error"],
+        answer: 0,
+        answerText: "9",
+        explanation: "Converting this float to an integer keeps the integral part and discards the decimal part."
+      },
+      {
+        id: 11,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "If the user enters <code>2010</code>, what does the final <code>print()</code> display?",
+        code: "year = input(\"Year: \" )\nprint(year + \"!\")",
+        options: ["2010!", "2011", "Error", "Year: 2010!"],
+        answer: 0,
+        answerText: "2010!",
+        explanation: "input() returns the text <code>\"2010\"</code>. Concatenating <code>\"!\"</code> creates <code>\"2010!\"</code>."
+      },
+      {
+        id: 12,
+        topic: 1,
+        difficulty: "medium",
+        type: "fill",
+        question: "Type the output of this temperature conversion.",
+        code: "temp_f = 68\ntemp_c = (temp_f - 32) * 5 / 9\nprint(temp_c)",
+        answers: ["20.0"],
+        answerText: "20.0",
+        placeholder: "Type the output",
+        explanation: "The calculation is (68 - 32) * 5 / 9, which equals 20.0."
+      },
+      {
+        id: 13,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this code?",
+        code: "value = 6\n# value = 99\nValue = 3\nprint(value)",
+        options: ["6", "3", "99", "NameError"],
+        answer: 0,
+        answerText: "6",
+        explanation: "The commented line is ignored, and Python treats <code>value</code> and <code>Value</code> as different names."
+      },
+      {
+        id: 14,
+        topic: 1,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the complete line displayed by this code.",
+        code: "a = 5\nb = 2.0\nc = \"3\"\nprint(a // b, a / b, c * (a % 3))",
+        answers: ["2.0 2.5 33"],
+        answerText: "2.0 2.5 33",
+        placeholder: "Type the exact output line",
+        explanation: "5 // 2.0 is 2.0, 5 / 2.0 is 2.5, and 5 % 3 is 2, so the string <code>\"3\"</code> repeats twice."
+      },
+      {
+        id: 15,
+        topic: 1,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this f-string?",
+        code: "course = \"IS1704\"\nweek = 2\nprint(f\"{course}: week {week}\")",
+        options: ["IS1704: week 2", "course: week week", "IS1704 + 2", "Error"],
+        answer: 0,
+        answerText: "IS1704: week 2",
+        explanation: "Expressions inside the curly brackets are replaced with the current values of the variables."
+      },
+      {
+        id: 16,
+        topic: 1,
+        difficulty: "medium",
+        type: "fill",
+        question: "Using <code>PI = 3.14</code>, type the area printed for a circle with radius 4.",
+        code: "PI = 3.14\nradius = 4\nprint(PI * radius ** 2)",
+        answers: ["50.24"],
+        answerText: "50.24",
+        placeholder: "Type the area",
+        explanation: "The area is PI * radius ** 2, so 3.14 * 4 ** 2 equals 50.24."
+      },
+      {
+        id: 17,
+        topic: 1,
+        difficulty: "hard",
+        type: "mcq",
+        question: "What is displayed by this digit calculation?",
+        code: "number = 58304\nthousands = number // 1000 % 10\nones = number % 10\nprint(thousands + ones)",
+        options: ["8", "12", "14", "58308"],
+        answer: 1,
+        answerText: "12",
+        explanation: "The thousands digit is 8 and the ones digit is 4. Their sum is 12."
+      },
+      {
+        id: 18,
+        topic: 1,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the exact time displayed by this code.",
+        code: "total_seconds = 3661\nhours = total_seconds // 3600\nminutes = (total_seconds % 3600) // 60\nseconds = total_seconds % 60\nprint(f\"{hours:02d}:{minutes:02d}:{seconds:02d}\")",
+        answers: ["01:01:01"],
+        answerText: "01:01:01",
+        placeholder: "Type HH:MM:SS",
+        explanation: "3661 seconds contains 1 hour, 1 minute, and 1 second. The <code>:02d</code> format adds leading zeroes."
+      },
+      {
+        id: 19,
+        topic: 1,
+        difficulty: "hard",
+        type: "mcq",
+        question: "An assessment is worth 15% of a final grade. A student scores 18 out of 20. How many final-grade percentage points does it contribute?",
+        options: ["2", "13.5", "15", "18"],
+        answer: 1,
+        answerText: "13.5",
+        explanation: "The weighted contribution is (18 / 20) * 15, which equals 13.5 percentage points."
+      },
+      {
+        id: 20,
+        topic: 1,
+        difficulty: "hard",
+        type: "fill",
+        question: "Using the monthly compounding formula below, type the rounded interest earned.",
+        code: "principal = 1000\nannual_rate = 0.12\nfrequency = 12\nyears = 1\namount = principal * (1 + annual_rate / frequency) ** (frequency * years)\nprint(round(amount - principal, 2))",
+        answers: ["126.83"],
+        answerText: "126.83",
+        placeholder: "Type the rounded interest",
+        explanation: "The calculated amount is approximately 1126.8250. Subtracting the principal and rounding to two decimal places gives 126.83."
+      },
+      {
+        id: 21,
+        topic: 2,
+        difficulty: "easy",
+        type: "mcq",
+        question: "Which order is printed by this program?",
+        code: "print(\"start\")\ndef announce():\n    print(\"inside\")\nprint(\"before\")\nannounce()\nprint(\"end\")",
+        options: ["start -> before -> inside -> end", "start -> inside -> before -> end", "before -> start -> inside -> end", "inside -> start -> before -> end"],
+        answer: 0,
+        answerText: "start -> before -> inside -> end",
+        explanation: "Defining announce() does not run its body. The body runs only when announce() is called."
+      },
+      {
+        id: 22,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "Where must this docstring be placed so that it documents <code>area</code>?",
+        code: "def area(width, height):\n    \"\"\"Return the rectangle area.\"\"\"\n    return width * height",
+        options: ["Immediately after the function header", "Before the def line", "After the return line", "Inside the function call"],
+        answer: 0,
+        answerText: "Immediately after the function header",
+        explanation: "A function docstring is the string literal placed as the first statement in the function body."
+      },
+      {
+        id: 23,
+        topic: 2,
+        difficulty: "easy",
+        type: "mcq",
+        question: "In the code below, which pair are the parameters?",
+        code: "def paint(width, colour):\n    print(width, colour)\n\npaint(4, \"blue\")",
+        options: ["width and colour", "4 and blue", "paint and print", "width and 4"],
+        answer: 0,
+        answerText: "width and colour",
+        explanation: "Parameters are the placeholders in the function definition. The values 4 and <code>\"blue\"</code> are arguments in the call."
+      },
+      {
+        id: 24,
+        topic: 2,
+        difficulty: "medium",
+        type: "fill",
+        question: "Fill the call with the string <code>pens</code> and the number 3. Include quotes around the string.",
+        code: "def describe(item, quantity):\n    print(item, quantity)\n\ndescribe(________)",
+        answers: ["'pens', 3", "\"pens\", 3", "'pens',3", "\"pens\",3"],
+        answerText: "'pens', 3",
+        placeholder: "Type the two arguments",
+        explanation: "The call supplies two positional arguments in the same order as the parameters: a string for item and an integer for quantity."
+      },
+      {
+        id: 25,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this keyword-argument call?",
+        code: "def show_coordinates(x, y):\n    print(x, y)\n\nshow_coordinates(y=8, x=3)",
+        options: ["3 8", "8 3", "x y", "TypeError"],
+        answer: 0,
+        answerText: "3 8",
+        explanation: "Keyword arguments are matched by parameter name, so x receives 3 and y receives 8 despite the order in the call."
+      },
+      {
+        id: 26,
+        topic: 2,
+        difficulty: "medium",
+        type: "fill",
+        question: "Type the value printed by this function call.",
+        code: "def total_with_tax(price, tax_rate=0.08):\n    return price * (1 + tax_rate)\n\nprint(total_with_tax(50))",
+        answers: ["54.0"],
+        answerText: "54.0",
+        placeholder: "Type the value",
+        explanation: "No tax rate is supplied, so the default 0.08 is used. 50 * 1.08 is 54.0."
+      },
+      {
+        id: 27,
+        topic: 2,
+        difficulty: "easy",
+        type: "mcq",
+        question: "What is displayed when the default argument is replaced?",
+        code: "def label(name, mark=\"!\"):\n    return name + mark\n\nprint(label(\"OK\", \"?\"))",
+        options: ["OK!", "OK?", "name?", "Error"],
+        answer: 1,
+        answerText: "OK?",
+        explanation: "The call supplies <code>\"?\"</code>, so it replaces the default mark <code>\"!\"</code>."
+      },
+      {
+        id: 28,
+        topic: 2,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the two output lines, in order, separated by a new line.",
+        code: "def add_and_print(x, y):\n    print(x + y)\n\nvalue = add_and_print(2, 5)\nprint(value)",
+        answers: ["7\nNone", "7 None"],
+        answerText: "7\nNone",
+        placeholder: "Example: first line, second line",
+        explanation: "The function prints 7 but has no return statement, so the assigned value is None and the second print displays None."
+      },
+      {
+        id: 29,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "Which two names are local to <code>total</code>?",
+        code: "tax_rate = 0.10\ndef total(price):\n    fee = 2\n    return price * (1 + tax_rate) + fee",
+        options: ["price and fee", "tax_rate and fee", "total and price", "tax_rate and total"],
+        answer: 0,
+        answerText: "price and fee",
+        explanation: "The parameter price and the variable fee belong to the function. tax_rate is defined outside it, and total is the function name."
+      },
+      {
+        id: 30,
+        topic: 2,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the value displayed by the nested function calls.",
+        code: "def add_tax(price):\n    return price + 2\n\ndef total(price):\n    return add_tax(price) * 3\n\nprint(total(4))",
+        answers: ["18"],
+        answerText: "18",
+        placeholder: "Type the value",
+        explanation: "total(4) calls add_tax(4), which returns 6. The outer function then returns 6 * 3, or 18."
+      },
+      {
+        id: 31,
+        topic: 2,
+        difficulty: "easy",
+        type: "mcq",
+        question: "What does this program display?",
+        code: "print(\"A\", end=\"-\")\nprint(\"B\")\nprint(\"C\")",
+        options: ["A-B, then C on the next line", "A, B, and C on separate lines", "AB-C", "A-B-C"],
+        answer: 0,
+        answerText: "A-B, then C on the next line",
+        explanation: "The first print ends with a hyphen instead of a new line. The second print writes B and then moves to the next line."
+      },
+      {
+        id: 32,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What is displayed by this standard-library code?",
+        code: "import math\nprint(math.floor(4.9), math.ceil(4.1), math.gcd(18, 24))",
+        options: ["4 5 6", "5 4 6", "4.9 4.1 18", "Error"],
+        answer: 0,
+        answerText: "4 5 6",
+        explanation: "floor rounds down, ceil rounds up, and gcd returns the greatest common divisor."
+      },
+      {
+        id: 33,
+        topic: 2,
+        difficulty: "medium",
+        type: "fill",
+        question: "Using this progressive-tax function, type the value printed for an income of 38,000.",
+        code: "def calculate_tax(income):\n    first_band = min(200, max(0, income - 20000) * 0.02)\n    second_band = max(0, income - 30000) * 0.035\n    return first_band + second_band\n\nprint(calculate_tax(38000.0))",
+        answers: ["480.0"],
+        answerText: "480.0",
+        placeholder: "Type the tax value",
+        explanation: "The first 10,000 above 20,000 contributes 200. The remaining 8,000 above 30,000 contributes 280. Together they make 480.0."
+      },
+      {
+        id: 34,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "What value is returned by this geometric-mean function?",
+        code: "def geometric_mean(x, y, z):\n    return round((x * y * z) ** (1 / 3), 1)\n\nprint(geometric_mean(2, 4, 8))",
+        options: ["4.0", "4", "14", "64"],
+        answer: 0,
+        answerText: "4.0",
+        explanation: "The product is 2 * 4 * 8 = 64. The cube root of 64 is 4.0."
+      },
+      {
+        id: 35,
+        topic: 2,
+        difficulty: "easy",
+        type: "mcq",
+        question: "Which values can be returned by <code>random.randrange(1, 7)</code>?",
+        options: ["1 through 6", "1 through 7", "0 through 6", "2 through 7"],
+        answer: 0,
+        answerText: "1 through 6",
+        explanation: "randrange includes the start value and excludes the stop value, so 1 is possible and 7 is not."
+      },
+      {
+        id: 36,
+        topic: 2,
+        difficulty: "medium",
+        type: "fill",
+        question: "Fill the import line so the call to <code>greet.say_hello()</code> works.",
+        code: "# greet.py contains say_hello(name)\n________\ngreet.say_hello(\"Lina\")",
+        answers: ["import greet"],
+        answerText: "import greet",
+        placeholder: "Type the import statement",
+        explanation: "The module is imported by its filename without the .py extension, then its function is accessed with dot notation."
+      },
+      {
+        id: 37,
+        topic: 2,
+        difficulty: "medium",
+        type: "mcq",
+        question: "After <code>import geometry</code>, which line correctly calls the rectangle-area function in that module?",
+        options: ["geometry.area_rectangle(4, 3)", "area_rectangle.geometry(4, 3)", "geometry.py.area_rectangle(4, 3)", "import.area_rectangle(4, 3)"],
+        answer: 0,
+        answerText: "geometry.area_rectangle(4, 3)",
+        explanation: "A function in an imported module is called with the module name, a dot, and the function name."
+      },
+      {
+        id: 38,
+        topic: 2,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the value returned by this call.",
+        code: "def calculate_total_amount(fifty_note, ten_note, five_note=0, two_note=0, one_coin=0):\n    return fifty_note * 50 + ten_note * 10 + five_note * 5 + two_note * 2 + one_coin\n\nprint(calculate_total_amount(2, 3, one_coin=4, two_note=2))",
+        answers: ["138"],
+        answerText: "138",
+        placeholder: "Type the amount",
+        explanation: "The result is 2 * 50 + 3 * 10 + 2 * 2 + 4, which equals 138. The unspecified five_note uses its default of 0."
+      },
+      {
+        id: 39,
+        topic: 2,
+        difficulty: "hard",
+        type: "mcq",
+        question: "What value is returned by this phone-bill calculation?",
+        code: "def compute_phone_bill(base, data_limit, amount_data=0.0, num_extra_sms=0, num_minutes_extra_calls=0):\n    return base + max(0.0, amount_data - data_limit * 1024) * 4.5 + num_extra_sms * 0.05 + num_minutes_extra_calls * 0.15\n\nprint(compute_phone_bill(35.5, 2, 2050, 10, 20))",
+        options: ["39.0", "44.5", "48.0", "115.5"],
+        answer: 2,
+        answerText: "48.0",
+        explanation: "There are 2 MB of extra data, costing 9.0. SMS cost 0.5 and calls cost 3.0, so 35.5 + 9.0 + 0.5 + 3.0 = 48.0."
+      },
+      {
+        id: 40,
+        topic: 2,
+        difficulty: "hard",
+        type: "fill",
+        question: "Type the string printed by this common-character function.",
+        code: "def get_common_characters(str1, str2):\n    result = \"\"\n    for ch in str1:\n        if ch in str2 and ch not in result:\n            result += ch\n    return result\n\nprint(get_common_characters(\"banana\", \"band\"))",
+        answers: ["ban"],
+        answerText: "ban",
+        placeholder: "Type the string",
+        explanation: "The function follows the first string. b, a, and n appear in both strings, and repeated characters are added only once."
+      }
+    ];
+
+    const quizForm = document.getElementById("quizForm");
+    const quiz = document.getElementById("quiz");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const resultPanel = document.getElementById("resultPanel");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const scoreCircle = document.getElementById("scoreCircle");
+    const formatStats = document.getElementById("formatStats");
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderQuestion(question) {
+      const topicClass = question.topic === 1 ? "topic-one" : "topic-two";
+      const topicLabel = question.topic === 1 ? "Topic 1" : "Topic 2";
+      const typeLabel = question.type === "mcq" ? "MCQ" : "Fill in the blank";
+      const codeBlock = question.code
+        ? `<pre class="code-block"><code>${escapeHtml(question.code)}</code></pre>`
+        : "";
+
+      let answerArea;
+      if (question.type === "mcq") {
+        answerArea = `
+          <fieldset class="options">
+            <legend class="sr-only">Choose an answer for question ${question.id}</legend>
+            ${question.options.map((option, index) => `
+              <label class="option">
+                <input type="radio" name="question-${question.id}" value="${index}">
+                <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                <span>${escapeHtml(option)}</span>
+              </label>
+            `).join("")}
+          </fieldset>
+        `;
+      } else {
+        answerArea = `
+          <label class="fill-label" for="question-${question.id}">Your answer</label>
+          <input class="fill-input" id="question-${question.id}" name="question-${question.id}" type="text" autocomplete="off" spellcheck="false" placeholder="${escapeHtml(question.placeholder)}">
+        `;
+      }
+
+      return `
+        <article class="question-card ${topicClass}" data-question-id="${question.id}">
+          <div class="question-head">
+            <div class="question-meta">
+              <span class="question-number">Question ${question.id}</span>
+              <span class="topic-pill ${topicClass}">${topicLabel}</span>
+              <span class="type-pill">${typeLabel}</span>
+              <span class="difficulty-pill difficulty-${question.difficulty}">${question.difficulty}</span>
+            </div>
+          </div>
+          <div class="question-text">${question.question}</div>
+          ${codeBlock}
+          ${answerArea}
+          <div class="feedback" aria-live="polite" hidden></div>
+        </article>
+      `;
+    }
+
+    function canonicalAnswer(value) {
+      return String(value ?? "")
+        .trim()
+        .toLowerCase()
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/\s+/g, "");
+    }
+
+    function getUserAnswer(question) {
+      if (question.type === "mcq") {
+        const selected = quizForm.querySelector(`input[name="question-${question.id}"]:checked`);
+        return selected ? Number(selected.value) : null;
+      }
+
+      const input = quizForm.querySelector(`#question-${question.id}`);
+      return input ? input.value : "";
+    }
+
+    function hasAnswered(question, userAnswer) {
+      return question.type === "mcq" ? userAnswer !== null : canonicalAnswer(userAnswer) !== "";
+    }
+
+    function isCorrect(question, userAnswer) {
+      if (question.type === "mcq") {
+        return userAnswer === question.answer;
+      }
+
+      return question.answers.some(answer => canonicalAnswer(answer) === canonicalAnswer(userAnswer));
+    }
+
+    function updateProgress() {
+      const answered = questions.reduce((total, question) => {
+        const userAnswer = getUserAnswer(question);
+        return total + (hasAnswered(question, userAnswer) ? 1 : 0);
+      }, 0);
+      const percentage = (answered / questions.length) * 100;
+      progressBar.style.width = `${percentage}%`;
+      progressText.textContent = `${answered} of ${questions.length} answered`;
+    }
+
+    function markQuiz() {
+      let score = 0;
+      let answered = 0;
+
+      questions.forEach(question => {
+        const userAnswer = getUserAnswer(question);
+        const answeredQuestion = hasAnswered(question, userAnswer);
+        const correct = answeredQuestion && isCorrect(question, userAnswer);
+        const card = quiz.querySelector(`[data-question-id="${question.id}"]`);
+        const feedback = card.querySelector(".feedback");
+
+        if (answeredQuestion) {
+          answered += 1;
+        }
+        if (correct) {
+          score += 1;
+        }
+
+        card.classList.toggle("is-correct", correct);
+        card.classList.toggle("is-incorrect", !correct);
+        feedback.className = `feedback ${correct ? "feedback-correct" : "feedback-incorrect"}`;
+        feedback.hidden = false;
+
+        const status = correct ? "Correct" : answeredQuestion ? "Not quite" : "Not answered";
+        feedback.innerHTML = `
+          <strong>${status}</strong>
+          <span>${question.explanation}</span>
+          <span class="answer-line">Correct answer: <code>${escapeHtml(question.answerText)}</code></span>
+        `;
+      });
+
+      const percentage = Math.round((score / questions.length) * 100);
+      scoreCircle.textContent = `${percentage}%`;
+      resultTitle.textContent = percentage >= 80 ? "Strong work" : percentage >= 50 ? "Keep practising" : "Review the explanations and try again";
+      resultText.textContent = `You scored ${score} out of ${questions.length}. You answered ${answered} question${answered === 1 ? "" : "s"}.`;
+      resultPanel.hidden = false;
+      resultPanel.focus({ preventScroll: true });
+      resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetQuiz() {
+      quizForm.reset();
+      quiz.querySelectorAll(".question-card").forEach(card => {
+        card.classList.remove("is-correct", "is-incorrect");
+        const feedback = card.querySelector(".feedback");
+        feedback.hidden = true;
+        feedback.className = "feedback";
+        feedback.innerHTML = "";
+      });
+      resultPanel.hidden = true;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    const mcqCount = questions.filter(question => question.type === "mcq").length;
+    const fillCount = questions.length - mcqCount;
+    formatStats.textContent = `${mcqCount} MCQ · ${fillCount} fill-in`;
+    quiz.innerHTML = questions.map(renderQuestion).join("");
+    updateProgress();
+    quizForm.addEventListener("change", updateProgress);
+    quizForm.addEventListener("input", updateProgress);
+    quizForm.addEventListener("submit", event => {
+      event.preventDefault();
+      markQuiz();
+    });
+    document.getElementById("resetButton").addEventListener("click", resetQuiz);
+  </script>
+</body>
+</html>

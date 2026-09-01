@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A 30-question Python quiz covering Topics 1 and 2.">
+  <title>Python quiz prep | Topics 1 and 2</title>
+  <style>
+    :root {
+      --ink: #20213a;
+      --muted: #686b83;
+      --paper: #ffffff;
+      --page: #f5f5fa;
+      --line: #e8e8f0;
+      --purple: #6556d9;
+      --purple-dark: #4f43bc;
+      --purple-soft: #eeecff;
+      --teal: #158b88;
+      --teal-soft: #e7f7f5;
+      --gold: #c78319;
+      --gold-soft: #fff5df;
+      --danger: #b94155;
+      --danger-soft: #fff0f3;
+      --shadow: 0 22px 60px rgba(37, 34, 78, 0.12);
+      --small-shadow: 0 8px 24px rgba(37, 34, 78, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(101, 86, 217, 0.12), transparent 28rem),
+        radial-gradient(circle at 92% 15%, rgba(21, 139, 136, 0.1), transparent 23rem),
+        var(--page);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 3rem;
+      align-items: center;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem 6rem;
+    }
+
+    .eyebrow,
+    .section-kicker {
+      margin: 0 0 0.75rem;
+      color: var(--purple);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin-bottom: 1.2rem;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      letter-spacing: -0.065em;
+      line-height: 0.98;
+    }
+
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 680px;
+      margin-bottom: 1.75rem;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .stat {
+      display: grid;
+      min-width: 112px;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(101, 86, 217, 0.15);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .stat strong {
+      font-size: 1.15rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .code-window {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 22px;
+      background: #191a31;
+      box-shadow: 0 24px 50px rgba(26, 24, 56, 0.23);
+      transform: rotate(2deg);
+    }
+
+    .window-bar {
+      display: flex;
+      gap: 0.45rem;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .window-bar span {
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 50%;
+      background: #ff747d;
+    }
+
+    .window-bar span:nth-child(2) {
+      background: #f4ca68;
+    }
+
+    .window-bar span:nth-child(3) {
+      background: #53c690;
+    }
+
+    .code-window pre {
+      margin: 0;
+      padding: 1.5rem 1.35rem 1.8rem;
+      color: #d7d8f1;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .code-keyword {
+      color: #c6a9ff;
+    }
+
+    .code-string {
+      color: #8ed7b6;
+    }
+
+    .quiz-shell {
+      max-width: 1020px;
+      margin: -2.7rem auto 4rem;
+      padding: 0 1.25rem;
+    }
+
+    .quiz-panel {
+      padding: clamp(1.2rem, 4vw, 2.3rem);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .quiz-intro {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quiz-intro h2 {
+      margin-bottom: 0.45rem;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+    }
+
+    .quiz-intro p:not(.section-kicker) {
+      max-width: 650px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .legend {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .topic-pill,
+    .type-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .topic-pill.topic-one {
+      color: #5446ba;
+      background: var(--purple-soft);
+    }
+
+    .topic-pill.topic-two {
+      color: #0c716f;
+      background: var(--teal-soft);
+    }
+
+    .type-pill {
+      color: #8c5b0c;
+      background: var(--gold-soft);
+    }
+
+    .progress-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: center;
+      margin: 1.7rem 0 1.9rem;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e8e7f3;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--purple), #9889ff);
+      transition: width 180ms ease;
+    }
+
+    .progress-text {
+      min-width: 126px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: right;
+    }
+
+    #quiz {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .question-card {
+      padding: 1.3rem;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--purple);
+      border-radius: 18px;
+      background: var(--paper);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .question-card.topic-two {
+      border-left-color: var(--teal);
+    }
+
+    .question-card.is-correct {
+      border-color: #9bd8c4;
+      border-left-color: #2d9d75;
+      box-shadow: 0 8px 24px rgba(45, 157, 117, 0.1);
+    }
+
+    .question-card.is-incorrect {
+      border-color: #f1b8c3;
+      border-left-color: var(--danger);
+      box-shadow: 0 8px 24px rgba(185, 65, 85, 0.08);
+    }
+
+    .question-head {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .question-number {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 750;
+    }
+
+    .question-text {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 650;
+    }
+
+    code,
+    .inline-code {
+      padding: 0.12em 0.36em;
+      border: 1px solid #e6e4f5;
+      border-radius: 5px;
+      background: #f6f4ff;
+      color: #4f3eab;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.9em;
+    }
+
+    .code-block {
+      overflow-x: auto;
+      margin: 0 0 1rem;
+      padding: 1rem;
+      border: 1px solid #e7e7ef;
+      border-radius: 12px;
+      background: #f8f8fb;
+      color: #30324c;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.6rem;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .option {
+      position: relative;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: #3c3e56;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+    }
+
+    .option:hover {
+      border-color: #b9b2f2;
+      background: #fbfaff;
+      transform: translateX(2px);
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      color: var(--ink);
+    }
+
+    .option input {
+      width: 1rem;
+      height: 1rem;
+      margin: 0;
+      accent-color: var(--purple);
+      flex: 0 0 auto;
+    }
+
+    .option-letter {
+      display: inline-grid;
+      width: 1.5rem;
+      height: 1.5rem;
+      place-items: center;
+      border: 1px solid #d9d8e6;
+      border-radius: 50%;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .option:has(input:checked) .option-letter {
+      border-color: var(--purple);
+      color: var(--purple-dark);
+      background: #fff;
+    }
+
+    .fill-label {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .fill-input {
+      width: 100%;
+      padding: 0.78rem 0.9rem;
+      border: 1px solid #dcdce8;
+      border-radius: 11px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .fill-input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(101, 86, 217, 0.13);
+    }
+
+    .feedback {
+      display: grid;
+      gap: 0.3rem;
+      margin-top: 1rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 11px;
+      font-size: 0.88rem;
+    }
+
+    .feedback[hidden] {
+      display: none;
+    }
+
+    .feedback-correct {
+      color: #176746;
+      background: #edf9f3;
+    }
+
+    .feedback-incorrect {
+      color: #8d3044;
+      background: var(--danger-soft);
+    }
+
+    .feedback strong {
+      font-size: 0.9rem;
+    }
+
+    .answer-line {
+      color: inherit;
+      opacity: 0.9;
+    }
+
+    .answer-line code {
+      border-color: currentColor;
+      background: transparent;
+      color: inherit;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.6rem;
+    }
+
+    .button {
+      min-height: 48px;
+      padding: 0.75rem 1.15rem;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 800;
+      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:focus-visible,
+    .option:has(input:focus-visible),
+    .fill-input:focus-visible {
+      outline: 3px solid rgba(101, 86, 217, 0.28);
+      outline-offset: 2px;
+    }
+
+    .button-primary {
+      color: #fff;
+      background: var(--purple);
+      box-shadow: 0 8px 18px rgba(101, 86, 217, 0.2);
+    }
+
+    .button-primary:hover {
+      background: var(--purple-dark);
+    }
+
+    .button-secondary {
+      border-color: #dcdce8;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .button-secondary:hover {
+      border-color: #b9b2f2;
+      background: #fbfaff;
+    }
+
+    .result-panel {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 1.2rem;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border: 1px solid #c9c4fa;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f6f4ff, #f3fbfa);
+    }
+
+    .result-panel[hidden] {
+      display: none;
+    }
+
+    .score-circle {
+      display: grid;
+      width: 86px;
+      height: 86px;
+      place-items: center;
+      border: 7px solid #c6c1f8;
+      border-radius: 50%;
+      color: var(--purple-dark);
+      background: #fff;
+      font-size: 1.05rem;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .result-panel h2 {
+      margin-bottom: 0.3rem;
+      font-size: 1.35rem;
+      letter-spacing: -0.025em;
+    }
+
+    .result-panel p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 0 1.5rem 3rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 3.2rem;
+        padding-bottom: 5rem;
+      }
+
+      .code-window {
+        max-width: 430px;
+        transform: rotate(0deg);
+      }
+
+      .quiz-shell {
+        margin-top: -2.2rem;
+      }
+
+      .quiz-intro {
+        display: grid;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.75rem;
+      }
+
+      .progress-wrap {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .progress-text {
+        text-align: left;
+      }
+
+      .question-card {
+        padding: 1rem;
+      }
+
+      .question-head {
+        align-items: flex-start;
+      }
+
+      .result-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">COR-IS1704 · Week 1 and Week 2</p>
+      <h1>Python quiz prep</h1>
+      <p>Work through 30 questions on the first two topics. Choose an option or type the missing answer, then check the full quiz when you are ready.</p>
+      <div class="hero-stats" aria-label="Quiz details">
+        <div class="stat"><strong>30</strong><span>questions</span></div>
+        <div class="stat"><strong>15 + 15</strong><span>Topics 1 and 2</span></div>
+        <div class="stat"><strong>20 / 10</strong><span>MCQ / fill-in</span></div>
+      </div>
+    </div>
+
+    <div class="code-window" aria-hidden="true">
+      <div class="window-bar"><span></span><span></span><span></span></div>
+      <pre><span class="code-keyword">def</span> keep_practising(topic):
+    <span class="code-keyword">return</span> <span class="code-string">"ready"</span></pre>
+    </div>
+  </header>
+
+  <main class="quiz-shell">
+    <section class="quiz-panel" aria-labelledby="quiz-heading">
+      <div class="quiz-intro">
+        <div>
+          <p class="section-kicker">Your practice set</p>
+          <h2 id="quiz-heading">Topics 1 and 2</h2>
+          <p>Questions are based on the Python ideas in your examples. The page accepts answers without case or extra-space differences for fill-in questions.</p>
+        </div>
+        <div class="legend" aria-label="Question labels">
+          <span class="topic-pill topic-one">Topic 1</span>
+          <span class="topic-pill topic-two">Topic 2</span>
+          <span class="type-pill">MCQ + fill-in</span>
+        </div>
+      </div>
+
+      <div class="progress-wrap" aria-label="Quiz progress">
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">0 of 30 answered</div>
+      </div>
+
+      <form id="quizForm">
+        <div id="quiz"></div>
+
+        <div class="actions">
+          <button class="button button-primary" type="submit">Check all answers</button>
+          <button class="button button-secondary" type="button" id="resetButton">Reset quiz</button>
+        </div>
+      </form>
+
+      <section class="result-panel" id="resultPanel" aria-live="polite" aria-labelledby="resultTitle" tabindex="-1" hidden>
+        <div class="score-circle" id="scoreCircle">0%</div>
+        <div>
+          <h2 id="resultTitle">Your result</h2>
+          <p id="resultText"></p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>Python 3 syntax · Read the explanation under each question after marking.</footer>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        topic: 1,
+        type: "mcq",
+        question: "What is the value of <code>2 ** 3 + 1.0</code>?",
+        options: ["7.0", "9", "9.0", "16"],
+        answer: 2,
+        answerText: "9.0",
+        explanation: "Exponentiation happens first, so <code>2 ** 3</code> is 8. Adding the float <code>1.0</code> gives <code>9.0</code>."
+      },
+      {
+        id: 2,
+        topic: 1,
+        type: "mcq",
+        question: "What is the value of <code>'a' + '123'</code>?",
+        options: ["'123a'", "'a123'", "'a'123", "Error"],
+        answer: 1,
+        answerText: "'a123'",
+        explanation: "The <code>+</code> operator joins two strings in the order they appear."
+      },
+      {
+        id: 3,
+        topic: 1,
+        type: "mcq",
+        question: "What happens when Python evaluates <code>'3' * 'bc'</code>?",
+        options: ["'3bc'", "'bcbcbc'", "'3bcbcbc'", "Error"],
+        answer: 3,
+        answerText: "Error, specifically a TypeError",
+        explanation: "A string can be multiplied by an integer, but <code>'bc'</code> is another string. Python raises a <code>TypeError</code>."
+      },
+      {
+        id: 4,
+        topic: 1,
+        type: "mcq",
+        question: "Which option is a valid Python variable name?",
+        options: ["#2var", "var two", "2nd_var", "var2"],
+        answer: 3,
+        answerText: "var2",
+        explanation: "A variable name can contain letters, digits, and underscores, but it cannot start with a digit or contain spaces or symbols such as <code>#</code>."
+      },
+      {
+        id: 5,
+        topic: 1,
+        type: "fill",
+        question: "Type the output of this code.",
+        code: "var = 3\nprint(2 + var)",
+        answers: ["5"],
+        answerText: "5",
+        placeholder: "Type the output",
+        explanation: "The variable <code>var</code> stores 3, so Python evaluates <code>2 + 3</code>."
+      },
+      {
+        id: 6,
+        topic: 1,
+        type: "mcq",
+        question: "What is the value of <code>2 ** 2 ** 3 % 7</code>?",
+        options: ["1", "3", "4", "256"],
+        answer: 2,
+        answerText: "4",
+        explanation: "Exponentiation is evaluated from the right: <code>2 ** (2 ** 3)</code> is 256. Then <code>256 % 7</code> is 4."
+      },
+      {
+        id: 7,
+        topic: 1,
+        type: "mcq",
+        question: "If a user enters <code>50</code>, what does <code>type(input('Enter your age:'))</code> produce?",
+        options: ["<class 'str'>", "<class 'int'>", "<class 'float'>", "50"],
+        answer: 0,
+        answerText: "<class 'str'>",
+        explanation: "The <code>input()</code> function returns text. It does not automatically convert digits to an integer."
+      },
+      {
+        id: 8,
+        topic: 1,
+        type: "fill",
+        question: "Fill in the blank with the value produced by this expression.",
+        code: "float('123')  # answer: ______",
+        answers: ["123.0"],
+        answerText: "123.0",
+        placeholder: "Type the value",
+        explanation: "<code>float()</code> converts the text <code>'123'</code> into the floating-point number <code>123.0</code>."
+      },
+      {
+        id: 9,
+        topic: 1,
+        type: "mcq",
+        question: "What is the value of <code>10 // 3</code>?",
+        options: ["3", "3.33", "1", "Error"],
+        answer: 0,
+        answerText: "3",
+        explanation: "The <code>//</code> operator performs floor division. It keeps the whole-number part of 10 divided by 3."
+      },
+      {
+        id: 10,
+        topic: 1,
+        type: "mcq",
+        question: "What is the value of <code>17 % 5</code>?",
+        options: ["2", "3", "5", "12"],
+        answer: 0,
+        answerText: "2",
+        explanation: "The modulo operator returns the remainder. Dividing 17 by 5 leaves a remainder of 2."
+      },
+      {
+        id: 11,
+        topic: 1,
+        type: "fill",
+        question: "Type the output of this expression.",
+        code: "print(int('42') + 8)",
+        answers: ["50"],
+        answerText: "50",
+        placeholder: "Type the output",
+        explanation: "<code>int('42')</code> converts the text to the integer 42, and 42 + 8 is 50."
+      },
+      {
+        id: 12,
+        topic: 1,
+        type: "mcq",
+        question: "Which expression converts the text <code>'42'</code> into the integer 42?",
+        options: ["str(42)", "float('42')", "int('42')", "input('42')"],
+        answer: 2,
+        answerText: "int('42')",
+        explanation: "The <code>int()</code> function converts suitable text or numbers into an integer."
+      },
+      {
+        id: 13,
+        topic: 1,
+        type: "fill",
+        question: "Type the output. Do not include quotation marks in your answer.",
+        code: "print('ha' * 3)",
+        answers: ["hahaha", "'hahaha'", "\"hahaha\""],
+        answerText: "hahaha",
+        placeholder: "Type the output",
+        explanation: "Multiplying a string by 3 repeats it three times: <code>ha</code> + <code>ha</code> + <code>ha</code>."
+      },
+      {
+        id: 14,
+        topic: 1,
+        type: "mcq",
+        question: "What is displayed by <code>print(3 == 3.0)</code>?",
+        options: ["True", "False", "3.0", "Error"],
+        answer: 0,
+        answerText: "True",
+        explanation: "Python compares the numeric values here. The integer 3 and the float 3.0 have equal values."
+      },
+      {
+        id: 15,
+        topic: 1,
+        type: "mcq",
+        question: "What is displayed by <code>print(2 + 3 * 4)</code>?",
+        options: ["20", "14", "24", "9"],
+        answer: 1,
+        answerText: "14",
+        explanation: "Multiplication has priority over addition, so Python evaluates 3 * 4 first and then adds 2."
+      },
+      {
+        id: 16,
+        topic: 2,
+        type: "mcq",
+        question: "Which line correctly defines a function named <code>get_length</code> with one parameter?",
+        options: ["get_length(word):", "def get_length():", "def get_length(word):", "def get_length('word'):"],
+        answer: 2,
+        answerText: "def get_length(word):",
+        explanation: "A function definition starts with <code>def</code>, followed by the function name, parentheses containing parameters, and a colon."
+      },
+      {
+        id: 17,
+        topic: 2,
+        type: "mcq",
+        question: "Which is a valid way to call <code>greeting(a, b)</code>?",
+        options: ["greeting()", "greeting('hello')", "greeting('hello', 'user')", "greeting('hello', 'Mr/Ms', 'user')"],
+        answer: 2,
+        answerText: "greeting('hello', 'user')",
+        explanation: "The function has two parameters, so the call must supply exactly two arguments."
+      },
+      {
+        id: 18,
+        topic: 2,
+        type: "fill",
+        question: "Type the output of this program.",
+        code: "def square(number):\n    return number * number\n\nprint(square(4))",
+        answers: ["16"],
+        answerText: "16",
+        placeholder: "Type the output",
+        explanation: "The function returns 4 * 4, which is 16."
+      },
+      {
+        id: 19,
+        topic: 2,
+        type: "mcq",
+        question: "What is stored in <code>result</code> after this code runs?",
+        code: "def show():\n    print('Hello')\n\nresult = show()",
+        options: ["None", "'Hello'", "0", "Error"],
+        answer: 0,
+        answerText: "None",
+        explanation: "The function prints <code>Hello</code>, but it has no <code>return</code> statement. Python therefore returns <code>None</code>."
+      },
+      {
+        id: 20,
+        topic: 2,
+        type: "fill",
+        question: "Type the output of this program.",
+        code: "def compute_percentage(num):\n    return (num / 120) * 100\n\nprint(compute_percentage(60))",
+        answers: ["50.0"],
+        answerText: "50.0",
+        placeholder: "Type the output",
+        explanation: "The function calculates (60 / 120) * 100, which Python displays as the float 50.0."
+      },
+      {
+        id: 21,
+        topic: 2,
+        type: "mcq",
+        question: "What is displayed when this code runs?",
+        code: "def greet():\n    print('Welcome!')\n\ngreet()",
+        options: ["Welcome!", "greet()", "None", "Error"],
+        answer: 0,
+        answerText: "Welcome!",
+        explanation: "Calling <code>greet()</code> runs its indented body, which prints <code>Welcome!</code>."
+      },
+      {
+        id: 22,
+        topic: 2,
+        type: "mcq",
+        question: "What happens in this program?",
+        code: "def get_name():\n    name = 'Ada'\n\nprint(name)",
+        options: ["It prints Ada", "It prints None", "It raises a NameError", "It raises a TypeError"],
+        answer: 2,
+        answerText: "It raises a NameError",
+        explanation: "The variable <code>name</code> is local to <code>get_name()</code>. It does not exist in the outer scope where <code>print(name)</code> runs."
+      },
+      {
+        id: 23,
+        topic: 2,
+        type: "fill",
+        question: "Fill in the parameter name so this function call works.",
+        code: "def greet(________):\n    print('Hi', name)\n\ngreet('Maya')",
+        answers: ["name"],
+        answerText: "name",
+        placeholder: "Type the parameter name",
+        explanation: "The parameter must be called <code>name</code> because the function body uses <code>print('Hi', name)</code>."
+      },
+      {
+        id: 24,
+        topic: 2,
+        type: "mcq",
+        question: "Which import makes <code>random.randint(1, 10)</code> available?",
+        options: ["import math", "import fibo", "import random.randint", "import random"],
+        answer: 3,
+        answerText: "import random",
+        explanation: "Importing the <code>random</code> module lets you use its <code>randint</code> function as <code>random.randint(...)</code>."
+      },
+      {
+        id: 25,
+        topic: 2,
+        type: "fill",
+        question: "Fill in the missing line so the program calculates the sale price after the discount.",
+        code: "def main():\n    reg_price = get_reg_price()\n    ________\n    print('The sale price is $' + str(sale_price))",
+        answers: ["sale_price = reg_price - get_discount(reg_price)"],
+        answerText: "sale_price = reg_price - get_discount(reg_price)",
+        placeholder: "Type the missing line",
+        explanation: "The discount function returns the discount amount. Subtract that amount from the regular price and store the result in <code>sale_price</code>."
+      },
+      {
+        id: 26,
+        topic: 2,
+        type: "mcq",
+        question: "What happens when this function is called as shown?",
+        code: "def greet(a, b):\n    print(a, b)\n\ngreet('hello')",
+        options: ["It prints hello", "It prints hello b", "It raises a TypeError", "It raises a NameError"],
+        answer: 2,
+        answerText: "It raises a TypeError",
+        explanation: "The function requires two arguments, but the call supplies only one. Python raises a <code>TypeError</code>."
+      },
+      {
+        id: 27,
+        topic: 2,
+        type: "fill",
+        question: "Fill in the function call so that the program prints 7.",
+        code: "def add(a, b):\n    return a + b\n\nresult = ________\nprint(result)",
+        answers: ["add(3, 4)"],
+        answerText: "add(3, 4)",
+        placeholder: "Type the function call",
+        explanation: "Calling <code>add(3, 4)</code> returns 3 + 4, so <code>result</code> becomes 7."
+      },
+      {
+        id: 28,
+        topic: 2,
+        type: "mcq",
+        question: "If the user enters <code>Ada</code>, what final line is displayed?",
+        code: "def get_name():\n    return input('Enter your name: ')\n\nname = get_name()\nprint('Hi!', name)",
+        options: ["Hi! Ada", "Hi! name", "It raises an error", "None"],
+        answer: 0,
+        answerText: "Hi! Ada",
+        explanation: "The returned input is assigned to <code>name</code>, and that value is passed to <code>print()</code>."
+      },
+      {
+        id: 29,
+        topic: 2,
+        type: "mcq",
+        question: "Which keyword sends a value back from a function?",
+        options: ["send", "yield", "return", "output"],
+        answer: 2,
+        answerText: "return",
+        explanation: "The <code>return</code> statement ends the function call and gives a value back to the caller."
+      },
+      {
+        id: 30,
+        topic: 2,
+        type: "fill",
+        question: "Type the output of this program. Do not include quotation marks.",
+        code: "def repeat(word, times):\n    return word * times\n\nprint(repeat('go', 3))",
+        answers: ["gogogo", "'gogogo'", "\"gogogo\""],
+        answerText: "gogogo",
+        placeholder: "Type the output",
+        explanation: "The string <code>go</code> is repeated three times, producing <code>gogogo</code>."
+      }
+    ];
+
+    const quizForm = document.getElementById("quizForm");
+    const quiz = document.getElementById("quiz");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const resultPanel = document.getElementById("resultPanel");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const scoreCircle = document.getElementById("scoreCircle");
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderQuestion(question) {
+      const topicClass = question.topic === 1 ? "topic-one" : "topic-two";
+      const topicLabel = question.topic === 1 ? "Topic 1" : "Topic 2";
+      const typeLabel = question.type === "mcq" ? "MCQ" : "Fill in the blank";
+      const codeBlock = question.code
+        ? `<pre class="code-block"><code>${escapeHtml(question.code)}</code></pre>`
+        : "";
+
+      let answerArea;
+      if (question.type === "mcq") {
+        answerArea = `
+          <fieldset class="options">
+            <legend class="sr-only">Choose an answer for question ${question.id}</legend>
+            ${question.options.map((option, index) => `
+              <label class="option">
+                <input type="radio" name="question-${question.id}" value="${index}">
+                <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                <span>${escapeHtml(option)}</span>
+              </label>
+            `).join("")}
+          </fieldset>
+        `;
+      } else {
+        answerArea = `
+          <label class="fill-label" for="question-${question.id}">Your answer</label>
+          <input class="fill-input" id="question-${question.id}" name="question-${question.id}" type="text" autocomplete="off" spellcheck="false" placeholder="${escapeHtml(question.placeholder)}">
+        `;
+      }
+
+      return `
+        <article class="question-card ${topicClass}" data-question-id="${question.id}">
+          <div class="question-head">
+            <div class="question-meta">
+              <span class="question-number">Question ${question.id}</span>
+              <span class="topic-pill ${topicClass}">${topicLabel}</span>
+              <span class="type-pill">${typeLabel}</span>
+            </div>
+          </div>
+          <div class="question-text">${question.question}</div>
+          ${codeBlock}
+          ${answerArea}
+          <div class="feedback" aria-live="polite" hidden></div>
+        </article>
+      `;
+    }
+
+    function canonicalAnswer(value) {
+      return String(value ?? "")
+        .trim()
+        .toLowerCase()
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/\s+/g, "");
+    }
+
+    function getUserAnswer(question) {
+      if (question.type === "mcq") {
+        const selected = quizForm.querySelector(`input[name="question-${question.id}"]:checked`);
+        return selected ? Number(selected.value) : null;
+      }
+
+      const input = quizForm.querySelector(`#question-${question.id}`);
+      return input ? input.value : "";
+    }
+
+    function hasAnswered(question, userAnswer) {
+      return question.type === "mcq" ? userAnswer !== null : canonicalAnswer(userAnswer) !== "";
+    }
+
+    function isCorrect(question, userAnswer) {
+      if (question.type === "mcq") {
+        return userAnswer === question.answer;
+      }
+
+      return question.answers.some(answer => canonicalAnswer(answer) === canonicalAnswer(userAnswer));
+    }
+
+    function updateProgress() {
+      const answered = questions.reduce((total, question) => {
+        const userAnswer = getUserAnswer(question);
+        return total + (hasAnswered(question, userAnswer) ? 1 : 0);
+      }, 0);
+      const percentage = (answered / questions.length) * 100;
+      progressBar.style.width = `${percentage}%`;
+      progressText.textContent = `${answered} of ${questions.length} answered`;
+    }
+
+    function markQuiz() {
+      let score = 0;
+      let answered = 0;
+
+      questions.forEach(question => {
+        const userAnswer = getUserAnswer(question);
+        const answeredQuestion = hasAnswered(question, userAnswer);
+        const correct = answeredQuestion && isCorrect(question, userAnswer);
+        const card = quiz.querySelector(`[data-question-id="${question.id}"]`);
+        const feedback = card.querySelector(".feedback");
+
+        if (answeredQuestion) {
+          answered += 1;
+        }
+        if (correct) {
+          score += 1;
+        }
+
+        card.classList.toggle("is-correct", correct);
+        card.classList.toggle("is-incorrect", !correct);
+        feedback.className = `feedback ${correct ? "feedback-correct" : "feedback-incorrect"}`;
+        feedback.hidden = false;
+
+        const status = correct ? "Correct" : answeredQuestion ? "Not quite" : "Not answered";
+        feedback.innerHTML = `
+          <strong>${status}</strong>
+          <span>${question.explanation}</span>
+          <span class="answer-line">Correct answer: <code>${escapeHtml(question.answerText)}</code></span>
+        `;
+      });
+
+      const percentage = Math.round((score / questions.length) * 100);
+      scoreCircle.textContent = `${percentage}%`;
+      resultTitle.textContent = percentage >= 80 ? "Strong start" : percentage >= 50 ? "Keep practising" : "Use the feedback and try again";
+      resultText.textContent = `You scored ${score} out of ${questions.length}. You answered ${answered} question${answered === 1 ? "" : "s"}. Review the explanations below each question.`;
+      resultPanel.hidden = false;
+      resultPanel.focus({ preventScroll: true });
+      resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetQuiz() {
+      quizForm.reset();
+      quiz.querySelectorAll(".question-card").forEach(card => {
+        card.classList.remove("is-correct", "is-incorrect");
+        const feedback = card.querySelector(".feedback");
+        feedback.hidden = true;
+        feedback.className = "feedback";
+        feedback.innerHTML = "";
+      });
+      resultPanel.hidden = true;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    quiz.innerHTML = questions.map(renderQuestion).join("");
+    updateProgress();
+    quizForm.addEventListener("change", updateProgress);
+    quizForm.addEventListener("input", updateProgress);
+    quizForm.addEventListener("submit", event => {
+      event.preventDefault();
+      markQuiz();
+    });
+    document.getElementById("resetButton").addEventListener("click", resetQuiz);
+  </script>
+</body>
+</html>
