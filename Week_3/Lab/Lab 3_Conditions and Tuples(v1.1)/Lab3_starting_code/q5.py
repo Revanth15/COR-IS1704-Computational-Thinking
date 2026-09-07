@@ -26,8 +26,8 @@ if age <= 6:
     print(f"{name}, you can travel for free.")
 elif 6 < age < 60:
     if is_student:
-        print(f"{salutation} {name}, you can get concessionary fare for student.")
+        print(f"{salutation} {name}, you can get concessionary fare for students.")
     else:
         print(f"{salutation} {name}, you need to pay full fare.")
 elif age >= 60:
-    print(f"{salutation} {name}, you can get consessionary fare for senior citizens.")
+    print(f"{salutation} {name}, you can get concessionary fare for senior citizens.")
