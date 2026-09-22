@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python Weeks 2–5 · 75-question practice quiz</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #65708a;
+      --paper: #f6f8fc;
+      --card: #ffffff;
+      --line: #dfe5f0;
+      --navy: #21345f;
+      --blue: #3c67d6;
+      --blue-soft: #eef3ff;
+      --violet: #7659d8;
+      --violet-soft: #f3efff;
+      --green: #18794e;
+      --green-soft: #eaf8f0;
+      --red: #b4233f;
+      --red-soft: #fff0f2;
+      --amber: #9a6200;
+      --amber-soft: #fff7df;
+      --shadow: 0 12px 30px rgba(31, 47, 83, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 0% 0%, #e9efff 0, transparent 34rem),
+        radial-gradient(circle at 100% 0%, #f0ebff 0, transparent 28rem),
+        var(--paper);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .shell { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+
+    header { padding: 48px 0 24px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--navy);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(60,103,214,.18);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 16px 0 10px;
+      color: var(--navy);
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .lede {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .stat {
+      padding: 16px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(223,229,240,.95);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(31,47,83,.04);
+    }
+
+    .stat strong { display: block; color: var(--navy); font-size: 1.35rem; }
+    .stat span { color: var(--muted); font-size: .88rem; }
+
+    .notice {
+      margin: 18px 0 28px;
+      padding: 14px 16px;
+      color: #3c3b55;
+      background: rgba(255,255,255,.72);
+      border-left: 4px solid var(--violet);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 24px;
+      padding: 12px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(223,229,240,.95);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .toolbar label {
+      color: var(--muted);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    select, button, textarea { font: inherit; }
+
+    select {
+      padding: 9px 32px 9px 11px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--navy);
+      border: 1px solid var(--navy);
+      border-radius: 10px;
+      font-weight: 800;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); box-shadow: 0 8px 15px rgba(33,52,95,.16); }
+    button.secondary { color: var(--navy); background: #fff; }
+    button.accent { background: var(--blue); border-color: var(--blue); }
+    button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(60,103,214,.3);
+      outline-offset: 2px;
+    }
+
+    .progress-wrap { flex: 1 1 220px; min-width: 180px; margin-left: auto; }
+    .progress-label { display: flex; justify-content: space-between; color: var(--muted); font-size: .78rem; }
+    .progress { height: 8px; margin-top: 5px; overflow: hidden; background: #e8edf7; border-radius: 99px; }
+    .progress > span { display: block; width: 0%; height: 100%; background: linear-gradient(90deg, var(--blue), var(--violet)); border-radius: inherit; transition: width .2s ease; }
+
+    #quiz { padding-bottom: 40px; }
+
+    .set-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 36px 0 12px;
+      color: var(--navy);
+    }
+
+    .set-heading h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.02em; }
+    .set-heading span { color: var(--muted); font-size: .85rem; }
+
+    .question {
+      position: relative;
+      margin: 12px 0;
+      padding: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 22px rgba(31,47,83,.045);
+      transition: border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+    .question.is-hidden { display: none; }
+    .question.is-correct { border-color: #84d2a8; box-shadow: 0 8px 24px rgba(24,121,78,.1); }
+    .question.is-wrong { border-color: #efa1af; box-shadow: 0 8px 24px rgba(180,35,63,.08); }
+
+    .q-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .q-number { color: var(--navy); font-weight: 900; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .02em;
+    }
+    .pill.week { color: var(--blue); background: var(--blue-soft); }
+    .pill.type { color: #5f4ab0; background: var(--violet-soft); }
+    .pill.tricky { color: var(--amber); background: var(--amber-soft); }
+
+    .prompt { margin: 0; font-weight: 730; }
+    .prompt code, .explanation code, .answer code { padding: 2px 5px; color: #28385e; background: #f0f3f9; border-radius: 5px; font: .92em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    pre {
+      max-width: 100%;
+      margin: 15px 0;
+      padding: 15px;
+      overflow-x: auto;
+      color: #edf3ff;
+      background: #17233f;
+      border-radius: 12px;
+      font: .9rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 4;
+    }
+
+    .choices { display: grid; gap: 9px; margin-top: 16px; }
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      color: var(--ink);
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .choice:hover { border-color: #9fb2ec; background: #f7f9ff; }
+    .choice input { margin-top: 4px; accent-color: var(--blue); }
+    .choice code { white-space: pre-wrap; word-break: break-word; font: .9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 70px;
+      margin-top: 15px;
+      resize: vertical;
+      padding: 12px;
+      color: var(--ink);
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      font: .92rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .hint { margin: 9px 0 0; color: var(--muted); font-size: .83rem; }
+
+    .feedback {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-size: .91rem;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { color: var(--green); background: var(--green-soft); }
+    .feedback.wrong { color: var(--red); background: var(--red-soft); }
+    .feedback.pending { color: var(--amber); background: var(--amber-soft); }
+    .feedback strong { display: block; margin-bottom: 4px; }
+    .source { margin-top: 7px; color: var(--muted); font-size: .8rem; }
+    .question.is-unanswered { border-color: #edcf72; }
+    .check-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .check-btn { color: var(--navy); background: var(--blue-soft); border-color: #b9c9f6; }
+    .check-status { color: var(--muted); font-size: .82rem; }
+
+    #results {
+      display: none;
+      margin: 0 0 28px;
+      padding: 22px;
+      color: var(--navy);
+      background: linear-gradient(135deg, #eef3ff, #f5f0ff);
+      border: 1px solid #cbd7fb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    #results.show { display: block; }
+    #results h2 { margin: 0 0 5px; font-size: 1.5rem; }
+    #results p { margin: 4px 0; color: #4a5875; }
+    .result-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+    .result-stat { padding: 11px; background: rgba(255,255,255,.72); border-radius: 10px; }
+    .result-stat strong { display: block; font-size: 1.2rem; }
+    .result-stat span { color: var(--muted); font-size: .78rem; }
+
+    footer { padding: 12px 0 44px; color: var(--muted); font-size: .84rem; }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 22px, 680px); }
+      header { padding-top: 30px; }
+      .overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { position: static; }
+      .progress-wrap { flex-basis: 100%; margin-left: 0; }
+      .question { padding: 17px; border-radius: 14px; }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .check-row { align-items: stretch; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <div class="eyebrow">Practice quiz · source-grounded</div>
+    <h1>Python Weeks 2–5<br>75-question mastery run</h1>
+    <p class="lede">Fresh practice based only on the Week_2–Week_5 material in this workspace: functions, conditionals, tuples, strings, for-loops, and lists.</p>
+
+    <div class="overview" aria-label="Quiz overview">
+      <div class="stat"><strong>75</strong><span>questions · 1 point each</span></div>
+      <div class="stat"><strong>45 + 30</strong><span>MCQs + code fills</span></div>
+      <div class="stat"><strong>25</strong><span>marked Tricky</span></div>
+      <div class="stat"><strong>15</strong><span>mini-sets of 3 + 2</span></div>
+    </div>
+
+    <div class="notice">
+      Each five-question set follows the shape you described for the real test: three MCQs followed by two short code-completion questions. Use Check answer on an individual card whenever you are ready; Submit quiz still grades all 75 and unlocks the full review.
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="toolbar" aria-label="Quiz controls">
+      <label for="weekFilter">Show</label>
+      <select id="weekFilter">
+        <option value="all">All weeks</option>
+        <option value="Week 2">Week 2 · Functions</option>
+        <option value="Week 3">Week 3 · Conditionals</option>
+        <option value="Week 4">Week 4 · Strings + loops</option>
+        <option value="Week 5">Week 5 · Lists</option>
+      </select>
+      <select id="difficultyFilter" aria-label="Difficulty filter">
+        <option value="all">All difficulty</option>
+        <option value="standard">Standard only</option>
+        <option value="tricky">Tricky only</option>
+      </select>
+      <button class="secondary" id="clearBtn" type="button">Clear answers</button>
+      <button class="secondary" id="mistakesBtn" type="button" hidden>Show mistakes</button>
+      <button class="accent" id="submitBtn" type="button">Submit quiz</button>
+      <div class="progress-wrap" aria-live="polite">
+        <div class="progress-label"><span id="progressText">0 / 75 answered</span><span id="filterText">75 shown</span></div>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+    </div>
+
+    <section id="results" aria-live="polite"></section>
+    <section id="quiz" aria-label="75-question quiz"></section>
+  </main>
+
+  <footer class="shell">
+    Built as one self-contained HTML file. No internet connection or external library is required.
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        id: 1, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "Which option correctly defines and then calls a function with no parameters?",
+        options: [
+          "define say_hi(): print(\"Hi\"); say_hi()",
+          "def say_hi(): print(\"Hi\")  followed later by  say_hi()",
+          "def say_hi; print(\"Hi\"); say_hi()",
+          "def say_hi(): print(\"Hi\")  with no call needed"
+        ],
+        answer: 1,
+        explanation: "A function definition uses def, parentheses, a colon, and an indented body. The body runs only when the function is called.",
+        source: "Week_2/Pre/2. Functions.ipynb · Function Definition and Function Call"
+      },
+      {
+        id: 2, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "In this code, what is name in the function definition?",
+        code: "def welcome(name):\n    print(\"Hi\", name)\n\nwelcome(\"Ari\")",
+        options: ["The argument", "The parameter", "The return value", "The module"],
+        answer: 1,
+        explanation: "name is a placeholder in the definition, so it is a parameter. Ari is the argument supplied by the call.",
+        source: "Week_2/Pre/2. Functions.ipynb · Parameters vs. arguments"
+      },
+      {
+        id: 3, week: "Week 2", type: "mcq", tricky: true,
+        prompt: "What appears on the screen when this code runs?",
+        code: "def mark(text, end=\"!\"):\n    print(text, end=end)\n\nmark(\"A\", end=\"-\")\nmark(\"B\")",
+        options: ["A-B!", "A!B-", "A-B followed by a blank line", "A and B on separate lines"],
+        answer: 0,
+        explanation: "The first call overrides end with a hyphen, so it does not move to a new line. The second call uses the default exclamation mark.",
+        source: "Week_2/Pre/2. Functions.ipynb · Default Arguments and print(end=...)"
+      },
+      {
+        id: 4, week: "Week 2", type: "short", tricky: false,
+        prompt: "Fill the blank so the function prints the value passed into it.",
+        code: "def show_total(________):\n    print(total)\n\nshow_total(47)",
+        accepted: ["total"],
+        explanation: "The parameter must be named total because the function body refers to total.",
+        source: "Week_2/Pre/2. Functions.ipynb · Parameters"
+      },
+      {
+        id: 5, week: "Week 2", type: "short", tricky: false,
+        prompt: "Fill the blank so add_and_return passes the sum back to its caller.",
+        code: "def add_and_return(x, y):\n    ________ x + y",
+        accepted: ["return"],
+        explanation: "return sends a value back to the caller and ends the function.",
+        source: "Week_2/Pre/2. Functions.ipynb · Functions with a Return Statement"
+      },
+      {
+        id: 6, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "What is returned by this call?",
+        code: "def charge(amount, fee=2):\n    return amount + fee\n\ncharge(10)",
+        options: ["2", "10", "12", "An error because fee is missing"],
+        answer: 2,
+        explanation: "Because the call omits fee, its default value 2 is used. The result is 10 + 2.",
+        source: "Week_2/Pre/2. Functions.ipynb · Default Arguments"
+      },
+      {
+        id: 7, week: "Week 2", type: "mcq", tricky: true,
+        prompt: "Which call is valid and produces the same result as a positional call to describe(3, \"hi\")?",
+        code: "def describe(number, word):\n    return str(number) + word",
+        options: [
+          "describe(word=\"hi\", number=3)",
+          "describe(\"hi\", number=3)",
+          "describe(number=3, \"hi\")",
+          "describe(number: 3, word: \"hi\")"
+        ],
+        answer: 0,
+        explanation: "Keyword arguments may be written in a different order when every supplied argument is named. A positional argument cannot follow a keyword argument.",
+        source: "Week_2/Pre/2. Functions.ipynb · Keyword Arguments"
+      },
+      {
+        id: 8, week: "Week 2", type: "mcq", tricky: true,
+        prompt: "What is printed, line by line?",
+        code: "def double_and_print(x):\n    print(x * 2)\n\nvalue = double_and_print(3)\nprint(value)",
+        options: ["6 then 6", "6 then None", "None then 6", "Nothing because the function has no return"],
+        answer: 1,
+        explanation: "The print inside the function displays 6. Since there is no return statement, value receives None, which is printed next.",
+        source: "Week_2/Pre/2. Functions.ipynb · return vs. print"
+      },
+      {
+        id: 9, week: "Week 2", type: "short", tricky: false,
+        prompt: "Complete the function header with a default discount of zero percent.",
+        code: "def total_cost(price, quantity, __________):\n    return price * quantity * (1 - discount / 100)",
+        accepted: ["discount=0", "discount = 0"],
+        explanation: "The parameter is discount and the default value is 0, so a caller may omit it.",
+        source: "Week_2/Pre/2. Functions.ipynb · Default Arguments"
+      },
+      {
+        id: 10, week: "Week 2", type: "short", tricky: false,
+        prompt: "Fill the blank to calculate the sale price from the regular price and the discount amount.",
+        code: "def main():\n    regular = get_price()\n    # blank\n    print(sale_price)\n\ndef discount_amount(price):\n    return price * 0.2",
+        accepted: ["sale_price = regular - discount_amount(regular)", "sale_price=regular-discount_amount(regular)"],
+        explanation: "The current regular price is the argument to discount_amount; subtract the returned discount from regular.",
+        source: "Week_2/In-class/Week2_Starting Code/2. In-Class Exercises.docx · Function calls and return values"
+      },
+      {
+        id: 11, week: "Week 2", type: "mcq", tricky: true,
+        prompt: "What happens when this code reaches the last line?",
+        code: "def make_code():\n    code = \"AB\"\n\nmake_code()\nprint(code)",
+        options: ["It prints AB", "It prints None", "It raises NameError", "It raises TypeError"],
+        answer: 2,
+        explanation: "code is local to make_code. A local variable cannot be accessed by that name outside the function.",
+        source: "Week_2/Pre/2. Functions.ipynb · Scope of a Variable"
+      },
+      {
+        id: 12, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "geometry.py defines area_circle(r). Which setup correctly calls it from another file?",
+        options: [
+          "import geometry, then geometry.area_circle(2)",
+          "import geometry.py, then area_circle(2)",
+          "from geometry import module, then geometry.area_circle(2)",
+          "include geometry, then geometry.area_circle(2)"
+        ],
+        answer: 0,
+        explanation: "Import the module name without .py, then use the module prefix and dot to access its function.",
+        source: "Week_2/Pre/2. Importing a module.docx · Part A and Part B"
+      },
+      {
+        id: 13, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "Which values can random.randint(3, 7) return?",
+        options: ["3, 4, 5, 6", "4, 5, 6, 7", "3, 4, 5, 6, 7", "Any integer from 0 to 7"],
+        answer: 2,
+        explanation: "randint includes both endpoints, unlike randrange's exclusive stop value.",
+        source: "Week_2/In-class/Week2_Starting Code/2. In-Class Exercises.docx · Python Standard Libraries"
+      },
+      {
+        id: 14, week: "Week 2", type: "short", tricky: false,
+        prompt: "Fill the import statement so main.py can use say_hello from greet.py through greet.say_hello(...).",
+        code: "________ greet\n\ngreet.say_hello(\"Mina\")",
+        accepted: ["import"],
+        explanation: "The module is imported with import greet, and its function is then accessed through the module prefix.",
+        source: "Week_2/Pre/2. Importing a module.docx · Part A – Importing a Given Module"
+      },
+      {
+        id: 15, week: "Week 2", type: "short", tricky: true,
+        prompt: "Fill the blank so the local name is returned and then available to greet.",
+        code: "def get_name():\n    return input(\"Name: \")\n\ndef greet():\n    ________\n    print(\"Hi\", name)",
+        accepted: ["name = get_name()", "name=get_name()"],
+        explanation: "get_name returns the input string. greet must capture that returned value in its own local name before printing it.",
+        source: "Week_2/Pre/2. Functions.ipynb · Scope of a Variable and return"
+      },
+      {
+        id: 16, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "What does this call return?",
+        code: "def bill(base, limit, used=0, sms=0, mins=0):\n    return base + max(0, used - limit * 1024) * 4.5 + sms * .05 + mins * .15\n\nbill(40, 2, 2050)",
+        options: ["40", "44.50", "49.00", "9.00"],
+        answer: 2,
+        explanation: "Two megabytes beyond the 2 × 1024 MB limit are charged at 4.5 each, so 40 + 9 = 49.",
+        source: "Week_2/Lab/Lab 2 - Functions.docx · Q6 Phone Bill"
+      },
+      {
+        id: 17, week: "Week 2", type: "mcq", tricky: false,
+        prompt: "A $12 item is bought three times with a 25% discount. What is the price after discount?",
+        options: ["$9.00", "$27.00", "$36.00", "$39.00"],
+        answer: 1,
+        explanation: "The discounted total is 12 × 3 × (1 − 25/100) = 27.",
+        source: "Week_2/Lab/Lab 2 - Functions.docx · Q5 Shopping Cart"
+      },
+      {
+        id: 18, week: "Week 2", type: "mcq", tricky: true,
+        prompt: "A system time is 90,061 seconds after the Unix epoch. Which breakdown is correct?",
+        options: [
+          "1 day, 1 hour, 1 minute, 1 second",
+          "1 day, 0 hours, 61 minutes, 1 second",
+          "0 days, 25 hours, 1 minute, 1 second",
+          "1 day, 1 hour, 0 minutes, 61 seconds"
+        ],
+        answer: 0,
+        explanation: "Remove 86,400 seconds for one day, then 3,661 seconds becomes 1 hour, 1 minute, and 1 second.",
+        source: "Week_2/In-class/Week2_Starting Code/2. In-Class Exercises.docx · Q7 Time Calculator"
+      },
+      {
+        id: 19, week: "Week 2", type: "short", tricky: true,
+        prompt: "Fill the expression for the total interest earned, excluding the original principal.",
+        code: "def interest(p, r, n, t):\n    return round(____________________, 2)",
+        accepted: ["p * (1 + r / n) ** (n * t) - p", "p*((1+r/n)**(n*t))-p", "p * ((1 + (r / n)) ** (n * t)) - p"],
+        explanation: "Compound growth gives p × (1 + r/n)^(nt); subtract p to keep only the interest earned.",
+        source: "Week_2/Lab/Lab 2 - Functions.docx · Q4 Interest Calculator"
+      },
+      {
+        id: 20, week: "Week 2", type: "short", tricky: true,
+        prompt: "Fill the condition so each character is added only if it appears in s2 and has not already been added.",
+        code: "for ch in s1:\n    if ______________________________:\n        result += ch",
+        accepted: ["ch in s2 and ch not in result", "(ch in s2) and (ch not in result)", "ch in s2 and not (ch in result)"],
+        explanation: "The two tests preserve the order from s1 while preventing duplicate characters in result.",
+        source: "Week_2/Lab/lab2_starting_code/lab_2_util.py · get_common_characters"
+      },
+      {
+        id: 21, week: "Week 3", type: "mcq", tricky: false,
+        prompt: "What is the type printed by this statement?",
+        code: "print(type(\"False\"))",
+        options: ["bool", "str", "int", "NoneType"],
+        answer: 1,
+        explanation: "Quotation marks make False a string. Boolean keywords are written without quotation marks.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · bool"
+      },
+      {
+        id: 22, week: "Week 3", type: "mcq", tricky: false,
+        prompt: "What is the value of this expression?",
+        code: "\"Yes\" == \"yes\"",
+        options: ["True", "False", "\"Yes\"", "An error"],
+        answer: 1,
+        explanation: "String comparisons are case-sensitive, so an uppercase Y does not match a lowercase y.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · String Comparison"
+      },
+      {
+        id: 23, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "What is printed?",
+        code: "n = 6\nif n >= 5:\n    print(\"A\")\nif n % 2 == 0:\n    print(\"B\")",
+        options: ["A only", "B only", "A followed by B", "Nothing"],
+        answer: 2,
+        explanation: "These are two independent if statements. Both conditions are true, so both lines run.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · if Statement"
+      },
+      {
+        id: 24, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the condition that detects an empty password.",
+        code: "password = input(\"New password: \")\nif __________________:\n    print(\"Password cannot be empty\")",
+        accepted: ["password == \"\"", "password == ''"],
+        explanation: "An empty string is represented by a pair of matching quotes, and == compares the value.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · Relational Operators"
+      },
+      {
+        id: 25, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the guard that prevents division by zero.",
+        code: "if __________________:\n    result = num1 / num2\nelse:\n    print(\"Cannot divide by zero\")",
+        accepted: ["num2 != 0"],
+        explanation: "The division branch should run only when num2 is not equal to zero.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · if-else Statement"
+      },
+      {
+        id: 26, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "What is the value of this expression?",
+        code: "not 2 > 1 and 3 == 3 or 4 < 1",
+        options: ["True", "False", "3", "A syntax error"],
+        answer: 1,
+        explanation: "Comparisons happen first, then not, then and, then or: False and True or False becomes False.",
+        source: "Week_3/Pre/3.2. More on Conditional Statements.ipynb · Precedence Table"
+      },
+      {
+        id: 27, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "Which expression is equivalent to not (x or y)?",
+        options: ["not x or not y", "not x and not y", "x and y", "x or not y"],
+        answer: 1,
+        explanation: "De Morgan's law changes not (A or B) into not A and not B.",
+        source: "Week_3/Pre/3.2. More on Conditional Statements.ipynb · De Morgan's Law"
+      },
+      {
+        id: 28, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "What word is printed?",
+        code: "a = False\nb = True\nc = True\nd = False\n\nif a and b:\n    if c:\n        print(\"Alpha\")\n    else:\n        print(\"Beta\")\nelse:\n    if d:\n        print(\"Gamma\")\n    else:\n        print(\"Delta\")",
+        options: ["Alpha", "Beta", "Gamma", "Delta"],
+        answer: 3,
+        explanation: "The outer condition is false because a is false. In the else branch d is also false, so Delta is printed.",
+        source: "Week_3/In-class/q3.py · Nested if/else structure"
+      },
+      {
+        id: 29, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the logical operator so both requirements must be true.",
+        code: "if age <= 12 ______ gender == \"M\":\n    print(\"Hello boy!\")",
+        accepted: ["and"],
+        explanation: "and requires the age test and the gender test to be true.",
+        source: "Week_3/Pre/3.2. More on Conditional Statements.ipynb · Logical Operators"
+      },
+      {
+        id: 30, week: "Week 3", type: "short", tricky: true,
+        prompt: "Use De Morgan's law to fill an equivalent condition for not (packed and paid).",
+        code: "if __________________:\n    print(\"not ready\")",
+        accepted: ["not packed or not paid", "not(packed and paid)", "not (packed and paid)"],
+        explanation: "not (A and B) is equivalent to not A or not B. The original expression is also accepted because it is equivalent.",
+        source: "Week_3/Pre/3.2. More on Conditional Statements.ipynb · De Morgan's Law"
+      },
+      {
+        id: 31, week: "Week 3", type: "mcq", tricky: false,
+        prompt: "What does record[1] evaluate to?",
+        code: "record = (\"Kai\", 18, 3.5)\nrecord[1]",
+        options: ["\"Kai\"", "18", "3.5", "An IndexError"],
+        answer: 1,
+        explanation: "Tuple indices start at zero, so index 1 refers to the second element, 18.",
+        source: "Week_3/Pre/3.3. Tuples.ipynb · Accessing the Elements of a Tuple"
+      },
+      {
+        id: 32, week: "Week 3", type: "mcq", tricky: false,
+        prompt: "What happens when the last line runs?",
+        code: "profile = (\"SMU\", \"SCIS\")\nprofile[0] = \"SIS\"",
+        options: ["The tuple changes", "It appends SIS", "It raises TypeError", "It raises IndexError"],
+        answer: 2,
+        explanation: "Tuples are immutable, so item assignment is not supported.",
+        source: "Week_3/Pre/3.3. Tuples.ipynb · Tuples Are Immutable"
+      },
+      {
+        id: 33, week: "Week 3", type: "mcq", tricky: false,
+        prompt: "After this code runs, what are a and b?",
+        code: "def split_total(x, y):\n    return x + y, x - y\n\na, b = split_total(9, 4)",
+        options: ["a is 13 and b is 5", "a is 5 and b is 13", "a is (13, 5) and b is None", "The call raises TypeError"],
+        answer: 0,
+        explanation: "The function returns a two-element tuple, and the two variables unpack its values in order.",
+        source: "Week_3/Pre/3.3. Tuples.ipynb · Using Tuple as a Return Value"
+      },
+      {
+        id: 34, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the return statement so the function returns the integer quotient and remainder.",
+        code: "def integer_division(m, n):\n    ________",
+        accepted: ["return m // n, m % n", "return (m // n, m % n)"],
+        explanation: "Floor division produces the integer quotient and modulo produces the remainder; returning them together creates a tuple.",
+        source: "Week_3/Pre/3.3. Tuples.ipynb · Integer Division Exercise"
+      },
+      {
+        id: 35, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the variable name used to capture the Boolean part of the returned ticket tuple.",
+        code: "fare, __________ = get_ticket_info(age)\nif is_discount:\n    print(\"Discount\")",
+        accepted: ["is_discount"],
+        explanation: "The second element returned by get_ticket_info is stored in is_discount and then tested.",
+        source: "Week_3/Lab/Lab3_starting_code/q4.py · Tuple return and unpacking"
+      },
+      {
+        id: 36, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "According to the Zoo ticket rules, what does get_ticket_info(60) return?",
+        options: ["(33, False)", "(22, True)", "(15, True)", "(0, True)"],
+        answer: 2,
+        explanation: "Senior citizens are age 60 and above, so age 60 receives the senior fare and a discount flag.",
+        source: "Week_3/Lab/Lab 3 - Conditions and Tuples(v1.1).docx · Q4 Zoo Ticket"
+      },
+      {
+        id: 37, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "What does grade(90) return?",
+        code: "def grade(score):\n    if score >= 50:\n        return \"P\"\n    elif score >= 80:\n        return \"A\"\n    else:\n        return \"F\"\n\ngrade(90)",
+        options: ["\"A\"", "\"P\"", "\"F\"", "It checks both branches and raises an error"],
+        answer: 1,
+        explanation: "An if-elif chain stops at the first true condition. score >= 50 is already true for 90.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · if-elif Statements"
+      },
+      {
+        id: 38, week: "Week 3", type: "mcq", tricky: true,
+        prompt: "A taxi ride is both during a peak period and between midnight and 6am. What surcharge modifier does this function return?",
+        code: "def modifier(peak, midnight):\n    if peak:\n        return 1.25\n    elif midnight:\n        return 1.5\n    return 1",
+        options: ["1", "1.25", "1.5", "2.75"],
+        answer: 1,
+        explanation: "The peak branch is checked first and returns immediately, so the midnight branch is never reached.",
+        source: "Week_3/Lab/Lab3_starting_code/taxi_fare.py · calculate_surcharge_modifer"
+      },
+      {
+        id: 39, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the keyword that starts the second branch of this multi-way condition.",
+        code: "if 10000 <= sales < 15000:\n    rate = 0.10\n________ 15000 <= sales < 18000:\n    rate = 0.15",
+        accepted: ["elif"],
+        explanation: "elif adds another condition to an if chain after the preceding condition is false.",
+        source: "Week_3/Pre/3.1. Conditional Statements.ipynb · if-elif Statements"
+      },
+      {
+        id: 40, week: "Week 3", type: "short", tricky: false,
+        prompt: "Fill the tuple returned for a child younger than three in the Zoo ticket task.",
+        code: "if age < 3:\n    return __________",
+        accepted: ["(0, True)", "0, True"],
+        explanation: "Children below three pay zero and are still considered to receive a discounted price.",
+        source: "Week_3/Lab/Lab 3 - Conditions and Tuples(v1.1).docx · Q4 Zoo Ticket"
+      },
+      {
+        id: 41, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "What is the value of word[-2]?",
+        code: "word = \"Loop\"\nword[-2]",
+        options: ["\"L\"", "\"o\"", "\"p\"", "An IndexError"],
+        answer: 1,
+        explanation: "Negative indices count from the end: -1 is p and -2 is the o before it.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · Accessing Individual Characters"
+      },
+      {
+        id: 42, week: "Week 4", type: "mcq", tricky: true,
+        prompt: "What is the value of this slice?",
+        code: "s = \"abcdefgh\"\ns[1:7:2]",
+        options: ["\"abcdefg\"", "\"bdf\"", "\"ceg\"", "\"bd\""],
+        answer: 1,
+        explanation: "Start at index 1, stop before index 7, and take every second character: indices 1, 3, and 5.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · Slicing to Extract Substrings"
+      },
+      {
+        id: 43, week: "Week 4", type: "mcq", tricky: true,
+        prompt: "What is printed?",
+        code: "s = \"code\"\ns.upper()\nprint(s)",
+        options: ["CODE", "code", "None", "A TypeError"],
+        answer: 1,
+        explanation: "upper returns a new string. It does not change the original string because strings are immutable.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · String Methods Do Not Modify Strings"
+      },
+      {
+        id: 44, week: "Week 4", type: "short", tricky: false,
+        prompt: "Fill the slice that reverses word.",
+        code: "word = \"stressed\"\nreversed_word = word[________]",
+        accepted: ["::-1"],
+        explanation: "A step of -1 walks through the whole string from right to left.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · Reverse a String"
+      },
+      {
+        id: 45, week: "Week 4", type: "short", tricky: true,
+        prompt: "Fill the print statement so sep appears after every character except the last.",
+        code: "for i in range(len(message)):\n    if i != len(message) - 1:\n        __________\n    else:\n        print(message[i])",
+        accepted: ["print(message[i], end=sep)", "print(message[i],end=sep)"],
+        explanation: "The separator is used as print's end value for every non-final character; the final branch prints a newline normally.",
+        source: "Week_4/In-class/4. In-Class Exercises.docx · Q1 Print a Message with Separators"
+      },
+      {
+        id: 46, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "What does this expression return?",
+        code: "\"banana\".find(\"na\")",
+        options: ["0", "1", "2", "-1"],
+        answer: 2,
+        explanation: "The first n in the substring na is at index 2, so find returns 2.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · String Methods"
+      },
+      {
+        id: 47, week: "Week 4", type: "mcq", tricky: true,
+        prompt: "What list is produced?",
+        code: "\"a,b,,c\".split(\",\")",
+        options: [
+          "[\"a\", \"b\", \"c\"]",
+          "[\"a\", \"b\", \"\", \"c\"]",
+          "[\"a,b\", \"c\"]",
+          "[\"a\", \"b\", \"c\", \"\"]"
+        ],
+        answer: 1,
+        explanation: "When a delimiter occurs twice in a row, split preserves the empty field between the delimiters.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · split()"
+      },
+      {
+        id: 48, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "What is the value of this membership test?",
+        code: "\"cat\" in \"concatenate\"",
+        options: ["True", "False", "The index of cat", "A TypeError"],
+        answer: 0,
+        explanation: "The consecutive characters c-a-t occur in concatenate, so the in test is True.",
+        source: "Week_4/Pre/4.1. Strings.ipynb · in to Check Existence"
+      },
+      {
+        id: 49, week: "Week 4", type: "short", tricky: false,
+        prompt: "Fill the line that replaces a lowercase a with e while building an encrypted message.",
+        code: "if ch == \"a\":\n    ______________________________",
+        accepted: ["encrypted_message += \"e\"", "encrypted_message = encrypted_message + \"e\""],
+        explanation: "The replacement character must be appended to the new string, not substituted in place inside the immutable original.",
+        source: "Week_4/Lab/lab4_starting_code/q4.py · Message Encryption"
+      },
+      {
+        id: 50, week: "Week 4", type: "short", tricky: true,
+        prompt: "Fill the boundary checks so a character a is counted only as the standalone word a.",
+        code: "if text[i] == \"a\" and ______________________________:\n    counter += 1",
+        accepted: [
+          "text[i - 1] == \" \" and text[i + 1] == \" \"",
+          "text[i-1] == \" \" and text[i+1] == \" \""
+        ],
+        explanation: "Under the lab's stated assumption, the character before and after the a must both be spaces.",
+        source: "Week_4/Lab/Lab 4 - Strings and for-Loops.docx · Q7 Count Words"
+      },
+      {
+        id: 51, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "How many values does range(2, 10, 3) generate?",
+        options: ["2", "3", "4", "8"],
+        answer: 1,
+        explanation: "The values are 2, 5, and 8. The stop value 10 is excluded.",
+        source: "Week_4/Pre/4.2. for Loops.ipynb · range(start, stop, step)"
+      },
+      {
+        id: 52, week: "Week 4", type: "mcq", tricky: true,
+        prompt: "What values are printed, separated by spaces?",
+        code: "for n in range(10, 1, -3):\n    print(n, end=\" \")",
+        options: ["10 7 4 1", "10 7 4", "10 9 8 7 6 5 4 3 2", "1 4 7 10"],
+        answer: 1,
+        explanation: "With a negative step the values decrease, but the stop value 1 is still excluded.",
+        source: "Week_4/Pre/4.2. for Loops.ipynb · Negative step"
+      },
+      {
+        id: 53, week: "Week 4", type: "mcq", tricky: true,
+        prompt: "Which sequence of pairs is printed?",
+        code: "for i in range(2):\n    for j in range(3):\n        print(i, j)",
+        options: [
+          "0 0; 1 1; 2 2",
+          "0 0; 0 1; 0 2; 1 0; 1 1; 1 2",
+          "0 1; 0 2; 1 1; 1 2",
+          "0 0; 1 0; 2 0; 0 1; 1 1; 2 1"
+        ],
+        answer: 1,
+        explanation: "For each outer value, the inner loop runs through 0, 1, and 2 before the outer loop advances.",
+        source: "Week_4/In-class/q6.py · Playing with Strings and Week_4/Pre/4.2. for Loops.ipynb"
+      },
+      {
+        id: 54, week: "Week 4", type: "short", tricky: false,
+        prompt: "Fill the range call so the loop visits every even number from 2 through 50.",
+        code: "for n in range(________________):\n    print(n, end=\" \")",
+        accepted: ["2, 51, 2", "2,51,2"],
+        explanation: "The stop is exclusive, so use 51 to include 50; a step of 2 visits only even values.",
+        source: "Week_4/Pre/4.2. for Loops.ipynb · range() exercise"
+      },
+      {
+        id: 55, week: "Week 4", type: "short", tricky: false,
+        prompt: "Fill the expression to transform 2, 3, 4 into the output 3, 5, 7.",
+        code: "for i in range(2, 5):\n    print(________________)",
+        accepted: ["i * 2 - 1", "i*2-1"],
+        explanation: "Doubling and subtracting one maps 2 to 3, 3 to 5, and 4 to 7.",
+        source: "Week_4/In-class/4. In-Class Exercises.docx · for-loop output tracing"
+      },
+      {
+        id: 56, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "What is printed?",
+        code: "word = \"cucumber\"\ncount = 0\nfor ch in word:\n    if ch == \"u\":\n        count += 1\nprint(count)",
+        options: ["1", "2", "3", "8"],
+        answer: 1,
+        explanation: "cucumber contains two lowercase u characters.",
+        source: "Week_4/In-class/in-class-notes.ipynb · Counting characters with a for-loop"
+      },
+      {
+        id: 57, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "What does display_fibonacci(5) print when the sequence starts 1, 2?",
+        options: ["1, 2, 3, 5, 8", "0, 1, 1, 2, 3", "1, 1, 2, 3, 5", "2, 3, 5, 8, 13"],
+        answer: 0,
+        explanation: "The lab specifies the first terms as 1 and 2, so the next three are 3, 5, and 8.",
+        source: "Week_4/Lab/Lab 4 - Strings and for-Loops.docx · Q8 Fibonacci Numbers"
+      },
+      {
+        id: 58, week: "Week 4", type: "mcq", tricky: false,
+        prompt: "Under the stated password rules, which password is strong?",
+        options: ["abcdefghi", "ABCDEFGH1", "Abcdef12!", "Abc def12!"],
+        answer: 2,
+        explanation: "Abcdef12! has at least eight characters, lowercase and uppercase letters, a digit, and a special character from !@#$.",
+        source: "Week_4/In-class/4. In-Class Exercises.docx · Q7 Password Strength"
+      },
+      {
+        id: 59, week: "Week 4", type: "short", tricky: false,
+        prompt: "Fill the line that prints the character at position l without moving to a new line.",
+        code: "for i in range(len(message)):\n    for l in range(i + 1):\n        ______________________________\n    print()",
+        accepted: ["print(message[l], end=\"\")", "print(message[l],end=\"\")"],
+        explanation: "The inner loop builds each row by printing characters without a newline; the following print starts the next row.",
+        source: "Week_4/In-class/4. In-Class Exercises.docx · Q6 Playing with Strings"
+      },
+      {
+        id: 60, week: "Week 4", type: "short", tricky: true,
+        prompt: "Fill the range check so month_int values from 1 through 12 are accepted.",
+        code: "if ______________________________:\n    print(\"valid month\")\nelse:\n    print(\"Enter a number between 1 and 12 only!\")",
+        accepted: ["1 <= month_int <= 12", "1<=month_int<=12"],
+        explanation: "A chained comparison expresses both inclusive boundaries in one condition.",
+        source: "Week_4/Lab/Lab 4 - Strings and for-Loops.docx · Q1 Number of Days in a Month"
+      },
+      {
+        id: 61, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "Which expression creates a list containing a string, a number, and another list?",
+        options: [
+          "[\"x\", 3, [4, 5]]",
+          "(\"x\", 3, [4, 5])",
+          "{\"x\", 3, [4, 5]}",
+          "\"x\", 3, [4, 5]"
+        ],
+        answer: 0,
+        explanation: "Square brackets create a list, and list elements may have different data types, including another list.",
+        source: "Week_5/Pre/5. Lists.ipynb · List Creation"
+      },
+      {
+        id: 62, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What is the value of this list slice?",
+        code: "items = [\"a\", \"b\", \"c\", \"d\"]\nitems[1:4:2]",
+        options: ["[\"a\", \"b\", \"c\"]", "[\"b\", \"d\"]", "[\"b\", \"c\", \"d\"]", "[\"c\"]"],
+        answer: 1,
+        explanation: "The slice starts at index 1, stops before index 4, and takes indices 1 and 3.",
+        source: "Week_5/Pre/5. Lists.ipynb · Accessing Multiple Elements"
+      },
+      {
+        id: 63, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What is printed by the two print statements?",
+        code: "items = [\"a\"]\nresult = items.append(\"b\")\nprint(items)\nprint(result)",
+        options: [
+          "[\"a\", \"b\"] then [\"a\", \"b\"]",
+          "[\"a\"] then None",
+          "[\"a\", \"b\"] then None",
+          "None then [\"a\", \"b\"]"
+        ],
+        answer: 2,
+        explanation: "append changes the original list and returns None.",
+        source: "Week_5/Pre/5. Lists.ipynb · Adding an Element to a List"
+      },
+      {
+        id: 64, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the method name that adds pear to the end of items.",
+        code: "items = [\"apple\", \"orange\"]\nitems.________(\"pear\")",
+        accepted: ["append"],
+        explanation: "append adds one element to the end of the existing list.",
+        source: "Week_5/Pre/5. Lists.ipynb · append()"
+      },
+      {
+        id: 65, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the loop header so value visits each score in scores.",
+        code: "scores = [62, 74, 81]\ntotal = 0\nfor __________:\n    total += value",
+        accepted: ["value in scores"],
+        explanation: "A for-each loop over scores assigns each list element to value in turn.",
+        source: "Week_5/Pre/5. Lists.ipynb · Traversing a List"
+      },
+      {
+        id: 66, week: "Week 5", type: "mcq", tricky: true,
+        prompt: "After the assignment and update, what are b and c?",
+        code: "a = [1, 2]\nb = a\nc = a[:]\na[0] = 9",
+        options: [
+          "b is [1, 2] and c is [1, 2]",
+          "b is [9, 2] and c is [1, 2]",
+          "b is [1, 2] and c is [9, 2]",
+          "Both b and c are [9, 2]"
+        ],
+        answer: 1,
+        explanation: "b refers to the same list as a, while a[:] creates a separate shallow copy before the update.",
+        source: "Week_5/Pre/5. Lists.ipynb · References and Slicing"
+      },
+      {
+        id: 67, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What is printed?",
+        code: "def bump(values):\n    values[0] += 1\n\nnums = [4]\nbump(nums)\nprint(nums)",
+        options: ["[4]", "[5]", "None", "A TypeError"],
+        answer: 1,
+        explanation: "The function parameter refers to the same mutable list, so changing its first element is visible to nums.",
+        source: "Week_5/Pre/5. Lists.ipynb · Passing a List as an Argument"
+      },
+      {
+        id: 68, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What does cart[1][0] evaluate to?",
+        code: "cart = [(\"milk\", 2.5, 2), (\"eggs\", 1.2, 6)]\ncart[1][0]",
+        options: ["\"milk\"", "\"eggs\"", "1.2", "2"],
+        answer: 1,
+        explanation: "cart[1] selects the second tuple, and [0] selects that tuple's first element, the item name.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 4 · Shopping Cart"
+      },
+      {
+        id: 69, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the loop variable part so the function can assign back into list positions.",
+        code: "def shorten(my_list):\n    for __________:\n        if len(my_list[index]) > 5:\n            my_list[index] = my_list[index][0:5]",
+        accepted: ["index in range(len(my_list))", "index in range (len(my_list))"],
+        explanation: "Iterating over indices allows the function to write the shortened string back into the original list.",
+        source: "Week_5/In-class/5. In-Class Exercises (1).docx · Q1 Code Tracing"
+      },
+      {
+        id: 70, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the tuple expression so every string-number combination is appended.",
+        code: "for i in range(len(str_list)):\n    for j in range(len(num_list)):\n        new_list.append(________________)",
+        accepted: ["(str_list[i], num_list[j])", "(str_list [i], num_list [j])"],
+        explanation: "The nested loops select one element from each list and package the pair as a tuple.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 8 · More on Lists"
+      },
+      {
+        id: 71, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "According to the lab specification, what does all_older_than([], 20) return?",
+        options: ["True", "False", "None", "It raises IndexError"],
+        answer: 0,
+        explanation: "The lab explicitly says an empty age list returns True: there is no age that violates the requirement.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 2 · all_older_than"
+      },
+      {
+        id: 72, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What does get_leap_years([1900, 2000, 2020]) return?",
+        options: ["[1900, 2000, 2020]", "[2000, 2020]", "[1900, 2020]", "[]"],
+        answer: 1,
+        explanation: "A century year must also be divisible by 400. Thus 1900 is not a leap year, while 2000 and 2020 are.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 2 · get_leap_years"
+      },
+      {
+        id: 73, week: "Week 5", type: "mcq", tricky: false,
+        prompt: "What should get_non_common_strings([\"a\", \"b\", \"c\"], [\"b\", \"c\", \"d\"]) return?",
+        options: ["[\"b\", \"c\"]", "[\"a\", \"d\"]", "[\"a\", \"b\", \"c\", \"d\"]", "[]"],
+        answer: 1,
+        explanation: "The function returns values present in exactly one of the two lists, so the shared b and c are removed.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 8 · get_non_common_strings"
+      },
+      {
+        id: 74, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the condition that treats COMMON_WORDS as lowercase while preserving the original spelling in the result.",
+        code: "for word in sentence.split(\" \"):\n    if ______________________________:\n        misspelled_words.append(word)",
+        accepted: ["word.lower() not in COMMON_WORDS", "word.lower()not in COMMON_WORDS"],
+        explanation: "Compare the lowercase version with the lowercase dictionary, but append word itself so its original capitalization is retained.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · p. 5 · Spelling Check"
+      },
+      {
+        id: 75, week: "Week 5", type: "short", tricky: false,
+        prompt: "Fill the bracket formula for the matching tax band.",
+        code: "for limit, base, percent in reversed(TAX_INFO):\n    if income >= limit:\n        return ______________________________",
+        accepted: ["base + (income - limit) * percent", "base+(income-limit)*percent"],
+        explanation: "Once the highest matching threshold is found, add its base tax to the tax rate applied to income above that threshold.",
+        source: "Week_5/Lab/Lab 5 - Lists (v1.1).pdf · pp. 6–7 · Tax Calculation"
+      }
+    ];
+
+    const quiz = document.getElementById("quiz");
+    const results = document.getElementById("results");
+    const weekFilter = document.getElementById("weekFilter");
+    const difficultyFilter = document.getElementById("difficultyFilter");
+    const progressText = document.getElementById("progressText");
+    const filterText = document.getElementById("filterText");
+    const progressBar = document.getElementById("progressBar");
+    const submitBtn = document.getElementById("submitBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const mistakesBtn = document.getElementById("mistakesBtn");
+
+    let submitted = false;
+    let lastResults = new Map();
+    let checkedResults = new Map();
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function qCode(value) {
+      return value ? "<pre><code>" + escapeHtml(value) + "</code></pre>" : "";
+    }
+
+    function renderQuestion(q, index) {
+      const setNumber = Math.floor(index / 5) + 1;
+      const difficulty = q.tricky ? '<span class="pill tricky">Tricky</span>' : "";
+      let body = "";
+
+      if (q.type === "mcq") {
+        body = '<div class="choices">' + q.options.map(function(option, optionIndex) {
+          return '<label class="choice"><input type="radio" name="q' + q.id + '" value="' + optionIndex + '"><span>' + escapeHtml(option) + '</span></label>';
+        }).join("") + "</div>";
+      } else {
+        body = '<textarea id="answer-' + q.id + '" placeholder="Type only the missing Python code..." spellcheck="false"></textarea><p class="hint">Equivalent Python with different spacing is accepted where it has the same meaning.</p>';
+      }
+
+      return '<article class="question" data-id="' + q.id + '" data-week="' + q.week + '" data-tricky="' + (q.tricky ? "true" : "false") + '" data-set="' + setNumber + '">' +
+        '<div class="q-top"><span class="q-number">Q' + (index + 1) + '</span><span class="pill week">' + q.week + '</span><span class="pill type">' + (q.type === "mcq" ? "MCQ" : "Short answer · code fill") + '</span>' + difficulty + '</div>' +
+        '<p class="prompt">' + q.prompt + '</p>' +
+        qCode(q.code) +
+        body +
+        '<div class="check-row"><button class="check-btn" type="button" data-check-id="' + q.id + '">Check answer</button><span class="check-status" id="status-' + q.id + '">Answer when ready</span></div>' +
+        '<div class="feedback" id="feedback-' + q.id + '"></div>' +
+        "</article>";
+    }
+
+    function renderQuiz() {
+      let html = "";
+      questions.forEach(function(q, index) {
+        if (index % 5 === 0) {
+          const setNumber = Math.floor(index / 5) + 1;
+          html += '<div class="set-heading" data-set-heading="' + setNumber + '"><h2>Mini-set ' + setNumber + '</h2><span>3 MCQs + 2 code fills</span></div>';
+        }
+        html += renderQuestion(q, index);
+      });
+      quiz.innerHTML = html;
+      applyFilters();
+      updateProgress();
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .trim()
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+    }
+
+    function normalizeCode(value) {
+      return normalizeText(value)
+        .replace(/["']/g, "'")
+        .replace(/\s+/g, "");
+    }
+
+    function getResponse(q) {
+      if (q.type === "mcq") {
+        const selected = document.querySelector('input[name="q' + q.id + '"]:checked');
+        return selected ? selected.value : "";
+      }
+      return document.getElementById("answer-" + q.id).value;
+    }
+
+    function isCorrect(q, response) {
+      if (!String(response).trim()) return false;
+      if (q.type === "mcq") return Number(response) === q.answer;
+      return q.accepted.some(function(answer) { return normalizeCode(response) === normalizeCode(answer); });
+    }
+
+    function answerDisplay(q) {
+      return q.type === "mcq" ? q.options[q.answer] : q.accepted[0];
+    }
+
+    function showPendingFeedback(q) {
+      const card = document.querySelector('[data-id="' + q.id + '"]');
+      const feedback = document.getElementById("feedback-" + q.id);
+      const status = document.getElementById("status-" + q.id);
+      card.classList.remove("is-correct", "is-wrong");
+      card.classList.add("is-unanswered");
+      feedback.className = "feedback show pending";
+      feedback.innerHTML = "<strong>Answer this first.</strong><div>Select an option or enter the missing code, then click Check answer.</div>";
+      status.textContent = "Needs an answer";
+    }
+
+    function showAnswerFeedback(q, correct) {
+      const card = document.querySelector('[data-id="' + q.id + '"]');
+      const feedback = document.getElementById("feedback-" + q.id);
+      const status = document.getElementById("status-" + q.id);
+      card.classList.remove("is-unanswered", "is-correct", "is-wrong");
+      card.classList.add(correct ? "is-correct" : "is-wrong");
+      feedback.className = "feedback show " + (correct ? "correct" : "wrong");
+      feedback.innerHTML = (correct ? "<strong>Correct.</strong>" : "<strong>Review this one.</strong>") +
+        "<div>" + escapeHtml(q.explanation) + "</div>" +
+        '<div class="answer">Answer: <code>' + escapeHtml(answerDisplay(q)) + "</code></div>" +
+        '<div class="source">Source anchor: ' + escapeHtml(q.source) + "</div>";
+      status.textContent = correct ? "Correct" : "Review this one";
+    }
+
+    function checkQuestion(id) {
+      const q = questions.find(function(item) { return item.id === id; });
+      if (!q) return;
+      const response = getResponse(q);
+      if (!String(response).trim()) {
+        checkedResults.delete(q.id);
+        showPendingFeedback(q);
+        return;
+      }
+      const correct = isCorrect(q, response);
+      checkedResults.set(q.id, { correct: correct, response: response });
+      showAnswerFeedback(q, correct);
+    }
+
+    function gradeQuiz() {
+      let score = 0;
+      let mcqScore = 0;
+      let shortScore = 0;
+      let trickyScore = 0;
+      let unanswered = 0;
+      lastResults = new Map();
+
+      questions.forEach(function(q) {
+        const response = getResponse(q);
+        if (!String(response).trim()) unanswered += 1;
+        const correct = isCorrect(q, response);
+        if (correct) {
+          score += 1;
+          if (q.type === "mcq") mcqScore += 1;
+          else shortScore += 1;
+          if (q.tricky) trickyScore += 1;
+        }
+        lastResults.set(q.id, { correct: correct, response: response });
+        checkedResults.set(q.id, { correct: correct, response: response });
+        showAnswerFeedback(q, correct);
+      });
+
+      const percent = Math.round((score / questions.length) * 100);
+      results.innerHTML =
+        "<h2>" + score + " / " + questions.length + " · " + percent + "%</h2>" +
+        "<p>" + (unanswered ? unanswered + " unanswered. " : "") + "Every question is worth one point. Use the filters to review a week or the Tricky set.</p>" +
+        '<div class="result-grid">' +
+          '<div class="result-stat"><strong>' + mcqScore + ' / 45</strong><span>MCQ score</span></div>' +
+          '<div class="result-stat"><strong>' + shortScore + ' / 30</strong><span>code-fill score</span></div>' +
+          '<div class="result-stat"><strong>' + trickyScore + ' / ' + questions.filter(function(q) { return q.tricky; }).length + '</strong><span>Tricky score</span></div>' +
+          '<div class="result-stat"><strong>' + (questions.length - score) + '</strong><span>to review</span></div>' +
+        "</div>";
+      results.classList.add("show");
+      submitted = true;
+      mistakesBtn.hidden = false;
+      mistakesBtn.textContent = "Show mistakes";
+      applyFilters();
+      results.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function updateProgress() {
+      const answered = questions.filter(function(q) { return String(getResponse(q)).trim().length > 0; }).length;
+      progressText.textContent = answered + " / " + questions.length + " answered";
+      progressBar.style.width = Math.round((answered / questions.length) * 100) + "%";
+    }
+
+    function applyFilters() {
+      const week = weekFilter.value;
+      const difficulty = difficultyFilter.value;
+      const showMistakes = mistakesBtn.dataset.mode === "mistakes";
+      let shown = 0;
+
+      questions.forEach(function(q) {
+        const card = document.querySelector('[data-id="' + q.id + '"]');
+        const heading = document.querySelector('[data-set-heading="' + (Math.floor((q.id - 1) / 5) + 1) + '"]');
+        const weekMatch = week === "all" || q.week === week;
+        const difficultyMatch = difficulty === "all" || (difficulty === "tricky" ? q.tricky : !q.tricky);
+        const mistakeMatch = !showMistakes || (submitted && lastResults.has(q.id) && !lastResults.get(q.id).correct);
+        const visible = weekMatch && difficultyMatch && mistakeMatch;
+        card.classList.toggle("is-hidden", !visible);
+        if (visible) shown += 1;
+        if (heading) heading.dataset.visible = "true";
+      });
+
+      document.querySelectorAll(".set-heading").forEach(function(heading) {
+        const set = Number(heading.dataset.setHeading);
+        const hasVisible = questions.slice((set - 1) * 5, set * 5).some(function(q) {
+          return !document.querySelector('[data-id="' + q.id + '"]').classList.contains("is-hidden");
+        });
+        heading.classList.toggle("is-hidden", !hasVisible);
+      });
+      filterText.textContent = shown + " shown";
+    }
+
+    function invalidateCheck(id) {
+      if (!checkedResults.has(id)) return;
+      checkedResults.delete(id);
+      const card = document.querySelector('[data-id="' + id + '"]');
+      const feedback = document.getElementById("feedback-" + id);
+      const status = document.getElementById("status-" + id);
+      card.classList.remove("is-correct", "is-wrong", "is-unanswered");
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      status.textContent = "Answer changed · check again";
+    }
+
+    function clearAnswers() {
+      document.querySelectorAll('input[type="radio"]').forEach(function(input) { input.checked = false; });
+      document.querySelectorAll("textarea").forEach(function(area) { area.value = ""; });
+      submitted = false;
+      lastResults = new Map();
+      checkedResults = new Map();
+      results.classList.remove("show");
+      mistakesBtn.hidden = true;
+      mistakesBtn.dataset.mode = "";
+      document.querySelectorAll(".question").forEach(function(card) {
+        card.classList.remove("is-correct", "is-wrong", "is-unanswered");
+      });
+      document.querySelectorAll(".feedback").forEach(function(feedback) {
+        feedback.className = "feedback";
+        feedback.innerHTML = "";
+      });
+      applyFilters();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    weekFilter.addEventListener("change", applyFilters);
+    difficultyFilter.addEventListener("change", applyFilters);
+    submitBtn.addEventListener("click", gradeQuiz);
+    clearBtn.addEventListener("click", clearAnswers);
+    quiz.addEventListener("click", function(event) {
+      const button = event.target.closest("[data-check-id]");
+      if (button) checkQuestion(Number(button.dataset.checkId));
+    });
+    mistakesBtn.addEventListener("click", function() {
+      mistakesBtn.dataset.mode = mistakesBtn.dataset.mode === "mistakes" ? "" : "mistakes";
+      mistakesBtn.textContent = mistakesBtn.dataset.mode === "mistakes" ? "Show all questions" : "Show mistakes";
+      applyFilters();
+    });
+    quiz.addEventListener("input", function(event) {
+      updateProgress();
+      const card = event.target.closest(".question");
+      if (card) invalidateCheck(Number(card.dataset.id));
+    });
+    quiz.addEventListener("change", function(event) {
+      updateProgress();
+      const card = event.target.closest(".question");
+      if (card) invalidateCheck(Number(card.dataset.id));
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>
