@@ -7,7 +7,7 @@ def find_students(names):
             last_names.append(student[1])
     return students
 
-# Complexity is O(1)
+# Complexity is O(n^2)
 
 
 print('Testcase 1')

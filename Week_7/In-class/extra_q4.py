@@ -1,5 +1,14 @@
 def get_largest_numbers(my_list):
-    pass
+    first_10 = my_list[:10]
+    rest = my_list[10:]
+    for elem in rest:
+        for i in range(len(first_10)):
+            if elem > first_10[i]:
+                first_10[i] = elem
+                break
+
+    first_10.sort()
+    return first_10
 
 
 print('Testcase 1')

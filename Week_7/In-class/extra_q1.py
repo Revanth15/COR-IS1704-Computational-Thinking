@@ -13,7 +13,7 @@ def bubble_sort(lst):
 
     return lst
 
-# Complexity is O(n^n-1) 
+# Complexity is O(n^2) 
 # where n is the number of list items
 
 print('Testcase 1')

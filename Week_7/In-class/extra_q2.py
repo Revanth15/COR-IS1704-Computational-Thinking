@@ -9,7 +9,7 @@ def find_smallest_diff(my_list):
                     smallest_diff = diff
     return smallest_diff
 
-# Complexity is O(n^n)
+# Complexity is O(n^2)
 # where n is the number of list items
 
 print('Testcase 1')
