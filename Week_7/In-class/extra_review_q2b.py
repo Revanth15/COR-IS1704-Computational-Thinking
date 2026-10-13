@@ -1,5 +1,7 @@
 def print_diamond_using_str(text):
-    pass
+    size_of_diamond = (len(text) - 2) / 2
+    print(size_of_diamond)
+    return size_of_diamond
 
 
 print("Testcase 1: print_diamond_using_str('12345678')")

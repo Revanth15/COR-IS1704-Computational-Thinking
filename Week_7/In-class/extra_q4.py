@@ -5,8 +5,8 @@ def get_largest_numbers(my_list):
         for i in range(len(first_10)):
             if elem > first_10[i]:
                 first_10[i] = elem
+                first_10.sort()
                 break
-
     first_10.sort()
     return first_10
 

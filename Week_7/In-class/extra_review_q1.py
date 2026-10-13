@@ -1,5 +1,23 @@
 def encode_message(text):
-    pass
+    current_ch = ""
+    ch_counter = 0
+    return_str = ""
+    if text == "":
+        return text
+    for ch in text:
+        if current_ch == "":
+            current_ch = ch
+
+        if ch == current_ch:
+            ch_counter += 1
+        else:
+            return_str += " " + current_ch + str(ch_counter)
+            current_ch = ch
+            ch_counter = 1
+
+    return_str += " " + current_ch + str(ch_counter)
+
+    return return_str
 
 
 print('Testcase 1')

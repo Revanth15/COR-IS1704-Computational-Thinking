@@ -1,0 +1,2356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test 3 | Weeks 1–6 | 100 questions</title>
+  <meta name="description" content="Test 3: 100 Python practice questions from COR-IS1704 Weeks 1–6, with varied difficulty, grading, and source references.">
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #65708a;
+      --paper: #f6f8fc;
+      --card: #ffffff;
+      --line: #dfe5f0;
+      --navy: #21345f;
+      --blue: #3c67d6;
+      --blue-soft: #eef3ff;
+      --violet: #7659d8;
+      --violet-soft: #f3efff;
+      --green: #18794e;
+      --green-soft: #eaf8f0;
+      --red: #b4233f;
+      --red-soft: #fff0f2;
+      --amber: #9a6200;
+      --amber-soft: #fff7df;
+      --shadow: 0 12px 30px rgba(31, 47, 83, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 0% 0%, #e9efff 0, transparent 34rem),
+        radial-gradient(circle at 100% 0%, #f0ebff 0, transparent 28rem),
+        var(--paper);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .shell { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+
+    header { padding: 48px 0 24px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--navy);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(60,103,214,.18);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 16px 0 10px;
+      color: var(--navy);
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .lede {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .stat {
+      padding: 16px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(223,229,240,.95);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(31,47,83,.04);
+    }
+
+    .stat strong { display: block; color: var(--navy); font-size: 1.35rem; }
+    .stat span { color: var(--muted); font-size: .88rem; }
+
+    .notice {
+      margin: 18px 0 28px;
+      padding: 14px 16px;
+      color: #3c3b55;
+      background: rgba(255,255,255,.72);
+      border-left: 4px solid var(--violet);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 24px;
+      padding: 12px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(223,229,240,.95);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .toolbar label {
+      color: var(--muted);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    select, button, textarea { font: inherit; }
+
+    select {
+      padding: 9px 32px 9px 11px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--navy);
+      border: 1px solid var(--navy);
+      border-radius: 10px;
+      font-weight: 800;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); box-shadow: 0 8px 15px rgba(33,52,95,.16); }
+    button.secondary { color: var(--navy); background: #fff; }
+    button.accent { background: var(--blue); border-color: var(--blue); }
+    button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(60,103,214,.3);
+      outline-offset: 2px;
+    }
+
+    .progress-wrap { flex: 1 1 220px; min-width: 180px; margin-left: auto; }
+    .progress-label { display: flex; justify-content: space-between; color: var(--muted); font-size: .78rem; }
+    .progress { height: 8px; margin-top: 5px; overflow: hidden; background: #e8edf7; border-radius: 99px; }
+    .progress > span { display: block; width: 0%; height: 100%; background: linear-gradient(90deg, var(--blue), var(--violet)); border-radius: inherit; transition: width .2s ease; }
+
+    #quiz { padding-bottom: 40px; }
+
+    .set-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 36px 0 12px;
+      color: var(--navy);
+    }
+
+    .set-heading h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.02em; }
+    .set-heading span { color: var(--muted); font-size: .85rem; }
+
+    .question {
+      position: relative;
+      margin: 12px 0;
+      padding: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 22px rgba(31,47,83,.045);
+      transition: border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+    .question.is-hidden { display: none; }
+    .question.is-correct { border-color: #84d2a8; box-shadow: 0 8px 24px rgba(24,121,78,.1); }
+    .question.is-wrong { border-color: #efa1af; box-shadow: 0 8px 24px rgba(180,35,63,.08); }
+
+    .q-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .q-number { color: var(--navy); font-weight: 900; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .02em;
+    }
+    .pill.week { color: var(--blue); background: var(--blue-soft); }
+    .pill.type { color: #5f4ab0; background: var(--violet-soft); }
+    .pill.tricky { color: var(--amber); background: var(--amber-soft); }
+
+    .prompt { margin: 0; font-weight: 730; }
+    .prompt code, .explanation code, .answer code { padding: 2px 5px; color: #28385e; background: #f0f3f9; border-radius: 5px; font: .92em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    pre {
+      max-width: 100%;
+      margin: 15px 0;
+      padding: 15px;
+      overflow-x: auto;
+      color: #edf3ff;
+      background: #17233f;
+      border-radius: 12px;
+      font: .9rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      tab-size: 4;
+    }
+
+    .choices { display: grid; gap: 9px; margin-top: 16px; }
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      color: var(--ink);
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .choice:hover { border-color: #9fb2ec; background: #f7f9ff; }
+    .choice input { margin-top: 4px; accent-color: var(--blue); }
+    .choice code { white-space: pre-wrap; word-break: break-word; font: .9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 70px;
+      margin-top: 15px;
+      resize: vertical;
+      padding: 12px;
+      color: var(--ink);
+      background: #fbfcff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      font: .92rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .hint { margin: 9px 0 0; color: var(--muted); font-size: .83rem; }
+
+    .feedback {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-size: .91rem;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { color: var(--green); background: var(--green-soft); }
+    .feedback.wrong { color: var(--red); background: var(--red-soft); }
+    .feedback.pending { color: var(--amber); background: var(--amber-soft); }
+    .feedback strong { display: block; margin-bottom: 4px; }
+    .source { margin-top: 7px; color: var(--muted); font-size: .8rem; }
+    .question.is-unanswered { border-color: #edcf72; }
+    .check-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .check-btn { color: var(--navy); background: var(--blue-soft); border-color: #b9c9f6; }
+    .check-status { color: var(--muted); font-size: .82rem; }
+
+    #results {
+      display: none;
+      margin: 0 0 28px;
+      padding: 22px;
+      color: var(--navy);
+      background: linear-gradient(135deg, #eef3ff, #f5f0ff);
+      border: 1px solid #cbd7fb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    #results.show { display: block; }
+    #results h2 { margin: 0 0 5px; font-size: 1.5rem; }
+    #results p { margin: 4px 0; color: #4a5875; }
+    .result-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+    .result-stat { padding: 11px; background: rgba(255,255,255,.72); border-radius: 10px; }
+    .result-stat strong { display: block; font-size: 1.2rem; }
+    .result-stat span { color: var(--muted); font-size: .78rem; }
+
+    footer { padding: 12px 0 44px; color: var(--muted); font-size: .84rem; }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 22px, 680px); }
+      header { padding-top: 30px; }
+      .overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { position: static; }
+      .progress-wrap { flex-basis: 100%; margin-left: 0; }
+      .question { padding: 17px; border-radius: 14px; }
+      .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .check-row { align-items: stretch; flex-direction: column; }
+    }
+    .difficulty.easy { color: #18794e; background: #eaf8f0; }
+    .difficulty.medium { color: #21345f; background: #eef3ff; }
+    .difficulty.hard { color: #9a6200; background: #fff7df; }
+    .difficulty.challenge { color: #7659d8; background: #f3efff; }
+    .choices .choice { white-space: pre-wrap; }
+    .choice span { min-width: 0; overflow-wrap: anywhere; }
+    .set-heading.is-hidden { display: none; }
+    .feedback .answer code { white-space: pre-wrap; }
+    button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <div class="eyebrow">COR-IS1704 · Practice test</div>
+    <h1>Test 3</h1>
+    <p class="lede">100 original questions covering Weeks 1–6: fundamentals, functions and imports, conditions and tuples, strings and for-loops, lists, and list-processing algorithms.</p>
+
+    <div class="overview" aria-label="Quiz overview">
+      <div class="stat"><strong>100</strong><span>questions · 1 point each</span></div>
+      <div class="stat"><strong>60 + 40</strong><span>MCQs + code fills</span></div>
+      <div class="stat"><strong>43</strong><span>Hard or Challenge</span></div>
+      <div class="stat"><strong>20</strong><span>sets of 3 + 2</span></div>
+    </div>
+
+    <div class="notice">
+      Each set has three MCQs followed by two code fills. Every question is worth one point. Answers stay hidden until you check a question or submit the test. Submit grades all 100, including filtered-out questions. Your answers are saved in this browser when storage is available.
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="toolbar" aria-label="Quiz controls">
+      <label for="weekFilter">Show</label>
+      <select id="weekFilter">
+        <option value="all">All weeks</option>
+        <option value="Week 1">Week 1 · Fundamentals</option>
+        <option value="Week 2">Week 2 · Functions</option>
+        <option value="Week 3">Week 3 · Conditionals</option>
+        <option value="Week 4">Week 4 · Strings + loops</option>
+        <option value="Week 5">Week 5 · Lists</option>
+        <option value="Week 6">Week 6 · More on lists</option>
+      </select>
+      <select id="difficultyFilter" aria-label="Difficulty filter">
+        <option value="all">All difficulty</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+        <option value="Challenge">Challenge</option>
+        <option value="tricky">Hard + Challenge</option>
+      </select>
+      <button class="secondary" id="clearBtn" type="button">Clear answers</button>
+      <button class="secondary" id="mistakesBtn" type="button" hidden>Show mistakes</button>
+      <button class="accent" id="submitBtn" type="button">Submit test</button>
+      <div class="progress-wrap" aria-live="polite">
+        <div class="progress-label"><span id="progressText">0 / 100 answered</span><span id="filterText">100 shown</span></div>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+    </div>
+
+    <section id="results" aria-live="polite"></section>
+    <section id="quiz" aria-label="100-question test"></section>
+  </main>
+
+  <footer class="shell">
+    Practice based on Week_1–Week_6 course materials only. Challenge questions include the extra in-class exercises. Use Python 3; treat each snippet as a fresh run. No internet connection is required.
+  </footer>
+
+  <script>
+    const questions = [
+  {
+    "id": 1,
+    "week": "Week 1",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Which is a valid Python variable name?",
+    "code": null,
+    "options": [
+      "final score",
+      "return",
+      "_score2",
+      "2_score"
+    ],
+    "answer": 2,
+    "explanation": "A name may begin with an underscore and may contain digits after its first character. Spaces and reserved keywords are not allowed.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 II. Naming Rules and Conventions"
+  },
+  {
+    "id": 2,
+    "week": "Week 1",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "x = 9\ny = x\nx = 4\nprint(x, y)",
+    "options": [
+      "9 9",
+      "4 4",
+      "4 9",
+      "9 4"
+    ],
+    "answer": 2,
+    "explanation": "Assigning a new integer to x does not change the integer previously assigned to y.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 I. Variables"
+  },
+  {
+    "id": 3,
+    "week": "Week 1",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Predict the exact output. Pay attention to exponent associativity.",
+    "code": "print(2 ** 3 ** 2, (2 ** 3) ** 2)",
+    "options": [
+      "512 64",
+      "64 64",
+      "36 36",
+      "512 512"
+    ],
+    "answer": 0,
+    "explanation": "Exponentiation groups from the right. The first expression is 2 ** (3 ** 2), or 512. Explicit parentheses in the second force (2 ** 3) ** 2, or 64.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 Operator Associativity"
+  },
+  {
+    "id": 4,
+    "week": "Week 1",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "The string contains a whole number. Fill the conversion function name.",
+    "code": "text = \"27\"\ncount = ____(text)\nprint(count + 3)",
+    "accepted": [
+      "int"
+    ],
+    "explanation": "int converts the string to an integer, so adding 3 produces 30.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 V. Built-in Functions: int(), float() and str()"
+  },
+  {
+    "id": 5,
+    "week": "Week 1",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a single arithmetic operator to get the remaining minutes after whole hours. Assume minutes is nonnegative.",
+    "code": "minutes = 143\nremainder = minutes ____ 60",
+    "accepted": [
+      "%"
+    ],
+    "explanation": "Modulo gives the remainder after division by 60. The example leaves 23 minutes.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 IV. Operators: Arithmetic Operators"
+  },
+  {
+    "id": 6,
+    "week": "Week 1",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed, including the decimal point?",
+    "code": "print(18 / 6, 18 // 6)",
+    "options": [
+      "3.0 3",
+      "3 3",
+      "3 3.0",
+      "3.0 3.0"
+    ],
+    "answer": 0,
+    "explanation": "/ produces a float even for an exact quotient. With integer operands, // produces an integer.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 Arithmetic Operators"
+  },
+  {
+    "id": 7,
+    "week": "Week 1",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "The user enters 4 at the input prompt. Ignoring the prompt itself, what does the last line print?",
+    "code": "quantity = input(\"Quantity: \")\nprint(quantity * 3)",
+    "options": [
+      "12",
+      "444",
+      "It raises TypeError",
+      "4 4 4"
+    ],
+    "answer": 1,
+    "explanation": "input returns a string. Repeating the string \"4\" three times gives \"444\".",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 V. Built-in Functions: input() and String Repetition"
+  },
+  {
+    "id": 8,
+    "week": "Week 1",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Which statement about these assignments is correct?",
+    "code": "rate = 5\nRate = 7\n# rate = 100",
+    "options": [
+      "The third line deletes rate",
+      "rate is 100 and Rate is 7",
+      "rate is 5 and Rate is 7",
+      "Both names contain 7"
+    ],
+    "answer": 2,
+    "explanation": "Python names are case-sensitive. The commented assignment does not execute.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 II. Naming Rules and Conventions; VI. Comments"
+  },
+  {
+    "id": 9,
+    "week": "Week 1",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the keyword argument so the output is exactly red/blue followed by a newline.",
+    "code": "print(\"red\", \"blue\", ____=\"/\")",
+    "accepted": [
+      "sep"
+    ],
+    "explanation": "sep controls the text between print arguments. end controls what follows the last argument.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 V. Built-in Functions: print()"
+  },
+  {
+    "id": 10,
+    "week": "Week 1",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Use price, discount, /, *, and parentheses to fill the expression. discount is a percentage, so 15 means 15%.",
+    "code": "price = 80\ndiscount = 15\nfinal_price = ____",
+    "accepted": [
+      "price * (1 - discount / 100)",
+      "price * (100 - discount) / 100",
+      "price - price * discount / 100",
+      "(1 - discount / 100) * price"
+    ],
+    "explanation": "Convert the percentage to a fraction before subtracting the discounted amount. The final price is 68.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 IV. Operators; lab-style percentage calculations"
+  },
+  {
+    "id": 11,
+    "week": "Week 2",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "def cube(n):\n    return n ** 3\n\nprint(cube(2) + 1)",
+    "options": [
+      "None",
+      "8",
+      "7",
+      "9"
+    ],
+    "answer": 3,
+    "explanation": "cube returns 8, then the caller adds 1 and prints 9.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 IV. Functions with a Return Statement"
+  },
+  {
+    "id": 12,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Which call returns 17?",
+    "code": "def bill(cost, fee=3):\n    return cost + fee",
+    "options": [
+      "bill(12)",
+      "bill(fee=5, cost=12)",
+      "bill(5, cost=12)",
+      "bill(cost=12, fee=3)"
+    ],
+    "answer": 1,
+    "explanation": "Keyword arguments match parameters by name, so their order can differ from the definition.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 Keyword Arguments and Default Arguments"
+  },
+  {
+    "id": 13,
+    "week": "Week 2",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What appears on the screen?",
+    "code": "def announce(n):\n    print(n + 2)\n\nvalue = announce(6)\nprint(value)",
+    "options": [
+      "8\nNone",
+      "8",
+      "None\n8",
+      "8\n8"
+    ],
+    "answer": 0,
+    "explanation": "announce displays 8 but has no return statement, so its return value is None.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 Missing Return Statement; return vs. print"
+  },
+  {
+    "id": 14,
+    "week": "Week 2",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the parameter name. It must match the name used inside the function.",
+    "code": "def rectangle_area(____, height):\n    return width * height",
+    "accepted": [
+      "width"
+    ],
+    "explanation": "width is the first parameter and is multiplied by height in the body.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 III. Parameters"
+  },
+  {
+    "id": 15,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the missing statement so callers receive the discounted amount rather than None. Use amount and rate.",
+    "code": "def discounted(amount, rate):\n    ____",
+    "accepted": [
+      "return amount * (1 - rate / 100)",
+      "return amount * (100 - rate) / 100",
+      "return amount - amount * rate / 100"
+    ],
+    "explanation": "A calculation must be returned for the caller to receive its result.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 IV. Functions with a Return Statement"
+  },
+  {
+    "id": 16,
+    "week": "Week 2",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Trace both the returned value and the outer variable. What is printed?",
+    "code": "score = 11\ndef raise_score(score):\n    score = score + 4\n    return score\n\nprint(raise_score(score), score)",
+    "options": [
+      "11 15",
+      "15 15",
+      "11 11",
+      "15 11"
+    ],
+    "answer": 3,
+    "explanation": "The parameter score is local to raise_score. Its returned value is 15; the outer score remains 11.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 VI. Scope of a Variable"
+  },
+  {
+    "id": 17,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "def shift(x):\n    return x + 2\n\ndef combine(x):\n    return shift(x) * shift(x + 1)\n\nprint(combine(2))",
+    "options": [
+      "16",
+      "20",
+      "12",
+      "25"
+    ],
+    "answer": 1,
+    "explanation": "The two calls return 4 and 5. combine multiplies those results.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 V. Flow of Execution"
+  },
+  {
+    "id": 18,
+    "week": "Week 2",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is the purpose of the triple-quoted text here?",
+    "code": "def add_fee(amount):\n    \"\"\"Return amount plus a fixed fee of 2.\"\"\"\n    return amount + 2",
+    "options": [
+      "It makes the function accept strings only",
+      "It adds another return value",
+      "It prints whenever add_fee is called",
+      "It documents the function and can be shown by help(add_fee)"
+    ],
+    "answer": 3,
+    "explanation": "The string at the beginning of the function is its docstring.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 VII. Use docstrings to Add Documentations"
+  },
+  {
+    "id": 19,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill one keyword so a required unit_price is followed by an optional quantity of 1.",
+    "code": "____ total_cost(unit_price, quantity=1):\n    return unit_price * quantity",
+    "accepted": [
+      "def"
+    ],
+    "explanation": "def begins a function definition. quantity has a default value and may be omitted in a call.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 Function Definition; Default Arguments"
+  },
+  {
+    "id": 20,
+    "week": "Week 2",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill a call to subtract using keyword arguments only, deliberately naming b before a. The result must be 7.",
+    "code": "def subtract(a, b):\n    return a - b\n\nresult = ____",
+    "accepted": [
+      "subtract(b=2, a=9)"
+    ],
+    "explanation": "Arguments supplied by name do not have to follow parameter order.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 Keyword Arguments"
+  },
+  {
+    "id": 21,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "In a fresh Python script, which line correctly calls sqrt after this import?",
+    "code": "import math",
+    "options": [
+      "math.py.sqrt(49)",
+      "math.sqrt(49)",
+      "math(49).sqrt",
+      "sqrt(49)"
+    ],
+    "answer": 1,
+    "explanation": "import math binds the module name. Access its sqrt function with math.sqrt.",
+    "source": "Week_2/Pre/2. Importing a module.docx \u00b7 Part B: The math Module"
+  },
+  {
+    "id": 22,
+    "week": "Week 2",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "random.randrange(2, 10, 3) can return which set of values?",
+    "code": "import random",
+    "options": [
+      "2, 5, or 8",
+      "2, 5, 8, or 10",
+      "3, 6, or 9",
+      "Any integer from 2 through 9"
+    ],
+    "answer": 0,
+    "explanation": "The start is inclusive, the stop is exclusive, and the step is 3. Its possible values follow the same bounds as range.",
+    "source": "Week_2/Pre/2. Importing a module.docx \u00b7 Part B: The random Module; Week_4/Pre/4.2. for Loops.ipynb \u00b7 range(start, stop, step)"
+  },
+  {
+    "id": 23,
+    "week": "Week 2",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "def transform(n):\n    print(\"start\", end=\"|\")\n    return n * 2\n    print(\"end\", end=\"|\")\n\nprint(transform(5))",
+    "options": [
+      "start|None",
+      "start|10",
+      "10\nstart|",
+      "start|end|10"
+    ],
+    "answer": 1,
+    "explanation": "return ends the function immediately. The final print inside transform is unreachable.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 IV. Functions with a Return Statement; V. Flow of Execution"
+  },
+  {
+    "id": 24,
+    "week": "Week 2",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "A file helpers.py defines area(radius). Both files are in the same folder. Fill the module name in the import.",
+    "code": "import ____\n# The next statement in the caller is helpers.area(3).",
+    "accepted": [
+      "helpers"
+    ],
+    "explanation": "Import the module name without the .py extension, then use helpers.area to call its function.",
+    "source": "Week_2/Pre/2. Importing a module.docx \u00b7 Part A: Importing a Given Module"
+  },
+  {
+    "id": 25,
+    "week": "Week 2",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the missing expression by calling twice once. Do not hard-code the returned value.",
+    "code": "def twice(n):\n    return 2 * n\n\ndef six_times(n):\n    return 3 * ____",
+    "accepted": [
+      "twice(n)"
+    ],
+    "explanation": "six_times multiplies the result of twice(n) by 3, producing 6 * n.",
+    "source": "Week_2/Pre/2. Functions.ipynb \u00b7 V. Flow of Execution"
+  },
+  {
+    "id": 26,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed at this boundary?",
+    "code": "age = 18\nif age < 18:\n    print(\"junior\")\nelif age <= 65:\n    print(\"regular\")\nelse:\n    print(\"senior\")",
+    "options": [
+      "junior",
+      "senior",
+      "Nothing",
+      "regular"
+    ],
+    "answer": 3,
+    "explanation": "18 is not below 18, but it satisfies age <= 65.",
+    "source": "Week_3/Pre/3.1. Conditional Statements.ipynb \u00b7 V. if-elif Statements"
+  },
+  {
+    "id": 27,
+    "week": "Week 3",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Which lines are printed?",
+    "code": "points = 85\nif points >= 80:\n    print(\"high\")\nif points >= 50:\n    print(\"pass\")\nelse:\n    print(\"fail\")",
+    "options": [
+      "high",
+      "high\nfail",
+      "high\npass",
+      "pass"
+    ],
+    "answer": 2,
+    "explanation": "These are two separate if statements. The else belongs to the second if, whose condition is true.",
+    "source": "Week_3/Pre/3.1. Conditional Statements.ipynb \u00b7 III. if Statement; IV. if-else Statement"
+  },
+  {
+    "id": 28,
+    "week": "Week 3",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is the value of the expression?",
+    "code": "\"12\" < \"3\"",
+    "options": [
+      "12",
+      "False",
+      "True",
+      "It raises TypeError"
+    ],
+    "answer": 2,
+    "explanation": "Strings compare lexicographically. The first character \"1\" comes before \"3\"; the strings are not converted to numbers.",
+    "source": "Week_3/Pre/3.1. Conditional Statements.ipynb \u00b7 II. Relational Operators: String Comparison"
+  },
+  {
+    "id": 29,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a chained comparison so score is accepted from 40 through 70, including both endpoints. Use the given names and numeric bounds.",
+    "code": "score = 40\nif ____:\n    valid = True\nelse:\n    valid = False",
+    "accepted": [
+      "40 <= score <= 70",
+      "70 >= score >= 40"
+    ],
+    "explanation": "Both comparisons must include equality. This avoids excluding either endpoint.",
+    "source": "Week_3/Pre/3.1. Conditional Statements.ipynb \u00b7 II. Relational Operators"
+  },
+  {
+    "id": 30,
+    "week": "Week 3",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill one comparison operator so only values strictly above the threshold enter the branch.",
+    "code": "value = 6\nthreshold = 6\nif value ____ threshold:\n    result = \"above\"\nelse:\n    result = \"not above\"",
+    "accepted": [
+      ">"
+    ],
+    "explanation": "Strictly above excludes equality, so equal values take the else branch.",
+    "source": "Week_3/Pre/3.1. Conditional Statements.ipynb \u00b7 II. Relational Operators"
+  },
+  {
+    "id": 31,
+    "week": "Week 3",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is the value of this expression?",
+    "code": "False or True and not True",
+    "options": [
+      "True",
+      "It raises SyntaxError",
+      "False",
+      "None"
+    ],
+    "answer": 2,
+    "explanation": "not is evaluated before and, and and before or. The expression becomes False or (True and False).",
+    "source": "Week_3/Pre/3.2. More on Conditional Statements.ipynb \u00b7 Precedence Table"
+  },
+  {
+    "id": 32,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "For Boolean variables submitted and approved, which condition is equivalent to not (submitted and approved)?",
+    "code": null,
+    "options": [
+      "submitted and not approved",
+      "not submitted and not approved",
+      "submitted or approved",
+      "not submitted or not approved"
+    ],
+    "answer": 3,
+    "explanation": "De Morgan's law replaces the negated and with or between the two negated operands.",
+    "source": "Week_3/Pre/3.2. More on Conditional Statements.ipynb \u00b7 De Morgan's Law"
+  },
+  {
+    "id": 33,
+    "week": "Week 3",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "def allowed(member, balance):\n    if member:\n        if balance >= 10:\n            return \"go\"\n        return \"top up\"\n    return \"join\"\n\nprint(allowed(False, 100), allowed(True, 9))",
+    "options": [
+      "join top up",
+      "top up join",
+      "go top up",
+      "join go"
+    ],
+    "answer": 0,
+    "explanation": "The first call returns join regardless of its balance. The second is a member but fails the inner threshold.",
+    "source": "Week_3/Pre/3.2. More on Conditional Statements.ipynb \u00b7 I. Nested if/else Statements"
+  },
+  {
+    "id": 34,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a condition using not, or, has_ticket, and is_staff. Reject a person only when neither route allows entry.",
+    "code": "has_ticket = False\nis_staff = True\nif ____:\n    decision = \"reject\"\nelse:\n    decision = \"allow\"",
+    "accepted": [
+      "not (has_ticket or is_staff)",
+      "not(has_ticket or is_staff)"
+    ],
+    "explanation": "Negating the or condition rejects only someone who has neither a ticket nor staff status.",
+    "source": "Week_3/Pre/3.2. More on Conditional Statements.ipynb \u00b7 Logical Operators; De Morgan's Law"
+  },
+  {
+    "id": 35,
+    "week": "Week 3",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the Boolean expression for a leap year. Use year, %, ==, !=, and/or, and the constants 4, 100, 400. Divisibility by 400 qualifies; otherwise divisibility by 4 qualifies only if not divisible by 100.",
+    "code": "def leap(year):\n    return ____",
+    "accepted": [
+      "year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)",
+      "year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)",
+      "(year % 4 == 0 and year % 100 != 0) or year % 400 == 0",
+      "year % 400 == 0 or year % 4 == 0 and year % 100 != 0"
+    ],
+    "explanation": "Century years need the extra divisibility-by-400 rule. A condition checking only divisibility by 4 fails for years such as 2100.",
+    "source": "Week_3/Pre/3.2. More on Conditional Statements.ipynb \u00b7 II. Logical Operators; Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 2, Q2a: leap years"
+  },
+  {
+    "id": 36,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "def split_bill(total, people):\n    return total // people, total % people\n\nwhole, extra = split_bill(29, 6)\nprint(extra, whole)",
+    "options": [
+      "(4, 5)",
+      "5 4",
+      "4 5",
+      "4.833333333333333 0"
+    ],
+    "answer": 1,
+    "explanation": "The returned tuple is (4, 5). Unpacking assigns whole=4 and extra=5; print reverses their order.",
+    "source": "Week_3/Pre/3.3. Tuples.ipynb \u00b7 III. Using Tuple as a Return Value in a Function"
+  },
+  {
+    "id": 37,
+    "week": "Week 3",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What happens at the final line?",
+    "code": "record = (\"Nova\", 21, \"gold\")\nrecord[2] = \"silver\"",
+    "options": [
+      "The tuple becomes (\"Nova\", 21, \"silver\")",
+      "It creates a second tuple automatically",
+      "It raises TypeError because tuple items cannot be assigned",
+      "It raises IndexError because index 2 is invalid"
+    ],
+    "answer": 2,
+    "explanation": "The index exists, but tuples are immutable. Assigning to one of their positions is unsupported.",
+    "source": "Week_3/Pre/3.3. Tuples.ipynb \u00b7 Tuples Are Immutable"
+  },
+  {
+    "id": 38,
+    "week": "Week 3",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "def fare(age):\n    if age < 5:\n        return 0, True\n    elif age >= 60:\n        return 12, True\n    return 25, False\n\nprice, discounted = fare(5)\nprint(price, discounted)",
+    "options": [
+      "25 False",
+      "25 True",
+      "12 True",
+      "0 True"
+    ],
+    "answer": 0,
+    "explanation": "The age 5 boundary is excluded from age < 5. It also does not satisfy the senior condition.",
+    "source": "Week_3/Pre/3.3. Tuples.ipynb \u00b7 III. Using Tuple as a Return Value; Week_3/Lab/Lab 3 - Conditions and Tuples(v1.1).docx \u00b7 Q4: tiered tickets"
+  },
+  {
+    "id": 39,
+    "week": "Week 3",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the tuple index that retrieves the unit price.",
+    "code": "item = (\"tea\", 4.5, 3)\nunit_price = item[____]",
+    "accepted": [
+      "1"
+    ],
+    "explanation": "Index 1 is the second element, the unit price. Index 2 is the quantity.",
+    "source": "Week_3/Pre/3.3. Tuples.ipynb \u00b7 II. Accessing the Elements of a Tuple"
+  },
+  {
+    "id": 40,
+    "week": "Week 3",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the full return statement to return the total first and the discount flag second.",
+    "code": "def checkout(price, quantity):\n    total = price * quantity\n    has_discount = quantity >= 5\n    ____",
+    "accepted": [
+      "return total, has_discount",
+      "return (total, has_discount)"
+    ],
+    "explanation": "A comma combines the values into a tuple. The caller receives them in the specified order.",
+    "source": "Week_3/Pre/3.3. Tuples.ipynb \u00b7 III. Using Tuple as a Return Value in a Function"
+  },
+  {
+    "id": 41,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "text = \"algorithm\"\nprint(text[1:8:3], text[-1])",
+    "options": [
+      "lri m",
+      "lrh m",
+      "lrt h",
+      "loi m"
+    ],
+    "answer": 1,
+    "explanation": "The slice visits indices 1, 4, and 7, giving l, r, and h. Index -1 is the final m.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 III. Slicing to Extract Substrings; Accessing Individual Characters"
+  },
+  {
+    "id": 42,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "text = \"planet\"\nprint(\"[\" + text[4:1:-1] + \"]\", \"[\" + text[1:4:-1] + \"]\")",
+    "options": [
+      "[ena] [lan]",
+      "[ena] [al]",
+      "[ten] []",
+      "[ena] []"
+    ],
+    "answer": 3,
+    "explanation": "The first slice visits 4, 3, and 2. The second asks a negative step to move from 1 toward a larger stop and is empty. The brackets make the empty second slice visible.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 III. Slicing to Extract Substrings: Negative step"
+  },
+  {
+    "id": 43,
+    "week": "Week 4",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "For text = \"hi\", which expression raises IndexError?",
+    "code": "text = \"hi\"",
+    "options": [
+      "text[-1]",
+      "text[2:8]",
+      "text[:0]",
+      "text[2]"
+    ],
+    "answer": 3,
+    "explanation": "An out-of-range individual index raises IndexError. Slices clip their bounds and may return an empty string.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 IndexError; III. Slicing to Extract Substrings"
+  },
+  {
+    "id": 44,
+    "week": "Week 4",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill only the slice contents to get the first three characters. Use a stop index of 3.",
+    "code": "word = \"bracket\"\nfront = word[____]",
+    "accepted": [
+      ":3",
+      "0:3"
+    ],
+    "explanation": "A slice stops before its stop index, so indices 0, 1, and 2 give \"bra\".",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 III. Slicing to Extract Substrings"
+  },
+  {
+    "id": 45,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a comparison using text, slicing, and == to test whether the entire string reads the same forwards and backwards.",
+    "code": "def palindrome(text):\n    return ____",
+    "accepted": [
+      "text == text[::-1]",
+      "text[::-1] == text"
+    ],
+    "explanation": "The slice with step -1 reverses the string. Equality also works for a one-character or empty string.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 IV. Reverse a String; Week_4/In-class/4. In-Class Exercises.docx \u00b7 Q4: Palindrome"
+  },
+  {
+    "id": 46,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "label = \"MiXeD\"\ncopy = label.lower()\nlabel.upper()\nprint(label, copy)",
+    "options": [
+      "MIXED mixed",
+      "MiXeD mixed",
+      "mixed mixed",
+      "MiXeD MIXED"
+    ],
+    "answer": 1,
+    "explanation": "Both methods return new strings. Only the lower result is saved, and label remains unchanged.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VII. String Methods; String Methods Do Not Modify Strings"
+  },
+  {
+    "id": 47,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed when the searched character is absent?",
+    "code": "address = \"sam.example\"\npos = address.find(\"@\")\nprint(pos, address[:pos])",
+    "options": [
+      "-1 sam.example",
+      "-1 ",
+      "-1 sam.exampl",
+      "0 "
+    ],
+    "answer": 2,
+    "explanation": "find returns -1 when absent. Used as a slice stop, -1 removes the last character rather than indicating a failed extraction.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VII. String Methods: find; Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q2: Email Extractor"
+  },
+  {
+    "id": 48,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "words = \"rain|wind|sun\".split(\"|\")\nprint(len(words), words[1])",
+    "options": [
+      "3 sun",
+      "3 wind",
+      "1 rain|wind|sun",
+      "2 wind"
+    ],
+    "answer": 1,
+    "explanation": "Splitting on | produces three strings in their original order.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VII. String Methods: split"
+  },
+  {
+    "id": 49,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a condition using pos so a missing @ returns the empty string instead of dropping the last character.",
+    "code": "def email_id(address):\n    pos = address.find(\"@\")\n    if ____:\n        return \"\"\n    return address[:pos]",
+    "accepted": [
+      "pos == -1",
+      "pos < 0",
+      "0 > pos",
+      "-1 == pos"
+    ],
+    "explanation": "Check the failed-search result before treating it as a slice endpoint.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VII. String Methods: find; Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q2: Email Extractor"
+  },
+  {
+    "id": 50,
+    "week": "Week 4",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the string method name so comparison ignores letter case.",
+    "code": "reply = \"YeS\"\naccepted = reply.____() == \"yes\"",
+    "accepted": [
+      "lower"
+    ],
+    "explanation": "lower returns \"yes\", which matches the comparison string.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VII. String Methods: lower"
+  },
+  {
+    "id": 51,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "total = 0\nfor n in range(2, 9, 3):\n    total = total + n\nprint(total)",
+    "options": [
+      "9",
+      "15",
+      "24",
+      "16"
+    ],
+    "answer": 1,
+    "explanation": "The loop visits 2, 5, and 8. The stop value 9 is excluded.",
+    "source": "Week_4/Pre/4.2. for Loops.ipynb \u00b7 II. range(): range(start, stop, step)"
+  },
+  {
+    "id": 52,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "result = \"\"\nfor n in range(5, 0, -2):\n    result = result + str(n)\nprint(result)",
+    "options": [
+      "531",
+      "53",
+      "135",
+      "5310"
+    ],
+    "answer": 0,
+    "explanation": "The values are 5, 3, and 1. The negative step moves toward, but does not include, zero.",
+    "source": "Week_4/Pre/4.2. for Loops.ipynb \u00b7 II. range(): range(start, stop, step)"
+  },
+  {
+    "id": 53,
+    "week": "Week 4",
+    "difficulty": "Easy",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "count = 7\nfor ch in \"\":\n    count = count + 1\nprint(count)",
+    "options": [
+      "0",
+      "Nothing",
+      "8",
+      "7"
+    ],
+    "answer": 3,
+    "explanation": "An empty string has no characters, so the loop body never executes.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 VI. Iterate through a String"
+  },
+  {
+    "id": 54,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a range call using n so the loop includes every integer from 1 through n. Assume n >= 1.",
+    "code": "def total_to(n):\n    total = 0\n    for k in ____:\n        total = total + k\n    return total",
+    "accepted": [
+      "range(1, n + 1)",
+      "range(1,n+1,1)"
+    ],
+    "explanation": "The stop must be n + 1 because range excludes its stop.",
+    "source": "Week_4/Pre/4.2. for Loops.ipynb \u00b7 II. range()"
+  },
+  {
+    "id": 55,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill only the condition. Count adjacent equal characters, including overlapping matches. Use text, i, and ==.",
+    "code": "def adjacent_matches(text):\n    count = 0\n    for i in range(len(text) - 1):\n        if ____:\n            count = count + 1\n    return count",
+    "accepted": [
+      "text[i] == text[i + 1]",
+      "text[i + 1] == text[i]"
+    ],
+    "explanation": "Compare each character with its immediate successor. \"aaa\" has two overlapping adjacent pairs.",
+    "source": "Week_4/Pre/4.1. Strings.ipynb \u00b7 Accessing Individual Characters; VI. Iterate through a String; Week_4/Pre/4.2. for Loops.ipynb \u00b7 II. range()"
+  },
+  {
+    "id": 56,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "A padding function should keep the leftmost width characters when the message is too long. What is printed?",
+    "code": "def fit(text, width):\n    if len(text) < width:\n        return \" \" * (width - len(text)) + text\n    return text[:width]\n\nprint(\"[\" + fit(\"cat\", 5) + \"]\")\nprint(\"[\" + fit(\"planet\", 3) + \"]\")",
+    "options": [
+      "[cat  ]\n[net]",
+      "[ cat]\n[plan]",
+      "[  cat]\n[pla]",
+      "[  cat]\n[net]"
+    ],
+    "answer": 2,
+    "explanation": "Short text receives two leading spaces. Long text is sliced on the right, retaining its first three characters.",
+    "source": "Week_4/Lab/Lab 4 - Strings and for-Loops.docx \u00b7 Q5: Message Padding"
+  },
+  {
+    "id": 57,
+    "week": "Week 4",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "A cipher must map each original a to e, each original e to i, and each original i to a, once per character. Which approach avoids converting a newly produced e again?",
+    "code": null,
+    "options": [
+      "Scan the evolving result once for a, again for e, then again for i",
+      "Apply three independent if statements to the same changing character",
+      "Replace every vowel with the final character in the mapping",
+      "Inspect each original character and use one if/elif chain to choose its replacement"
+    ],
+    "answer": 3,
+    "explanation": "One if/elif chain chooses a single replacement from the original character. Repeated transformations can cascade.",
+    "source": "Week_4/Lab/Lab 4 - Strings and for-Loops.docx \u00b7 Q4: Message Encryption"
+  },
+  {
+    "id": 58,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "a = 1\nb = 1\nfor i in range(4):\n    next_value = a + b\n    a = b\n    b = next_value\nprint(a, b)",
+    "options": [
+      "3 5",
+      "8 13",
+      "1 5",
+      "5 8"
+    ],
+    "answer": 3,
+    "explanation": "The pairs after the four iterations are (1,2), (2,3), (3,5), and (5,8). The saved next_value preserves the old sum.",
+    "source": "Week_4/Lab/Lab 4 - Strings and for-Loops.docx \u00b7 Q8: Fibonacci Numbers"
+  },
+  {
+    "id": 59,
+    "week": "Week 4",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill only a Boolean condition. Count occurrences of the word an only when both neighboring characters are spaces. No count() method.",
+    "code": "def count_an(text):\n    count = 0\n    for i in range(len(text) - 3):\n        if ____:\n            count = count + 1\n    return count",
+    "accepted": [
+      "text[i:i + 4] == \" an \"",
+      "\" an \" == text[i:i + 4]"
+    ],
+    "explanation": "A four-character window includes the leading space, an, and trailing space. Embedded letters and unbounded words do not count.",
+    "source": "Week_4/Lab/Lab 4 - Strings and for-Loops.docx \u00b7 Q7: Count Words"
+  },
+  {
+    "id": 60,
+    "week": "Week 4",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a print call using ch and end. Each loop iteration must append ch followed by a vertical bar, without a newline.",
+    "code": "for ch in \"ab\":\n    ____",
+    "accepted": [
+      "print(ch, end=\"|\")"
+    ],
+    "explanation": "Using end=\"|\" produces a|b| across the two iterations.",
+    "source": "Week_1/Pre/1. Fundamentals.ipynb \u00b7 V. Built-in Functions: print(); Week_4/In-class/4. In-Class Exercises.docx \u00b7 Q1: separators"
+  },
+  {
+    "id": 61,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed after both updates?",
+    "code": "a = [2, 4]\nb = a\nc = a[:]\nb[0] = 9\nc.append(6)\nprint(a, c)",
+    "options": [
+      "[9, 4] [2, 4, 6]",
+      "[2, 4] [9, 4, 6]",
+      "[9, 4] [9, 4, 6]",
+      "[9, 4, 6] [9, 4, 6]"
+    ],
+    "answer": 0,
+    "explanation": "b shares the list referenced by a. c is a separate list created by slicing, so appending to c leaves a unchanged.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 V. Updating an Element of a List; IV. Accessing Multiple Elements"
+  },
+  {
+    "id": 62,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "values = [1, 3, 5]\nfor value in values:\n    value = value * 2\nprint(values)",
+    "options": [
+      "[5, 5, 5]",
+      "[2, 6, 10]",
+      "[1, 3, 5, 2, 6, 10]",
+      "[1, 3, 5]"
+    ],
+    "answer": 3,
+    "explanation": "Assigning to the loop variable does not assign to a list position. The list remains unchanged.",
+    "source": "Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q1: Code Tracing"
+  },
+  {
+    "id": 63,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "a = [7, 8]\nb = a + [9]\na[0] = 0\nvalue = b.append(10)\nprint(a, b, value)",
+    "options": [
+      "[0, 8] [7, 8, 9] [10]",
+      "[0, 8, 10] [7, 8, 9] None",
+      "[0, 8] [7, 8, 9, 10] None",
+      "[0, 8] [0, 8, 9, 10] None"
+    ],
+    "answer": 2,
+    "explanation": "Concatenation creates a new list. append changes b in place and returns None.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 VI. List Concatenation; IX. Adding an Element to a List"
+  },
+  {
+    "id": 64,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill a slice expression using values so result is a separate list before it is changed. Do not use a library or a method.",
+    "code": "values = [3, 6, 9]\nresult = ____\nresult[0] = 100",
+    "accepted": [
+      "values[:]",
+      "values[0:]",
+      "values[::]",
+      "values[0:len(values)]"
+    ],
+    "explanation": "A full slice copies the outer list. Changing an integer element in the copy does not change values.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 IV. Accessing Multiple Elements of a List"
+  },
+  {
+    "id": 65,
+    "week": "Week 5",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the left-hand side so each original list element is doubled in place.",
+    "code": "values = [2, 5, 8]\nfor i in range(len(values)):\n    ____ = values[i] * 2",
+    "accepted": [
+      "values[i]"
+    ],
+    "explanation": "Assign to an indexed list position to update the underlying list.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 V. Updating an Element of a List; VII. Traversing a List"
+  },
+  {
+    "id": 66,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "This function must return True when every age is strictly above n, including for an empty list. Which initialization and return strategy fits?",
+    "code": null,
+    "options": [
+      "Always return False for an empty list",
+      "Start with False and change to True if any age > n",
+      "Return True on the first age > n; return False after the loop",
+      "Return False on the first age <= n; return True after the loop"
+    ],
+    "answer": 3,
+    "explanation": "One failing age disproves the requirement. If there are no failures, including no ages at all, return True.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 2, Q2b: all_older_than"
+  },
+  {
+    "id": 67,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "What is printed?",
+    "code": "values = [4, -1, 3]\nrunning = 0\nresult = []\nfor n in values:\n    running = running + n\n    result.append(running)\nprint(result)",
+    "options": [
+      "[4, 0, 3]",
+      "[4, 3, 6]",
+      "[4, -1, 3]",
+      "[6, 6, 6]"
+    ],
+    "answer": 1,
+    "explanation": "The running total is retained across iterations, producing each prefix sum.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 3, Q2e: calculate_sums"
+  },
+  {
+    "id": 68,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "def bump(values):\n    values[0] = values[0] + 1\n    values = values + [99]\n    return values\n\ndata = [5, 6]\nnew_data = bump(data)\nprint(data, new_data)",
+    "options": [
+      "[6, 6] [6, 6, 99]",
+      "[5, 6] [5, 6, 99]",
+      "[6, 6, 99] [6, 6, 99]",
+      "[5, 6] [6, 6, 99]"
+    ],
+    "answer": 0,
+    "explanation": "The indexed update affects the shared list. Concatenation then creates a new list and rebinds only the local parameter.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 VIII. Passing a List as an Argument; VI. List Concatenation"
+  },
+  {
+    "id": 69,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the failing condition using age, n, and one comparison operator. Equality must fail.",
+    "code": "def all_above(ages, n):\n    for age in ages:\n        if ____:\n            return False\n    return True",
+    "accepted": [
+      "age <= n",
+      "n >= age"
+    ],
+    "explanation": "An age at or below the threshold violates strictly above. Returning True after the loop handles the empty list.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 2, Q2b: all_older_than"
+  },
+  {
+    "id": 70,
+    "week": "Week 5",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill an append call using result and running to store every prefix sum.",
+    "code": "def prefix_sums(values):\n    result = []\n    running = 0\n    for n in values:\n        running = running + n\n        ____\n    return result",
+    "accepted": [
+      "result.append(running)"
+    ],
+    "explanation": "Append the updated total on each iteration. An empty input naturally produces an empty list.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 3, Q2e: calculate_sums"
+  },
+  {
+    "id": 71,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Each tuple is (item name, unit price, quantity). What is printed?",
+    "code": "cart = [(\"rice\", 3, 2), (\"soap\", 4, 3)]\ntotal = 0\nfor item in cart:\n    total = total + item[1] * item[2]\nprint(total)",
+    "options": [
+      "18",
+      "13",
+      "7",
+      "5"
+    ],
+    "answer": 0,
+    "explanation": "The extended prices are 3*2=6 and 4*3=12. Add those, rather than just the unit prices or quantities.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 4, Q3a: calculate_total_price"
+  },
+  {
+    "id": 72,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "The specification requires the first longest string when lengths tie. What does this implementation actually print?",
+    "code": "def longest(words):\n    best = \"\"\n    for word in words:\n        if len(word) >= len(best):\n            best = word\n    return best\n\nprint(longest([\"oak\", \"pine\", \"cedar\", \"maple\"]))",
+    "options": [
+      "oak",
+      "cedar",
+      "maple",
+      "pine"
+    ],
+    "answer": 2,
+    "explanation": ">= overwrites an earlier longest string on a tie. Use > to retain the first longest string.",
+    "source": "Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q4: get_longest_str"
+  },
+  {
+    "id": 73,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "An email is defined here as a string with exactly one @ and no spaces. Which entry is valid?",
+    "code": null,
+    "options": [
+      "plain.text",
+      "name@",
+      "a @b",
+      "a@@b"
+    ],
+    "answer": 1,
+    "explanation": "Under the stated rule, name@ is valid even though it would not be a useful real address. Apply the exact contract rather than adding unstated rules.",
+    "source": "Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q4: concatenate_emails"
+  },
+  {
+    "id": 74,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the comparison operator to keep the first longest string on equal lengths.",
+    "code": "def first_longest(words):\n    best = \"\"\n    for word in words:\n        if len(word) ____ len(best):\n            best = word\n    return best",
+    "accepted": [
+      ">"
+    ],
+    "explanation": "Only a strictly longer string replaces best. Equal-length strings leave the earlier result in place.",
+    "source": "Week_5/In-class/5. In-Class Exercises (1).docx \u00b7 Q4: get_longest_str"
+  },
+  {
+    "id": 75,
+    "week": "Week 5",
+    "difficulty": "Easy",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Each tuple is (name, price, quantity). Fill an indexed expression using item to collect the item names.",
+    "code": "def names(cart):\n    result = []\n    for item in cart:\n        result.append(____)\n    return result",
+    "accepted": [
+      "item[0]"
+    ],
+    "explanation": "The first tuple element is the item name.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 4, Q3b: get_items"
+  },
+  {
+    "id": 76,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed?",
+    "code": "left = [\"x\", \"y\"]\nright = [1, 2]\nresult = []\nfor number in right:\n    for letter in left:\n        result.append((letter, number))\nprint(result)",
+    "options": [
+      "[(1, 'x'), (1, 'y'), (2, 'x'), (2, 'y')]",
+      "[('x', 1), ('y', 2)]",
+      "[('x', 1), ('y', 1), ('x', 2), ('y', 2)]",
+      "[('x', 1), ('x', 2), ('y', 1), ('y', 2)]"
+    ],
+    "answer": 2,
+    "explanation": "The outer loop fixes each number while the inner loop visits both letters. Tuple element order is separate from loop order.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 8, Q6a: get_all_combinations"
+  },
+  {
+    "id": 77,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Return values from [4, 8, 12] that are strictly larger than every value in [1, 8, 3]. What should the result be?",
+    "code": null,
+    "options": [
+      "[8, 12]",
+      "[12]",
+      "[]",
+      "[4, 8, 12]"
+    ],
+    "answer": 1,
+    "explanation": "Every means the candidate must exceed the largest comparison value, 8. Equal values do not qualify.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 8, Q6b: get_larger_numbers"
+  },
+  {
+    "id": 78,
+    "week": "Week 5",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "A prime checker tests possible divisors using range(2, n), returning False when it finds one and True after the loop. Which missing guard is essential for integer inputs?",
+    "code": null,
+    "options": [
+      "Return True when n < 2 before the loop",
+      "Return False when n < 2 before the loop",
+      "Return False whenever n is odd",
+      "Return True whenever the loop runs at least once"
+    ],
+    "answer": 1,
+    "explanation": "For 0, 1, and negative n, the divisor loop is empty. Returning True after it would falsely call those inputs prime.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 3, Q2d: get_prime_numbers"
+  },
+  {
+    "id": 79,
+    "week": "Week 5",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill only the tuple expression so every pair stores the letter first and the number second.",
+    "code": "def pairs(letters, numbers):\n    result = []\n    for letter in letters:\n        for number in numbers:\n            result.append(____)\n    return result",
+    "accepted": [
+      "(letter, number)"
+    ],
+    "explanation": "The parentheses group both values into one tuple to append.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 8, Q6a: get_all_combinations"
+  },
+  {
+    "id": 80,
+    "week": "Week 5",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the condition using word and right so the first loop keeps strings found only in left. Assume each input has no duplicates.",
+    "code": "def non_common(left, right):\n    result = []\n    for word in left:\n        if ____:\n            result.append(word)\n    for word in right:\n        if word not in left:\n            result.append(word)\n    return result",
+    "accepted": [
+      "word not in right",
+      "not (word in right)",
+      "not(word in right)"
+    ],
+    "explanation": "The first loop excludes strings shared with right. The second adds the strings unique to right, preserving each input's order.",
+    "source": "Week_5/Lab/Lab 5 - Lists (v1.1).pdf \u00b7 p. 8, Q6c: get_non_common_strings"
+  },
+  {
+    "id": 81,
+    "week": "Week 6",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Which values are retained, and what is printed?",
+    "code": "values = [1, 3, 5, 7]\naverage = sum(values) / len(values)\nresult = []\nfor value in values:\n    if value > average:\n        result.append(value)\nprint(result, values)",
+    "options": [
+      "[5, 7] [5, 7]",
+      "[4] [1, 3, 5, 7]",
+      "[5, 7] [1, 3, 5, 7]",
+      "[3, 5, 7] [1, 3, 5, 7]"
+    ],
+    "answer": 2,
+    "explanation": "The average is 4. Keep only 5 and 7 in a new list, leaving the input unchanged.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 1, Q1a: get_larger_values"
+  },
+  {
+    "id": 82,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Merge by alternating one value from left then one from right. Append the longer list's remaining values at the end. What is the result for left=[2, 4] and right=[9, 8, 7, 6]?",
+    "code": null,
+    "options": [
+      "[2, 9, 4, 8, 7, 6]",
+      "[2, 4, 9, 8, 7, 6]",
+      "[2, 9, 4, 8]",
+      "[9, 2, 8, 4, 7, 6]"
+    ],
+    "answer": 0,
+    "explanation": "After two paired positions, retain the unmatched right values 7 and 6 in their original order.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 1, Q1b: merge_list"
+  },
+  {
+    "id": 83,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Every number in values must be divisible by at least one divisor. Which pair returns True?",
+    "code": null,
+    "options": [
+      "values=[6, 10], divisors=[3, 5]",
+      "values=[6, 11], divisors=[3, 5]",
+      "values=[4, 9], divisors=[2, 5]",
+      "values=[7, 10], divisors=[2, 5]"
+    ],
+    "answer": 0,
+    "explanation": "6 has divisor 3 and 10 has divisor 5. The divisor need not be the same for every value.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 1, Q1c: check_numbers"
+  },
+  {
+    "id": 84,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the Boolean literal to reset matched for each new value. Inputs contain positive integers and divisors is nonempty.",
+    "code": "def covered(values, divisors):\n    for value in values:\n        matched = ____\n        for divisor in divisors:\n            if value % divisor == 0:\n                matched = True\n        if not matched:\n            return False\n    return True",
+    "accepted": [
+      "False"
+    ],
+    "explanation": "Reset the flag for each outer-loop value. A match for an earlier number must not carry over to a later number.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 1, Q1c: check_numbers"
+  },
+  {
+    "id": 85,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the return expression using result, left, right, n, slicing, and + to preserve the unmatched tail from either input.",
+    "code": "def interleave(left, right):\n    n = min(len(left), len(right))\n    result = []\n    for i in range(n):\n        result.append(left[i])\n        result.append(right[i])\n    return ____",
+    "accepted": [
+      "result + left[n:] + right[n:]",
+      "result + right[n:] + left[n:]"
+    ],
+    "explanation": "At least one tail is empty because n is the shorter length. Appending both tails keeps all remaining values without changing either input.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 1, Q1b: merge_list"
+  },
+  {
+    "id": 86,
+    "week": "Week 6",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Each record is (title, edition, format, copies). Keep each distinct title once in order of first appearance. What are the titles?",
+    "code": "books = [(\"Orbit\", \"Ed-1\", \"paperback\", 2),\n         (\"Tides\", \"Ed-2\", \"hardcover\", 1),\n         (\"Orbit\", \"Ed-3\", \"hardcover\", 4)]",
+    "options": [
+      "['Orbit', 'Tides']",
+      "['Ed-1', 'Ed-2', 'Ed-3']",
+      "['Tides', 'Orbit']",
+      "['Orbit', 'Tides', 'Orbit']"
+    ],
+    "answer": 0,
+    "explanation": "Uniqueness applies to the title, not the entire tuple. Preserve the first occurrence of each title.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 2, Q2a: get_unique_titles"
+  },
+  {
+    "id": 87,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Aggregate copies by title, retaining title order of first appearance. What should be returned?",
+    "code": "books = [(\"Tides\", \"Ed-1\", \"paperback\", 3),\n         (\"Orbit\", \"Ed-2\", \"hardcover\", 2),\n         (\"Tides\", \"Ed-2\", \"hardcover\", 5)]",
+    "options": [
+      "[('Orbit', 2), ('Tides', 8)]",
+      "[('Tides', 3), ('Orbit', 2)]",
+      "[('Tides', 8), ('Orbit', 2)]",
+      "[('Tides', 2), ('Orbit', 1)]"
+    ],
+    "answer": 2,
+    "explanation": "Add record[3] for each matching title. Counting records would give 2 and 1 rather than the numbers of copies.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 2, Q2b: get_titles_and_counts"
+  },
+  {
+    "id": 88,
+    "week": "Week 6",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Extract maximal runs of digit characters, preserving leading zeros, and separate the runs with one space. What is the result for \"id007x3.40z\"?",
+    "code": null,
+    "options": [
+      "\"007340\"",
+      "\"007 340\"",
+      "\"7 3.40\"",
+      "\"007 3 40\""
+    ],
+    "answer": 3,
+    "explanation": "Letters and the decimal point separate runs. The result is text, so leading zeros are retained.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 3, Q3: retrieve_numbers"
+  },
+  {
+    "id": 89,
+    "week": "Week 6",
+    "difficulty": "Medium",
+    "type": "short",
+    "tricky": false,
+    "prompt": "Fill the condition using title and titles so duplicate titles are not appended.",
+    "code": "def unique_titles(books):\n    titles = []\n    for book in books:\n        title = book[0]\n        if ____:\n            titles.append(title)\n    return titles",
+    "accepted": [
+      "title not in titles",
+      "not (title in titles)",
+      "not(title in titles)"
+    ],
+    "explanation": "Append a title only if it has not been collected before. This preserves first-appearance order.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 2, Q2a: get_unique_titles"
+  },
+  {
+    "id": 90,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the final append statement so a digit run at the end is retained. The input uses ASCII characters. Enter a call using runs and current.",
+    "code": "def digit_runs(text):\n    runs = []\n    current = \"\"\n    for ch in text:\n        if ch in \"0123456789\":\n            current = current + ch\n        else:\n            if current != \"\":\n                runs.append(current)\n                current = \"\"\n    if current != \"\":\n        ____\n    return runs",
+    "accepted": [
+      "runs.append(current)"
+    ],
+    "explanation": "A run followed by a separator is saved inside the loop. A run reaching the end needs a final flush after the loop.",
+    "source": "Week_6/In-class/6. In-Class Exercises.pdf \u00b7 p. 3, Q3: retrieve_numbers"
+  },
+  {
+    "id": 91,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Sort by increasing string length, keeping original order among equal lengths. What is the correct result for [\"sun\", \"ox\", \"a\", \"bee\", \"to\"]?",
+    "code": null,
+    "options": [
+      "['a', 'bee', 'ox', 'sun', 'to']",
+      "['a', 'ox', 'sun', 'to', 'bee']",
+      "['a', 'to', 'ox', 'bee', 'sun']",
+      "['a', 'ox', 'to', 'sun', 'bee']"
+    ],
+    "answer": 3,
+    "explanation": "Stability retains ox before to and sun before bee, because each pair has equal lengths.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 1, Q1: Sorting"
+  },
+  {
+    "id": 92,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is printed? The outer slice makes a new outer list; track the inner lists separately.",
+    "code": "matrix = [[1, 2], [3, 4]]\ncopy = matrix[:]\ncopy[0][1] = 9\ncopy[1] = [8, 8]\nprint(matrix, copy)",
+    "options": [
+      "[[1, 9], [8, 8]] [[1, 9], [8, 8]]",
+      "[[1, 2], [8, 8]] [[1, 9], [3, 4]]",
+      "[[1, 2], [3, 4]] [[1, 9], [8, 8]]",
+      "[[1, 9], [3, 4]] [[1, 9], [8, 8]]"
+    ],
+    "answer": 3,
+    "explanation": "The outer slice initially refers to the same inner lists. Updating an inner item is shared; replacing one outer position in copy does not replace that position in matrix.",
+    "source": "Week_5/Pre/5. Lists.ipynb \u00b7 IV. Accessing Multiple Elements; V. Updating an Element; Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 2, Q2a: list-of-lists matrix representation"
+  },
+  {
+    "id": 93,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "What is the transpose of [[2, 5, 8], [1, 4, 7]]? A transpose swaps row and column positions.",
+    "code": null,
+    "options": [
+      "[[8, 5, 2], [7, 4, 1]]",
+      "[[1, 4, 7], [2, 5, 8]]",
+      "[[2, 1], [5, 4], [8, 7]]",
+      "[[2, 5], [1, 4], [8, 7]]"
+    ],
+    "answer": 2,
+    "explanation": "Each original column becomes a row. The 2-by-3 matrix becomes a 3-by-2 matrix.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 2, Q2a: Matrix Transpose"
+  },
+  {
+    "id": 94,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill one comparison operator. Insert before the first strictly longer string so equal-length strings keep their original order.",
+    "code": "def stable_by_length(words):\n    result = []\n    for word in words:\n        inserted = False\n        for i in range(len(result)):\n            if len(result[i]) ____ len(word):\n                result = result[:i] + [word] + result[i:]\n                inserted = True\n                break\n        if not inserted:\n            result.append(word)\n    return result",
+    "accepted": [
+      ">"
+    ],
+    "explanation": "Using > skips equal-length entries so the new word is inserted after them. >= would reverse the arrival order of ties.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 1, Q1: Sorting"
+  },
+  {
+    "id": 95,
+    "week": "Week 6",
+    "difficulty": "Hard",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill an indexed expression using matrix, row, and col. Assume a nonempty rectangular matrix with at least one column.",
+    "code": "def transpose(matrix):\n    result = []\n    for col in range(len(matrix[0])):\n        new_row = []\n        for row in range(len(matrix)):\n            new_row.append(____)\n        result.append(new_row)\n    return result",
+    "accepted": [
+      "matrix[row][col]"
+    ],
+    "explanation": "The outer loop fixes an original column. The inner loop reads that column from each original row.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 2, Q2a: Matrix Transpose"
+  },
+  {
+    "id": 96,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "This computes a row-by-column dot product. What is printed?",
+    "code": "row = [2, -1, 3]\ncolumn = [4, 5, 0]\ntotal = 0\nfor k in range(len(row)):\n    total = total + row[k] * column[k]\nprint(total)",
+    "options": [
+      "3",
+      "8",
+      "13",
+      "-5"
+    ],
+    "answer": 0,
+    "explanation": "Multiply corresponding entries and add: 2*4 + (-1)*5 + 3*0 = 3.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 3, Q2b: Matrix Multiplication"
+  },
+  {
+    "id": 97,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "mcq",
+    "tricky": true,
+    "prompt": "Flattening recursively removes list nesting while preserving number order. What is the result for [2, [], [5, [1, []]], 2]?",
+    "code": null,
+    "options": [
+      "[2, 5, 1]",
+      "[2, 5, 1, 2]",
+      "[2, [], 5, 1, [], 2]",
+      "[1, 2, 2, 5]"
+    ],
+    "answer": 1,
+    "explanation": "Empty sublists add no numbers. Flattening preserves order and duplicate numbers; it does not sort or deduplicate.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 4, Q3: Flattening a List of Numbers"
+  },
+  {
+    "id": 98,
+    "week": "Week 6",
+    "difficulty": "Medium",
+    "type": "mcq",
+    "tricky": false,
+    "prompt": "Matrix A has 3 rows and 2 columns. Matrix B has 2 rows and 4 columns. Under ordinary matrix multiplication, how many rows and columns does A times B have?",
+    "code": null,
+    "options": [
+      "3 rows and 4 columns",
+      "2 rows and 2 columns",
+      "3 rows and 2 columns",
+      "4 rows and 3 columns"
+    ],
+    "answer": 0,
+    "explanation": "The matching inner dimension 2 makes the multiplication valid. The result uses A's row count and B's column count.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 3, Q2b: Matrix Multiplication"
+  },
+  {
+    "id": 99,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the product expression for one term of matrix multiplication. A and B are nonempty rectangular matrices with compatible dimensions.",
+    "code": "def multiply(A, B):\n    result = []\n    for row in range(len(A)):\n        new_row = []\n        for col in range(len(B[0])):\n            total = 0\n            for k in range(len(B)):\n                total = total + ____\n            new_row.append(total)\n        result.append(new_row)\n    return result",
+    "accepted": [
+      "A[row][k] * B[k][col]",
+      "B[k][col] * A[row][k]"
+    ],
+    "explanation": "The shared index k walks across row row of A and down column col of B. Reset total for every output cell.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 3, Q2b: Matrix Multiplication"
+  },
+  {
+    "id": 100,
+    "week": "Week 6",
+    "difficulty": "Challenge",
+    "type": "short",
+    "tricky": true,
+    "prompt": "Fill the expression using + and a recursive call so the flattened sublist is concatenated into result. Inputs contain only numbers and nested lists.",
+    "code": "def flatten(values):\n    result = []\n    for value in values:\n        if isinstance(value, list):\n            result = ____\n        else:\n            result.append(value)\n    return result",
+    "accepted": [
+      "result + flatten(value)"
+    ],
+    "explanation": "Concatenate the recursive result rather than appending it as one nested element. Empty lists contribute an empty list.",
+    "source": "Week_6/In-class/6. In-Class Exercises (Extra).pdf \u00b7 p. 4, Q3: Flattening a List of Numbers"
+  }
+];
+
+    const quiz = document.getElementById("quiz");
+    const results = document.getElementById("results");
+    const weekFilter = document.getElementById("weekFilter");
+    const difficultyFilter = document.getElementById("difficultyFilter");
+    const progressText = document.getElementById("progressText");
+    const filterText = document.getElementById("filterText");
+    const progressBar = document.getElementById("progressBar");
+    const submitBtn = document.getElementById("submitBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const mistakesBtn = document.getElementById("mistakesBtn");
+
+    let submitted = false;
+    let lastResults = new Map();
+    let checkedResults = new Map();
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function qCode(value) {
+      return value ? "<pre><code>" + escapeHtml(value) + "</code></pre>" : "";
+    }
+
+    function renderQuestion(q, index) {
+      const setNumber = Math.floor(index / 5) + 1;
+      const difficulty = '<span class="pill difficulty ' + q.difficulty.toLowerCase() + '">' + q.difficulty + '</span>';
+      let body = "";
+
+      if (q.type === "mcq") {
+        body = '<div class="choices">' + q.options.map(function(option, optionIndex) {
+          return '<label class="choice"><input type="radio" name="q' + q.id + '" value="' + optionIndex + '"><span>' + escapeHtml(option) + '</span></label>';
+        }).join("") + "</div>";
+      } else {
+        body = '<textarea id="answer-' + q.id + '" aria-label="Missing code for question ' + q.id + '" placeholder="Type only the missing Python code..." spellcheck="false"></textarea><p class="hint">Use the given names and requested form. Code is case-sensitive; spaces inside strings matter. Common listed alternatives are accepted, but the checker does not execute Python.</p>';
+      }
+
+      return '<article class="question" data-id="' + q.id + '" data-week="' + q.week + '" data-difficulty="' + q.difficulty + '" data-tricky="' + (q.tricky ? "true" : "false") + '" data-set="' + setNumber + '">' +
+        '<div class="q-top"><span class="q-number">Q' + (index + 1) + '</span><span class="pill week">' + q.week + '</span><span class="pill type">' + (q.type === "mcq" ? "MCQ" : "Short answer · code fill") + '</span>' + difficulty + '</div>' +
+        '<p class="prompt">' + escapeHtml(q.prompt) + '</p>' +
+        qCode(q.code) +
+        body +
+        '<div class="check-row"><button class="check-btn" type="button" data-check-id="' + q.id + '">Check answer</button><span class="check-status" id="status-' + q.id + '">Answer when ready</span></div>' +
+        '<div class="feedback" id="feedback-' + q.id + '"></div>' +
+        "</article>";
+    }
+
+    function renderQuiz() {
+      let html = "";
+      questions.forEach(function(q, index) {
+        if (index % 5 === 0) {
+          const setNumber = Math.floor(index / 5) + 1;
+          html += '<div class="set-heading" data-set-heading="' + setNumber + '"><h2>Mini-set ' + setNumber + '</h2><span>3 MCQs + 2 code fills</span></div>';
+        }
+        html += renderQuestion(q, index);
+      });
+      quiz.innerHTML = html;
+      applyFilters();
+      updateProgress();
+    }
+
+    // Compare Python-like tokens without discarding case or literal-string spaces.
+    function normalizeCode(value) {
+      const text = String(value || "").trim();
+      const tokens = text.match(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|[A-Za-z_][A-Za-z_0-9]*|\d+(?:\.\d+)?|==|!=|<=|>=|\/\/|\*\*|[^\s]/g) || [];
+      return JSON.stringify(tokens.map(function(token) {
+        if (token[0] !== '"' && token[0] !== "'") return token;
+        if (token[token.length - 1] !== token[0]) return token;
+        const contents = token.slice(1, -1).replace(/\\([\\'"nrt])/g, function(_, ch) {
+          return ({n: "\n", r: "\r", t: "\t"})[ch] || ch;
+        });
+        return { string: contents };
+      }));
+    }
+
+    function getResponse(q) {
+      if (q.type === "mcq") {
+        const selected = document.querySelector('input[name="q' + q.id + '"]:checked');
+        return selected ? selected.value : "";
+      }
+      return document.getElementById("answer-" + q.id).value;
+    }
+
+    function isCorrect(q, response) {
+      if (!String(response).trim()) return false;
+      if (q.type === "mcq") return Number(response) === q.answer;
+      return q.accepted.some(function(answer) { return normalizeCode(response) === normalizeCode(answer); });
+    }
+
+    function answerDisplay(q) {
+      return q.type === "mcq" ? q.options[q.answer] : q.accepted[0];
+    }
+
+    function showPendingFeedback(q) {
+      const card = document.querySelector('[data-id="' + q.id + '"]');
+      const feedback = document.getElementById("feedback-" + q.id);
+      const status = document.getElementById("status-" + q.id);
+      card.classList.remove("is-correct", "is-wrong");
+      card.classList.add("is-unanswered");
+      feedback.className = "feedback show pending";
+      feedback.innerHTML = "<strong>Answer this first.</strong><div>Select an option or enter the missing code, then click Check answer.</div>";
+      status.textContent = "Needs an answer";
+    }
+
+    function showAnswerFeedback(q, correct) {
+      const card = document.querySelector('[data-id="' + q.id + '"]');
+      const feedback = document.getElementById("feedback-" + q.id);
+      const status = document.getElementById("status-" + q.id);
+      card.classList.remove("is-unanswered", "is-correct", "is-wrong");
+      card.classList.add(correct ? "is-correct" : "is-wrong");
+      feedback.className = "feedback show " + (correct ? "correct" : "wrong");
+      feedback.innerHTML = (correct ? "<strong>Correct.</strong>" : "<strong>Review this one.</strong>") +
+        "<div>" + escapeHtml(q.explanation) + "</div>" +
+        '<div class="answer">Answer: <code>' + escapeHtml(answerDisplay(q)) + "</code></div>" +
+        '<div class="source">Source anchor: ' + escapeHtml(q.source) + "</div>";
+      status.textContent = correct ? "Correct" : "Review this one";
+    }
+
+    function checkQuestion(id) {
+      const q = questions.find(function(item) { return item.id === id; });
+      if (!q) return;
+      const response = getResponse(q);
+      if (!String(response).trim()) {
+        checkedResults.delete(q.id);
+        showPendingFeedback(q);
+        return;
+      }
+      const correct = isCorrect(q, response);
+      checkedResults.set(q.id, { correct: correct, response: response });
+      showAnswerFeedback(q, correct);
+    }
+
+    function gradeQuiz() {
+      let score = 0;
+      let mcqScore = 0;
+      let shortScore = 0;
+      let trickyScore = 0;
+      let unanswered = 0;
+      lastResults = new Map();
+
+      questions.forEach(function(q) {
+        const response = getResponse(q);
+        if (!String(response).trim()) unanswered += 1;
+        const correct = isCorrect(q, response);
+        if (correct) {
+          score += 1;
+          if (q.type === "mcq") mcqScore += 1;
+          else shortScore += 1;
+          if (q.tricky) trickyScore += 1;
+        }
+        lastResults.set(q.id, { correct: correct, response: response });
+        checkedResults.set(q.id, { correct: correct, response: response });
+        showAnswerFeedback(q, correct);
+      });
+
+      const percent = Math.round((score / questions.length) * 100);
+      results.innerHTML =
+        "<h2>" + score + " / " + questions.length + " · " + percent + "%</h2>" +
+        "<p>" + (unanswered ? unanswered + " unanswered. " : "") + "Every question is worth one point. Use the filters to review a week or Hard + Challenge questions.</p>" +
+        '<div class="result-grid">' +
+          '<div class="result-stat"><strong>' + mcqScore + ' / ' + questions.filter(q => q.type === 'mcq').length + '</strong><span>MCQ score</span></div>' +
+          '<div class="result-stat"><strong>' + shortScore + ' / ' + questions.filter(q => q.type === 'short').length + '</strong><span>code-fill score</span></div>' +
+          '<div class="result-stat"><strong>' + trickyScore + ' / ' + questions.filter(function(q) { return q.tricky; }).length + '</strong><span>Hard + Challenge score</span></div>' +
+          '<div class="result-stat"><strong>' + (questions.length - score) + '</strong><span>to review</span></div>' +
+        "</div>";
+      results.classList.add("show");
+      submitted = true;
+      mistakesBtn.hidden = false;
+      mistakesBtn.textContent = "Show mistakes";
+      applyFilters();
+      results.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function updateProgress() {
+      const answered = questions.filter(function(q) { return String(getResponse(q)).trim().length > 0; }).length;
+      progressText.textContent = answered + " / " + questions.length + " answered";
+      progressBar.style.width = Math.round((answered / questions.length) * 100) + "%";
+    }
+
+    function applyFilters() {
+      const week = weekFilter.value;
+      const difficulty = difficultyFilter.value;
+      const showMistakes = mistakesBtn.dataset.mode === "mistakes";
+      let shown = 0;
+
+      questions.forEach(function(q) {
+        const card = document.querySelector('[data-id="' + q.id + '"]');
+        const heading = document.querySelector('[data-set-heading="' + (Math.floor((q.id - 1) / 5) + 1) + '"]');
+        const weekMatch = week === "all" || q.week === week;
+        const difficultyMatch = difficulty === "all" || (difficulty === "tricky" ? q.tricky : q.difficulty === difficulty);
+        const mistakeMatch = !showMistakes || (submitted && lastResults.has(q.id) && !lastResults.get(q.id).correct);
+        const visible = weekMatch && difficultyMatch && mistakeMatch;
+        card.classList.toggle("is-hidden", !visible);
+        if (visible) shown += 1;
+        if (heading) heading.dataset.visible = "true";
+      });
+
+      document.querySelectorAll(".set-heading").forEach(function(heading) {
+        const set = Number(heading.dataset.setHeading);
+        const hasVisible = questions.slice((set - 1) * 5, set * 5).some(function(q) {
+          return !document.querySelector('[data-id="' + q.id + '"]').classList.contains("is-hidden");
+        });
+        heading.classList.toggle("is-hidden", !hasVisible);
+      });
+      filterText.textContent = shown + " shown";
+    }
+
+    function invalidateCheck(id) {
+      if (!checkedResults.has(id)) return;
+      checkedResults.delete(id);
+      const card = document.querySelector('[data-id="' + id + '"]');
+      const feedback = document.getElementById("feedback-" + id);
+      const status = document.getElementById("status-" + id);
+      card.classList.remove("is-correct", "is-wrong", "is-unanswered");
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      status.textContent = "Answer changed · check again";
+      if (submitted) {
+        submitted = false;
+        lastResults = new Map();
+        results.classList.remove("show");
+        mistakesBtn.hidden = true;
+        mistakesBtn.dataset.mode = "";
+        applyFilters();
+      }
+    }
+
+    function clearAnswers() {
+      document.querySelectorAll('input[type="radio"]').forEach(function(input) { input.checked = false; });
+      document.querySelectorAll("textarea").forEach(function(area) { area.value = ""; });
+      submitted = false;
+      lastResults = new Map();
+      checkedResults = new Map();
+      results.classList.remove("show");
+      mistakesBtn.hidden = true;
+      mistakesBtn.dataset.mode = "";
+      document.querySelectorAll(".question").forEach(function(card) {
+        card.classList.remove("is-correct", "is-wrong", "is-unanswered");
+      });
+      document.querySelectorAll(".feedback").forEach(function(feedback) {
+        feedback.className = "feedback";
+        feedback.innerHTML = "";
+      });
+      document.querySelectorAll(".check-status").forEach(function(status) { status.textContent = "Answer when ready"; });
+      saveAnswers();
+      applyFilters();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    weekFilter.addEventListener("change", applyFilters);
+    difficultyFilter.addEventListener("change", applyFilters);
+    submitBtn.addEventListener("click", gradeQuiz);
+    clearBtn.addEventListener("click", clearAnswers);
+    quiz.addEventListener("click", function(event) {
+      const button = event.target.closest("[data-check-id]");
+      if (button) checkQuestion(Number(button.dataset.checkId));
+    });
+    mistakesBtn.addEventListener("click", function() {
+      mistakesBtn.dataset.mode = mistakesBtn.dataset.mode === "mistakes" ? "" : "mistakes";
+      mistakesBtn.textContent = mistakesBtn.dataset.mode === "mistakes" ? "Show all questions" : "Show mistakes";
+      applyFilters();
+    });
+    quiz.addEventListener("input", function(event) {
+      updateProgress();
+      saveAnswers();
+      const card = event.target.closest(".question");
+      if (card) invalidateCheck(Number(card.dataset.id));
+    });
+    quiz.addEventListener("change", function(event) {
+      updateProgress();
+      saveAnswers();
+      const card = event.target.closest(".question");
+      if (card) invalidateCheck(Number(card.dataset.id));
+    });
+
+    const storageKey = "cor-is1704-test-3-v1";
+    function saveAnswers() {
+      try {
+        const answers = {};
+        questions.forEach(function(q) { answers[q.id] = getResponse(q); });
+        localStorage.setItem(storageKey, JSON.stringify(answers));
+      } catch (_) { /* Storage can be unavailable for local or embedded pages. */ }
+    }
+    function restoreAnswers() {
+      try {
+        const answers = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        questions.forEach(function(q) {
+          const value = answers[q.id];
+          if (typeof value !== "string") return;
+          if (q.type === "mcq") {
+            const radio = document.querySelector('input[name="q' + q.id + '"][value="' + value + '"]');
+            if (radio) radio.checked = true;
+          } else {
+            document.getElementById("answer-" + q.id).value = value;
+          }
+        });
+      } catch (_) { /* Start with blank answers if saved data is unavailable. */ }
+      updateProgress();
+    }
+    renderQuiz();
+    restoreAnswers();
+  </script>
+</body>
+</html>

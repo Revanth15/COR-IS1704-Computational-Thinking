@@ -1,0 +1,127 @@
+Lab 07 Reference
+[SE101] Operating Systems and Networking
+IPv4: Variable Length Subnet Masking
+
+# TASK 1
+
+Address-range:
+192.168.15.0/23 belongs to the canonical network 192.168.14.0/23.
+Pool: 192.168.14.0 through 192.168.15.255, containing 512 addresses.
+
+Allocation convention: 
+assign end hosts consecutively from the first usable
+address, then assign the LAN router interface the next address.
+The last actual used address below includes router interfaces.
+
+Subnet A
+Addresses needed: 71 hosts + 1 router interface + 2 reserved = 74
+Allocated addresses: 128
+Subnet address: 192.168.14.0/25
+Subnet mask: 255.255.255.128
+First host address: 192.168.14.1/25
+Last actual used address: 192.168.14.72/25
+Broadcast address: 192.168.14.127/25
+Hosts A1 through A71: 192.168.14.1 through 192.168.14.71
+Router A Pa0: 192.168.14.72/25
+
+Subnet B
+Addresses needed: 30 hosts + 1 router interface + 2 reserved = 33
+Allocated addresses: 64
+Subnet address: 192.168.14.128/26
+Subnet mask: 255.255.255.192
+First host address: 192.168.14.129/26
+Last actual used address: 192.168.14.159/26
+Broadcast address: 192.168.14.191/26
+Hosts B1 through B30: 192.168.14.129 through 192.168.14.158
+Router B Pb0: 192.168.14.159/26
+
+Subnet C
+Addresses needed: 15 hosts + 1 router interface + 2 reserved = 18
+Allocated addresses: 32
+Subnet address: 192.168.14.192/27
+Subnet mask: 255.255.255.224
+First host address: 192.168.14.193/27
+Last actual used address: 192.168.14.208/27
+Broadcast address: 192.168.14.223/27
+Hosts C1 through C15: 192.168.14.193 through 192.168.14.207
+Router C Pc0: 192.168.14.208/27
+
+Subnet AB
+Addresses needed: 2 router interfaces + 2 reserved = 4
+Allocated addresses: 4
+Subnet address: 192.168.14.224/30
+Subnet mask: 255.255.255.252
+First host address: 192.168.14.225/30
+Last actual used address: 192.168.14.226/30
+Broadcast address: 192.168.14.227/30
+Router A Pa1: 192.168.14.225/30
+Router B Pb1: 192.168.14.226/30
+
+Subnet BC
+Addresses needed: 2 router interfaces + 2 reserved = 4
+Allocated addresses: 4
+Subnet address: 192.168.14.228/30
+Subnet mask: 255.255.255.252
+First host address: 192.168.14.229/30
+Last actual used address: 192.168.14.230/30
+Broadcast address: 192.168.14.231/30
+Router B Pb2: 192.168.14.229/30
+Router C Pc1: 192.168.14.230/30
+
+Total allocated: 232 addresses
+Unallocated: 280 addresses
+
+# TASK 2
+
+Router A - Complete routing table
+Destination         Target port
+192.168.14.0/25      Pa0
+192.168.14.128/26    Pa1
+192.168.14.192/27    Pa1
+192.168.14.224/30    Pa1
+192.168.14.228/30    Pa1
+
+Router A - Generalized routing table
+Destination         Target port
+192.168.14.0/25      Pa0
+192.168.14.128/25    Pa1
+
+Router B - Complete routing table
+Destination         Target port
+192.168.14.0/25      Pb1
+192.168.14.128/26    Pb0
+192.168.14.192/27    Pb2
+192.168.14.224/30    Pb1
+192.168.14.228/30    Pb2
+
+Router B - Generalized routing table
+Destination         Target port
+192.168.14.0/24      Pb1
+192.168.14.128/26    Pb0
+192.168.14.192/27    Pb2
+192.168.14.228/30    Pb2
+
+Router C - Complete routing table
+Destination         Target port
+192.168.14.0/25      Pc1
+192.168.14.128/26    Pc1
+192.168.14.192/27    Pc0
+192.168.14.224/30    Pc1
+192.168.14.228/30    Pc1
+
+Router C - Generalized routing table
+Destination         Target port
+192.168.14.0/24      Pc1
+192.168.14.192/27    Pc0
+
+
+# TASK 3
+
+Non-loopback interface: enp0s1
+IPv4 address: 192.168.64.5/24
+Subnet mask: 255.255.255.0
+Network address: 192.168.64.0/24
+Broadcast address: 192.168.64.255
+
+
+Different-network comparison: Nope, all the above mentioned were the same likely because VM is running on a virtual network is my guess.
