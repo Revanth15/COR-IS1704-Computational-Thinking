@@ -20,20 +20,6 @@ def get_lineup(info):
             break
     return lineup
 
-# def get_lineup(info):
-#     lineup = []
-#     if info == []:
-#         return lineup
-#     lineup.append(info[0][0])
-#     lineup.append(info[0][1])
-#     for i in range(len(info)):
-#         for j in range(len(info)):
-#             if j != i:
-#                 if info[i][1] == info[j][0] and info[j][0] != "":
-#                     index = lineup.index(info[i][1])
-#                     lineup.insert(index+1,info[j][1])
-#     return lineup
-
 print('Testcase 1')
 print('-' * 10)
 print("Expected: ['Alice', 'Bob', 'Chris', 'Darren']")
