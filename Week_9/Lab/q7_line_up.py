@@ -2,12 +2,10 @@
 
 def get_lineup(info):
     lineup = []
-    last_index = 0
     if info == []:
         return lineup
     for item in info:
-        if "" in item:
-            last_index = info.index(item)
+        if item[1] == "":
             lineup.append(item[0])
     while True:
         updated_bool = False
