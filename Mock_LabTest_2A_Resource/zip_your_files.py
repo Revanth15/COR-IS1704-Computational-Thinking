@@ -8,7 +8,7 @@ test_start_date: Expect student solutions to have timestamp later
                  than this time (local) %Y-%m-%d %H:%M:%S
 """
 
-config = {'LT_tag': 'Mock_LT2A', 'test_start_date': '2026-11-06 08:00:00', 'LT_name': 'Mock Lab Test 2A', 'file_names': ['q1a.py', 'q1b.py', 'q2.py', 'q3.py']}
+config = {'LT_tag': 'Mock_LT2A', 'test_start_date': '2026-11-03 15:30:00', 'LT_name': 'Mock Lab Test 2A', 'file_names': ['q1a.py', 'q1b.py', 'q2.py', 'q3.py']}
 
 class SubmissionClass:
     
