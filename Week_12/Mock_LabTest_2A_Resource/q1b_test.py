@@ -1,4 +1,4 @@
-from q1b import find_second_letter
+from Week_12.Mock_LabTest_2A_Resource.q1b import find_second_letter
 
 if __name__ == "__main__":
     # Test Cases of Q1b

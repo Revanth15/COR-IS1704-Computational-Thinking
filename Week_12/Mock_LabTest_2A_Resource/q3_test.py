@@ -1,4 +1,4 @@
-from q3 import process_numbers
+from Week_12.Mock_LabTest_2A_Resource.q3 import process_numbers
 
 if __name__ == "__main__":
     print("Test Case for Q3")

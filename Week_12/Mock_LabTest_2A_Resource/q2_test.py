@@ -1,4 +1,4 @@
-from q2 import get_reversed_list
+from Week_12.Mock_LabTest_2A_Resource.q2 import get_reversed_list
 
 if __name__ == "__main__":
     # Test Cases of Q2

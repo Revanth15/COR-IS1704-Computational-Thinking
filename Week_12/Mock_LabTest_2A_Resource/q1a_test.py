@@ -1,4 +1,4 @@
-from q1a import find_last_letter
+from Week_12.Mock_LabTest_2A_Resource.q1a import find_last_letter
 
 if __name__ == "__main__":
     print('\nTestcase 1')
