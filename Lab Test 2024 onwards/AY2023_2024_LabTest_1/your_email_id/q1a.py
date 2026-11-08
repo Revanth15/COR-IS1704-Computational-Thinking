@@ -3,4 +3,10 @@
 
 def compute_parking(duration):
     # Replace the code below with your implementation.
-    return None
+    cost = 0.0
+    if duration <= 10:
+        return 0.0
+    elif duration <= 60:
+        return 5.0
+    else:
+        return 5 + (duration - 60) * 0.1
