@@ -34,9 +34,53 @@ def sort_by_latest_delivery_time(items):
         items[j + 1] = key
 
 # ###############################################################################
+# Check how to make them ints while unpacking
+def time_difference(time_1, time_2):
+    hour_1, minute_1 = time_1.strip().split(":")
+    hour_2, minute_2 = time_2.strip().split(":")
+    mins_gap = (int(hour_1) * 60 + int(minute_1)) -  (int(hour_2) * 60 + int(minute_2))
+    return mins_gap
+
+def update_time(time,adjustment,add_bool):
+    hour, minute = time.strip().split(":")
+    if add_bool:
+        minute = int(minute) + adjustment
+    else:
+        minute = int(minute) - adjustment
+    hour = int(hour)
+    if minute >= 60:
+        minute -= 60
+        if add_bool:
+            hour += 1
+        else:
+            hour -= 1
+    if minute < 10:
+        minute = "0" + str(minute)
+    return f"{hour}:{minute}"
 
 def schedule_delivery(items):
     # Replace the code below with your implementation.
+    sort_by_latest_delivery_time(items)
+    return_list = []
+    current_time = ""
+    for item in items:
+        item_name, destination, latest_delivery_time, travel_time = item
+        if len(return_list) == 0:
+            current_time = update_time(latest_delivery_time, 30, False)
+            return_list.append((item_name, destination, latest_delivery_time, current_time))
+            current_time = update_time(current_time, travel_time, True)
+        else:
+            mins_gap = time_difference(latest_delivery_time, current_time)
+            if mins_gap > 30:
+                mins_gap = 30
+                current_time = update_time(current_time, mins_gap, True)
+            else:
+                current_time = update_time(current_time, travel_time, True)
 
-    return None
+            if time_difference(latest_delivery_time,current_time) <= 0:
+                current_time += "*"
+
+            return_list.append((item_name, destination, latest_delivery_time, current_time))
+            current_time = update_time(current_time.strip("*"), travel_time, True)
+    return return_list
     
