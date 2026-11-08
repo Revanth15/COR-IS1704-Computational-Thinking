@@ -32,6 +32,4 @@ def is_partially_compliant(table):
     if max(school_mapping.values()) > 2:
         return False
 
-    # print(school_mapping)
-    # print(internship_years)
     return True
