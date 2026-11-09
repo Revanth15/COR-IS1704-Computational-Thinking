@@ -3,6 +3,15 @@
 
 def is_allowed_in_carryon(item_category, quantity):
     # Replace the code below with your implementation.
-    return None
+    if item_category in ["Electronics", "Food"] :
+        return True
+    elif item_category == "Weapons":
+        return False
+    elif item_category == "Liquids":
+        if quantity <= 100:
+            return True
+        else:
+            return False
+    return "Contact Staff"
 
     
