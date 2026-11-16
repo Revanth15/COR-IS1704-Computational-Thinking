@@ -3,4 +3,58 @@
     
 def get_min_allocation(rating):
     # Modify the code below.
-    return None
+    bonus = []
+    for r in rating:
+        bonus.append(1)
+        
+    for i in range(len(rating)):
+        current_rating = rating[i]
+        if i == 0:
+            if len(rating) > 2:
+                right_n = rating[i+1]
+                if right_n < current_rating:
+                    bonus[i] += 1
+        elif i == len(rating) - 1:
+            left_n = rating[i - 1]
+            if current_rating > left_n:
+                bonus[i] += max(1, bonus[i - 1])
+        else:
+            left_n = rating[i - 1]
+            right_n = rating[i+1]
+            if current_rating > left_n:
+                bonus[i] += max(1, bonus[i - 1])
+            elif current_rating > right_n:
+                bonus[i] += max(1, bonus[i + 1])
+        
+        # if bonus[i] == bonus[i-1]:
+        #     bonus[i-1] += 1
+    return bonus
+
+
+# def get_min_allocation(rating):
+#     # Modify the code below.
+#     bonus = []
+#     for r in rating:
+#         bonus.append(1)
+        
+#     for i in range(len(rating)):
+#         current_rating = rating[i]
+#         if i == 0:
+#             if len(rating) > 2:
+#                 right_n = rating[i+1]
+#                 if right_n < current_rating:
+#                     bonus[i] += 1
+#         elif i == len(rating) - 1:
+#             left_n = rating[i - 1]
+#             if current_rating > left_n:
+#                 bonus[i] += max(1, bonus[i - 1])
+#         else:
+#             left_n = rating[i - 1]
+#             right_n = rating[i+1]
+#             if current_rating > left_n:
+#                 bonus[i] += max(1, bonus[i - 1])
+#                 continue
+#             if current_rating > right_n:
+#                 bonus[i] += max(1, bonus[i + 1])
+#                 continue
+#     return bonus
