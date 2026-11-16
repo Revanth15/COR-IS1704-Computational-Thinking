@@ -12,4 +12,5 @@ def clean_sentence(sentence):
 
 def extract_words(sentence):
     # Modify the code below.
-    return None
+    cleaned_sentence = clean_sentence(sentence)
+    return cleaned_sentence.split(" ")

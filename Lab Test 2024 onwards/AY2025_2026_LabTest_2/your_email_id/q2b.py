@@ -18,4 +18,16 @@ def decode_potter_checksum(filename):
         * bool: True if calculated checksum is equal to expected checksum
     """    
     # Modify the code below.
-    return None
+    sentences = []
+    with open(filename, 'r') as file:
+        for line in file:
+            line = line.strip()
+            sentence_length = line[:3]
+            sentence = line[3:int(sentence_length)+3]
+            checksum = int(sentence[-2:])
+            num_vowels = 0
+            for ch in sentence:
+                if ch in "AaEeIiOoUu":
+                    num_vowels +=1
+            sentences.append((sentence[0:-2], num_vowels, True if num_vowels == checksum else False))
+    return sentences

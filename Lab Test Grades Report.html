@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Lab test grades and code review</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #596579;
+      --line: #dce3ed;
+      --paper: #ffffff;
+      --wash: #f2f5fa;
+      --navy: #14223c;
+      --blue: #315fe8;
+      --blue-soft: #eaf0ff;
+      --amber: #9a5a08;
+      --amber-soft: #fff4df;
+      --red: #a53636;
+      --red-soft: #fff0ee;
+      --green: #176b51;
+      --green-soft: #e8f7f0;
+      --code: #101827;
+      --code-ink: #e8eef9;
+      --shadow: 0 12px 32px rgba(24, 39, 65, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--wash);
+      color: var(--ink);
+      font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: #244fce; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: #15359b; }
+    .hero {
+      color: white;
+      padding: 46px max(24px, calc((100% - 1160px) / 2)) 38px;
+      background: radial-gradient(circle at 88% 12%, rgba(93, 133, 255, .34), transparent 27%), linear-gradient(125deg, #101b30, #1b3159 72%, #29477d);
+    }
+    .eyebrow { margin: 0 0 10px; color: #b9ccff; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; font-size: 11px; }
+    h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.08; letter-spacing: -.035em; margin: 0; max-width: 800px; }
+    .hero-copy { max-width: 790px; margin: 17px 0 0; color: #d8e2f5; font-size: 16px; }
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 25px; }
+    .hero-stat { border: 1px solid rgba(255,255,255,.21); background: rgba(255,255,255,.08); padding: 9px 13px; border-radius: 12px; color: #edf3ff; }
+    .hero-stat strong { color: white; font-size: 18px; margin-right: 5px; }
+    .layout { width: min(1160px, calc(100% - 36px)); margin: 24px auto 70px; }
+    .notice { background: #fff; border: 1px solid #f0dba8; border-left: 5px solid #e2a22c; border-radius: 13px; padding: 15px 18px; box-shadow: var(--shadow); color: #4f422c; }
+    .notice strong { color: #382c16; }
+    .summary-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; margin: 20px 0; }
+    .card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+    .card-pad { padding: 21px 23px; }
+    h2 { font-size: 22px; line-height: 1.2; letter-spacing: -.02em; margin: 0 0 14px; }
+    h3 { font-size: 18px; line-height: 1.3; margin: 0 0 10px; }
+    h4 { font-size: 14px; margin: 0; }
+    .muted { color: var(--muted); }
+    .chart-row { display: grid; grid-template-columns: minmax(160px, 1.1fr) 3fr 52px; align-items: center; gap: 12px; margin: 12px 0; font-size: 13px; }
+    .chart-label { color: #334158; }
+    .track { height: 13px; border-radius: 99px; background: #e9edf4; overflow: hidden; }
+    .fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #5278f1, #284dd0); }
+    .chart-score { text-align: right; font-weight: 750; color: #1d2e58; font-variant-numeric: tabular-nums; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 22px; }
+    .nav a { text-decoration: none; padding: 8px 11px; background: white; border: 1px solid var(--line); border-radius: 99px; color: #34435b; font-size: 13px; }
+    .nav a:hover { background: var(--blue-soft); border-color: #b7c7ff; color: #203ca0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: #526078; text-transform: uppercase; letter-spacing: .07em; font-size: 10px; }
+    td { font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .score { white-space: nowrap; font-weight: 800; color: #19356f; font-variant-numeric: tabular-nums; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 99px; padding: 4px 9px; font-size: 11px; font-weight: 750; white-space: nowrap; }
+    .pill.good { background: var(--green-soft); color: var(--green); }
+    .pill.warn { background: var(--amber-soft); color: var(--amber); }
+    .pill.bad { background: var(--red-soft); color: var(--red); }
+    .attempt { margin: 26px 0; overflow: hidden; scroll-margin-top: 15px; }
+    .attempt-head { padding: 22px 25px; background: linear-gradient(110deg, #fff, #f7f9fe); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
+    .attempt-head h2 { margin-bottom: 5px; }
+    .attempt-body { padding: 23px 25px 27px; }
+    .attempt-meta { text-align: right; min-width: 150px; }
+    .attempt-mark { font-size: 30px; line-height: 1.1; color: #18356f; font-weight: 850; letter-spacing: -.04em; }
+    .attempt-pct { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin: 17px 0 22px; }
+    .mini { border: 1px solid var(--line); background: #fbfcfe; border-radius: 12px; padding: 14px 15px; }
+    .mini p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .issue { border: 1px solid var(--line); border-radius: 13px; margin: 15px 0; overflow: hidden; background: white; }
+    .issue-title { display: flex; justify-content: space-between; gap: 15px; align-items: center; padding: 12px 15px; background: #f7f9fc; border-bottom: 1px solid var(--line); }
+    .issue-title small { color: var(--muted); font-size: 11px; }
+    .issue-body { padding: 14px 15px 16px; }
+    .issue-body p { margin: 7px 0 11px; }
+    .codehead { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin: 12px 0 0; color: #cbd5e6; background: #1b2638; border-radius: 9px 9px 0 0; padding: 7px 11px; font-size: 11px; }
+    .codehead a { color: #b9ccff; }
+    pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code); color: var(--code-ink); padding: 13px 15px; border-radius: 0 0 9px 9px; font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; tab-size: 4; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .case { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .case div { border-radius: 10px; padding: 10px 12px; font-size: 12px; }
+    .expected { background: var(--green-soft); color: #174d3c; }
+    .actual { background: var(--red-soft); color: #772a2a; }
+    .case strong { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2px; }
+    .method { margin-top: 20px; }
+    .method ul { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
+    .method li { margin: 5px 0; }
+    .footer { color: var(--muted); text-align: center; font-size: 12px; padding: 18px; }
+    @media (max-width: 760px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .chart-row { grid-template-columns: 1fr 2fr 45px; gap: 8px; }
+      .attempt-head { display: block; }
+      .attempt-meta { text-align: left; margin-top: 14px; }
+      .subgrid, .case { grid-template-columns: 1fr; }
+      .attempt-body { padding: 17px; }
+      .attempt-head { padding: 18px; }
+      table { display: block; overflow-x: auto; }
+    }
+    @media print {
+      body { background: white; }
+      .hero { padding: 24px; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .layout { width: 100%; margin: 16px auto; }
+      .card, .attempt { box-shadow: none; break-inside: avoid; }
+      .nav { display: none; }
+      .attempt { break-before: page; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">COR-IS1704 · review copy</p>
+    <h1>Lab test grades and code review</h1>
+    <p class="hero-copy">Five completed attempts, their estimated marks, supplied-test results, and the specific code patterns that lost marks or failed extra cases.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>5</strong> attempts reviewed</div>
+      <div class="hero-stat"><strong>106.25 / 125</strong> estimated marks</div>
+      <div class="hero-stat"><strong>85%</strong> average estimate</div>
+      <div class="hero-stat"><strong>92%</strong> highest estimate</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="notice"><strong>How to read the marks.</strong> These are independent estimates based on the paper requirements and the submitted <code>your_email_id</code> folders. The papers give question-level totals but no detailed partial-credit rubric, so the likely ranges are shown too. Possible deductions for blank author headers are not included.</div>
+
+    <div class="summary-grid">
+      <section class="card card-pad">
+        <h2>Score comparison</h2>
+        <p class="muted">Estimated percentage for each 25-mark paper.</p>
+        <div class="chart-row"><span class="chart-label">AY2023–24 · LT1</span><div class="track"><div class="fill" style="width:87%"></div></div><span class="chart-score">87%</span></div>
+        <div class="chart-row"><span class="chart-label">AY2023–24 · LT2</span><div class="track"><div class="fill" style="width:88%"></div></div><span class="chart-score">88%</span></div>
+        <div class="chart-row"><span class="chart-label">AY2024–25 · LT1</span><div class="track"><div class="fill" style="width:92%"></div></div><span class="chart-score">92%</span></div>
+        <div class="chart-row"><span class="chart-label">AY2024–25 · LT2</span><div class="track"><div class="fill" style="width:72%"></div></div><span class="chart-score">72%</span></div>
+        <div class="chart-row"><span class="chart-label">AY2025–26 · LT1</span><div class="track"><div class="fill" style="width:86%"></div></div><span class="chart-score">86%</span></div>
+      </section>
+      <section class="card card-pad">
+        <h2>At a glance</h2>
+        <table>
+          <thead><tr><th>Attempt</th><th>Estimate</th><th>Supplied outputs</th></tr></thead>
+          <tbody>
+            <tr><td>AY2023–24 LT1</td><td class="score">21.75/25</td><td><span class="pill good">Examples matched</span></td></tr>
+            <tr><td>AY2023–24 LT2</td><td class="score">22/25</td><td><span class="pill good">27/27</span></td></tr>
+            <tr><td>AY2024–25 LT1</td><td class="score">23/25</td><td><span class="pill warn">35/39</span></td></tr>
+            <tr><td>AY2024–25 LT2</td><td class="score">18/25</td><td><span class="pill warn">26/30</span></td></tr>
+            <tr><td>AY2025–26 LT1</td><td class="score">21.5/25</td><td><span class="pill warn">39/46</span></td></tr>
+          </tbody>
+        </table>
+        <p class="muted" style="font-size:12px;margin:12px 0 0">“Examples matched” means every listed example in the supplied scripts produced the expected output. Those scripts mostly print comparisons instead of asserting them.</p>
+      </section>
+    </div>
+
+    <nav class="nav" aria-label="Jump to attempt">
+      <a href="#ay2324-lt1">AY2023–24 LT1</a>
+      <a href="#ay2324-lt2">AY2023–24 LT2</a>
+      <a href="#ay2425-lt1">AY2024–25 LT1</a>
+      <a href="#ay2425-lt2">AY2024–25 LT2</a>
+      <a href="#ay2526-lt1">AY2025–26 LT1</a>
+      <a href="#method">Testing and notes</a>
+    </nav>
+
+    <section class="card attempt" id="ay2324-lt1">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 1 of 5</p><h2>AY2023–24 Lab Test 1</h2><p class="muted" style="margin:0">Strong Q1 and Q2; most deductions come from multi-step validation and scheduling.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">21.75<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">87% · likely 21 to 22.5</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 8/8 · Q2 8/8 · Q3 3.5–4/5 · Q4 1.5–2.5/4</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>All provided examples passed. Extra valid inputs found year-span and time arithmetic errors.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3(a) and Q3(b): year check only allows the first year ±1</h3><span class="pill bad">Hidden case fails</span></div>
+          <div class="issue-body">
+            <p>The check is built from the first student's year, so a table containing 2020, 2021, and 2022 passes when the rule rejects three distinct years. The same pattern appears in both parts.</p>
+            <div class="codehead"><span>q3a.py, lines 23–30; same logic in q3b.py, lines 34–41</span><span>Source excerpt below</span></div>
+            <pre><code>if len(internship_baseline) == 0:
+    internship_baseline.append(internship_year)
+    internship_baseline.append(internship_year - 1)
+    internship_baseline.append(internship_year + 1)
+
+if internship_year not in internship_baseline:
+    return False</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Reject three distinct internship years: 2020, 2021, 2022.</div><div class="actual"><strong>Actual</strong>Accepts them if the first student's year is 2021.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4: time subtraction, wait calculation, and late marker</h3><span class="pill bad">Several edge cases fail</span></div>
+          <div class="issue-body">
+            <p><code>update_time</code> subtracts minutes without borrowing an hour, and formats the hour without a leading zero. The waiting branch caps a gap at 30 minutes, which can schedule too early. The deadline check also marks equality as late.</p>
+            <div class="codehead"><span>q4.py, lines 44–59 and 73–81</span><span>Source excerpt below</span></div>
+            <pre><code>if minute &gt;= 60:
+    minute -= 60
+    if add_bool:
+        hour += 1
+    else:
+        hour -= 1
+if minute &lt; 10:
+    minute = "0" + str(minute)
+return f"{hour}:{minute}"
+
+if mins_gap &gt; 30:
+    mins_gap = 30
+    current_time = update_time(current_time, mins_gap, True)
+...
+if time_difference(latest_delivery_time, current_time) &lt;= 0:
+    current_time += "*"</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>07:00 minus 30 minutes should normalize to 06:30; an exact deadline should not get a late marker.</div><div class="actual"><strong>Actual</strong>Subtraction can produce a malformed negative minute; hour output can be 7:00; equality gets “*”.</div></div>
+            <p class="muted">An additional 12:30 delivery / 15:00 deadline case scheduled 12:45, earlier than the allowed 14:30.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card attempt" id="ay2324-lt2">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 2 of 5</p><h2>AY2023–24 Lab Test 2</h2><p class="muted" style="margin:0">All 27 provided checks matched; extra cases expose data parsing and traffic timing assumptions.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">22<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">88% · likely 21 to 23</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 9/9 · Q2 6.5–7/7 · Q3 3.5–4.5/5 · Q4 2–3/4</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>8 supplied scripts passed all 27 printed comparisons. Extra cases exposed 4 main failure patterns below.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q2(b): bank code can match anywhere in the branch ID</h3><span class="pill warn">Extra case fails</span></div>
+          <div class="issue-body">
+            <p>The requirement identifies the bank by the first three characters. Membership testing also accepts a code embedded later in the branch ID.</p>
+            <div class="codehead"><span>q2b.py, line 13</span><span>Source excerpt below</span></div>
+            <pre><code>if bank_code in branch_id:
+    return_list.append((nric, branch_id, loan_type, int(amount.strip("$"))))</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>For code DBS, only a branch ID beginning with DBS matches.</div><div class="actual"><strong>Actual</strong>An ID such as ABCDBS123 is also included.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3(a): any period makes a value numeric</h3><span class="pill warn">Valid text crashes</span></div>
+          <div class="issue-body">
+            <p>Values such as <code>version1.2</code> are strings, but this branch sends them to <code>float()</code> and raises <code>ValueError</code>.</p>
+            <div class="codehead"><span>q3a.py, lines 19–22</span><span>Source excerpt below</span></div>
+            <pre><code>if detail == "":
+    detail = None
+elif "." in detail:
+    detail = float(detail)</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Keep a non-numeric value such as version1.2 as text.</div><div class="actual"><strong>Actual</strong><code>float("version1.2")</code> raises an exception.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3(b): empty result dictionaries are returned</h3><span class="pill warn">Extra case fails</span></div>
+          <div class="issue-body">
+            <p>The function appends one output dictionary for every record, including dictionaries where no requested field matched. The requirement says to omit empty dictionaries.</p>
+            <div class="codehead"><span>q3b.py, lines 19–25</span><span>Source excerpt below</span></div>
+            <pre><code>for pokemon in pokedex:
+    return_pokemon = {}
+    for detail_heder in query_split:
+        if detail_heder in pokemon.keys():
+            return_pokemon[detail_heder] = pokemon[detail_heder]
+    return_list.append(return_pokemon)</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>A select query for absent fields should omit empty dictionaries.</div><div class="actual"><strong>Actual</strong>It returns one <code>{}</code> for each record.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4: state is reset incorrectly after a car crosses a light cycle</h3><span class="pill warn">Extra case fails</span></div>
+          <div class="issue-body">
+            <p>The remaining green time is reset to a full green interval after a car takes longer than the available green. The total light count is then estimated by dividing the largest delay by green duration, which ignores red time. With no cars, <code>max(lane_time_list)</code> raises <code>ValueError</code> because the list is empty.</p>
+            <div class="codehead"><span>q4.py, lines 21–30</span><span>Source excerpt below</span></div>
+            <pre><code>else:
+    traffic_light_duration += delay
+    lane_delay += red + delay + max(0, traffic_light_duration)
+    lane_cars.append((no, lane_delay))
+    if delay == green:
+        lane_delay += red
+    traffic_light_duration = green
+...
+return (return_list, max(lane_time_list) // green)</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>For lanes [(1,6),(2,6),(3,5)] and lights (10,5): delays 6, 21, 35 and count 3.</div><div class="actual"><strong>Actual</strong>Delays 6, 21, 26 and count 2.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card attempt" id="ay2425-lt1">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 3 of 5</p><h2>AY2024–25 Lab Test 1</h2><p class="muted" style="margin:0">Best estimate in this set. Q1 and Q2 are solid; ordering and diagonal handling account for most losses.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">23<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">92% · likely 22.5 to 23.5</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 8/8 · Q2 8/8 · Q3 about 2.5–3/3.5 · Q4 about 4–4.5/5.5</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>35/39 supplied outputs matched. 11/14 additional targeted cases matched.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3: set conversion loses first-seen ailment order</h3><span class="pill warn">2 supplied cases fail</span></div>
+          <div class="issue-body">
+            <p>The task requires unique ailments while preserving their required ordering. Converting through a set removes duplicates but does not preserve the input's first-seen order.</p>
+            <div class="codehead"><span>q3.py, line 21</span><span>Source excerpt below</span></div>
+            <pre><code>return (
+    round(total_age / len(patients), 2),
+    return_values[0],
+    return_values[1],
+    return_values[2],
+    list(set(return_values[3]))
+)</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Keep each ailment once, in its required first-seen order.</div><div class="actual"><strong>Actual</strong><code>set()</code> can reorder ailments; two supplied comparisons show the mismatch.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(c): winner detection misses diagonals and checks tie too early</h3><span class="pill bad">2 supplied cases fail</span></div>
+          <div class="issue-body">
+            <p>The board is declared a tie before row or column wins are checked. The diagonal loop builds strings but never checks either diagonal for a winner, then returns <code>None</code>. A debug <code>print()</code> also remains in the function.</p>
+            <div class="codehead"><span>q4c.py, lines 11–18 and 41–51</span><span>Source excerpt below</span></div>
+            <pre><code># Check tie
+tie_bool = True
+for row in board:
+    if "-" in row:
+        tie_bool = False
+if tie_bool:
+    return "tie"
+...
+# diagonal checker
+diagonal_plays = []
+for i in range(game_board_width):
+    line = ""
+    for j in range(i, 0, -1):
+        line += board[i][j]
+    diagonal_plays.append(line)
+print(diagonal_plays)
+return None</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Check row, column, and diagonal wins before declaring a full board a tie.</div><div class="actual"><strong>Actual</strong>Diagonal wins are missed; a full board with an existing row win can return <code>"tie"</code>.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card attempt" id="ay2425-lt2">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 4 of 5</p><h2>AY2024–25 Lab Test 2</h2><p class="muted" style="margin:0">Q1–Q3 work on the supplied data. Both Q4 coin problems need substantial completion.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">18<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">72% · likely 18 to 19.5</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 6/8 · Q2 8/8 · Q3 4/4 · Q4 about 0/5</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>26/30 supplied outputs matched. Q4(a) misses the listed invalid transaction set; Q4(b) returns <code>None</code> in all 3 cases.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q1(b): leftover slice is based on length difference</h3><span class="pill warn">Unequal lengths fail</span></div>
+          <div class="issue-body">
+            <p>The unpaired suffix starts after the shorter string's length. These slices instead calculate an index from the difference in lengths, so they omit or duplicate characters except for some fortunate lengths.</p>
+            <div class="codehead"><span>q1b.py, lines 16–20</span><span>Source excerpt below</span></div>
+            <pre><code>if l1 &gt; l2:
+    remaining_chars = s1[l1 - l2 + 1:]
+else:
+    remaining_chars = s2[l2 - l1 + 1:]
+remaining_chars = remaining_chars[::-1]</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>alternate_and_reverse("abcd", "x")</code> → <code>"axdcb"</code></div><div class="actual"><strong>Actual</strong><code>"ax"</code>, so the unpaired suffix disappears.</div></div>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>alternate_and_reverse("xy", "abcd")</code> → <code>"xaybdc"</code></div><div class="actual"><strong>Actual</strong><code>"xaybd"</code>, missing the <code>c</code>.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(a): spent coins stay in the account and invalid transactions still affect state</h3><span class="pill bad">Core behavior fails</span></div>
+          <div class="issue-body">
+            <p>The code checks the sum of an account's coins, not whether the address owns the exact denominations being spent. It never fills <code>indexes_to_pop</code>, so spent coins remain available. It then credits outputs even after identifying an invalid input. The final set conversion also loses the required transaction order, and debug output is printed.</p>
+            <div class="codehead"><span>q4a.py, lines 27–40, 45–67</span><span>Source excerpt below</span></div>
+            <pre><code>total_avail = sum(accounts[user])
+if total_avail &lt; amount:
+    invalid_trans.append(txID)
+    invalid_trans_bool = True
+    continue
+...
+indexes_to_pop = []
+...
+for index in indexes_to_pop:
+    accounts[user].pop(index + adjustment)
+...
+elif method == "OUT":
+    accounts[user].append(amount)
+...
+return list(set(invalid_trans))</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Coinbase gives A one coin worth 5; A spends it once; a second spend of 5 is invalid.</div><div class="actual"><strong>Actual</strong>The first coin is never removed, so the second spend is accepted. The supplied transactions_1 case returns <code>[]</code> instead of four invalid IDs.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(b): coin-combination search is not implemented</h3><span class="pill bad">No answer</span></div>
+          <div class="issue-body">
+            <p>The function is a stub, so every requested target returns <code>None</code> instead of the minimal-change combinations or an empty list.</p>
+            <div class="codehead"><span>q4b.py, lines 4–7</span><span>Source excerpt below</span></div>
+            <pre><code>def get_coins(filename, address, target):
+    # Replace the code below with your implementation.
+    return None</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card attempt" id="ay2526-lt1">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 5 of 5</p><h2>AY2025–26 Lab Test 1</h2><p class="muted" style="margin:0">Q1–Q3 are strong; Q4(a) breaks on downhill runs and Q4(b) is unfinished.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">21.5<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">86% · likely 20.5 to 22.5</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 6/7 · Q2 7/7 · Q3 7/7 · Q4 about 1.5/4</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>39/46 supplied outputs matched. 36 of 363 short rating arrays failed an exhaustive Q4(a) comparison.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q1(a): 60°C is excluded despite the inclusive boundary</h3><span class="pill warn">Boundary case fails</span></div>
+          <div class="issue-body">
+            <p>The paper says temperatures from 60°C inclusive to 75°C exclusive are safe after at least two minutes. The condition uses <code>60 &lt; temp</code>.</p>
+            <div class="codehead"><span>q1a.py, line 8</span><span>Source excerpt below</span></div>
+            <pre><code>if 60 &lt; temp &lt; 75 and holding_time &gt;= 2:
+    return True</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>is_food_safe(60.0, 2)</code> → <code>True</code></div><div class="actual"><strong>Actual</strong><code>False</code>. Other tested boundaries at 60.001, 75, and 100 behave as required.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(a): one-pass neighbor checks under-allocate on descending runs</h3><span class="pill bad">36/363 short arrays fail</span></div>
+          <div class="issue-body">
+            <p>The first employee's rule is skipped for a two-person row, and longer descending runs only add one point at the left edge. Middle elements also use a not-yet-correct right neighbor allocation, leaving adjacent higher-rated employees tied.</p>
+            <div class="codehead"><span>q4a.py, lines 12–27</span><span>Source excerpt below</span></div>
+            <pre><code>if i == 0:
+    if len(rating) &gt; 2:
+        right_n = rating[i + 1]
+        if right_n &lt; current_rating:
+            bonus[i] += 1
+...
+if current_rating &gt; left_n:
+    bonus[i] += max(1, bonus[i - 1])
+elif current_rating &gt; right_n:
+    bonus[i] += max(1, bonus[i + 1])</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>[9, 6, 5, 2]</code> → <code>[4, 3, 2, 1]</code></div><div class="actual"><strong>Actual</strong><code>[2, 2, 2, 1]</code>. The 9-rated employee needs four points; the 6 and 5 also need descending allocations.</div></div>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>[3, 2]</code> → <code>[2, 1]</code></div><div class="actual"><strong>Actual</strong><code>[1, 1]</code>, violating the neighbor rule.</div></div>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>[5, 4, 3, 2, 3, 4]</code> must give the 4-rated employee more points than the adjacent 3-rated employee.</div><div class="actual"><strong>Actual</strong><code>[2, 2, 2, 1, 2, 3]</code>; that adjacent 4 and 3 both get 2.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(b): grid allocation is a placeholder</h3><span class="pill bad">All six supplied cases fail</span></div>
+          <div class="issue-body">
+            <p>The function returns <code>None</code> for every grid instead of assigning the minimum points subject to the four-neighbor rule.</p>
+            <div class="codehead"><span>q4b.py, lines 4–6</span><span>Source excerpt below</span></div>
+            <pre><code>def get_min_allocation_grid(rating_grid):
+    # Modify the code below.
+    return None</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card card-pad method" id="method">
+      <h2>Testing and grading notes</h2>
+      <ul>
+        <li>Each attempt was reviewed by a separate Luna max reviewer, then compared with direct runs of the supplied scripts and additional boundary or adversarial cases.</li>
+        <li>The reference folders named <code>LT1-solution</code> or <code>LT2-solution</code> were not graded as submissions.</li>
+        <li>Supplied scripts mostly print expected and actual values rather than using assertions. Counts above are observed output matches.</li>
+        <li>Additional tests were run from temporary inputs or direct function calls; no submission source files were changed.</li>
+        <li>All five folders retain blank <code># Name:</code> and <code># Email ID:</code> headers. The papers say to include author details, but do not define the deduction, so the mark estimates exclude it.</li>
+        <li>For an official mark, use your instructor's partial-credit rubric. These estimates grade behavior, including cases that the supplied examples do not cover.</li>
+      </ul>
+    </section>
+    <p class="footer">Prepared from the five lab papers, submitted Python files, supplied test scripts, and additional targeted cases.</p>
+  </main>
+</body>
+</html>
