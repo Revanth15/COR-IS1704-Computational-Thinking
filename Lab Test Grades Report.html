@@ -101,6 +101,18 @@
     .method { margin-top: 20px; }
     .method ul { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
     .method li { margin: 5px 0; }
+    .solution-group { margin: 14px 0; border: 1px solid var(--line); border-radius: 13px; background: #fff; overflow: hidden; }
+    .solution-group > summary { cursor: pointer; list-style: none; padding: 14px 16px; background: #f7f9fc; font-weight: 800; color: #203253; }
+    .solution-group > summary::-webkit-details-marker { display: none; }
+    .solution-group > summary::after { content: "Open"; float: right; font-size: 11px; color: #66738a; font-weight: 650; }
+    .solution-group[open] > summary::after { content: "Close"; }
+    .solution-content { padding: 16px; border-top: 1px solid var(--line); }
+    .solution-content h3 { margin-top: 21px; }
+    .solution-content h3:first-child { margin-top: 0; }
+    .solution-content p { margin: 8px 0 12px; }
+    .diagram { margin: 12px 0 18px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #f8faff; overflow-x: auto; }
+    .diagram figcaption { color: var(--muted); font-size: 12px; margin-top: 8px; }
+    .solution-callout { background: var(--blue-soft); color: #293b70; border-radius: 10px; padding: 11px 13px; margin: 12px 0; font-size: 13px; }
     .footer { color: var(--muted); text-align: center; font-size: 12px; padding: 18px; }
     @media (max-width: 760px) {
       .summary-grid { grid-template-columns: 1fr; }
@@ -127,11 +139,11 @@
   <header class="hero">
     <p class="eyebrow">COR-IS1704 · review copy</p>
     <h1>Lab test grades and code review</h1>
-    <p class="hero-copy">Five completed attempts, their estimated marks, supplied-test results, and the specific code patterns that lost marks or failed extra cases.</p>
+    <p class="hero-copy">Six completed attempts, their estimated marks, supplied-test results, the code patterns that lost marks, and corrected solutions for the problems that need another pass.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>5</strong> attempts reviewed</div>
-      <div class="hero-stat"><strong>106.25 / 125</strong> estimated marks</div>
-      <div class="hero-stat"><strong>85%</strong> average estimate</div>
+      <div class="hero-stat"><strong>6</strong> attempts reviewed</div>
+      <div class="hero-stat"><strong>123.25 / 150</strong> estimated marks</div>
+      <div class="hero-stat"><strong>82.2%</strong> average estimate</div>
       <div class="hero-stat"><strong>92%</strong> highest estimate</div>
     </div>
   </header>
@@ -148,6 +160,7 @@
         <div class="chart-row"><span class="chart-label">AY2024–25 · LT1</span><div class="track"><div class="fill" style="width:92%"></div></div><span class="chart-score">92%</span></div>
         <div class="chart-row"><span class="chart-label">AY2024–25 · LT2</span><div class="track"><div class="fill" style="width:72%"></div></div><span class="chart-score">72%</span></div>
         <div class="chart-row"><span class="chart-label">AY2025–26 · LT1</span><div class="track"><div class="fill" style="width:86%"></div></div><span class="chart-score">86%</span></div>
+        <div class="chart-row"><span class="chart-label">AY2025–26 · LT2</span><div class="track"><div class="fill" style="width:68%"></div></div><span class="chart-score">68%</span></div>
       </section>
       <section class="card card-pad">
         <h2>At a glance</h2>
@@ -159,6 +172,7 @@
             <tr><td>AY2024–25 LT1</td><td class="score">23/25</td><td><span class="pill warn">35/39</span></td></tr>
             <tr><td>AY2024–25 LT2</td><td class="score">18/25</td><td><span class="pill warn">26/30</span></td></tr>
             <tr><td>AY2025–26 LT1</td><td class="score">21.5/25</td><td><span class="pill warn">39/46</span></td></tr>
+            <tr><td>AY2025–26 LT2</td><td class="score">17/25</td><td><span class="pill warn">20/26</span></td></tr>
           </tbody>
         </table>
         <p class="muted" style="font-size:12px;margin:12px 0 0">“Examples matched” means every listed example in the supplied scripts produced the expected output. Those scripts mostly print comparisons instead of asserting them.</p>
@@ -171,12 +185,14 @@
       <a href="#ay2425-lt1">AY2024–25 LT1</a>
       <a href="#ay2425-lt2">AY2024–25 LT2</a>
       <a href="#ay2526-lt1">AY2025–26 LT1</a>
+      <a href="#ay2526-lt2">AY2025–26 LT2</a>
+      <a href="#corrections">Corrected code and solutions</a>
       <a href="#method">Testing and notes</a>
     </nav>
 
     <section class="card attempt" id="ay2324-lt1">
       <div class="attempt-head">
-        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 1 of 5</p><h2>AY2023–24 Lab Test 1</h2><p class="muted" style="margin:0">Strong Q1 and Q2; most deductions come from multi-step validation and scheduling.</p></div>
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 1 of 6</p><h2>AY2023–24 Lab Test 1</h2><p class="muted" style="margin:0">Strong Q1 and Q2; most deductions come from multi-step validation and scheduling.</p></div>
         <div class="attempt-meta"><div class="attempt-mark">21.75<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">87% · likely 21 to 22.5</div></div>
       </div>
       <div class="attempt-body">
@@ -229,7 +245,7 @@ if time_difference(latest_delivery_time, current_time) &lt;= 0:
 
     <section class="card attempt" id="ay2324-lt2">
       <div class="attempt-head">
-        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 2 of 5</p><h2>AY2023–24 Lab Test 2</h2><p class="muted" style="margin:0">All 27 provided checks matched; extra cases expose data parsing and traffic timing assumptions.</p></div>
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 2 of 6</p><h2>AY2023–24 Lab Test 2</h2><p class="muted" style="margin:0">All 27 provided checks matched; extra cases expose data parsing and traffic timing assumptions.</p></div>
         <div class="attempt-meta"><div class="attempt-mark">22<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">88% · likely 21 to 23</div></div>
       </div>
       <div class="attempt-body">
@@ -295,7 +311,7 @@ return (return_list, max(lane_time_list) // green)</code></pre>
 
     <section class="card attempt" id="ay2425-lt1">
       <div class="attempt-head">
-        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 3 of 5</p><h2>AY2024–25 Lab Test 1</h2><p class="muted" style="margin:0">Best estimate in this set. Q1 and Q2 are solid; ordering and diagonal handling account for most losses.</p></div>
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 3 of 6</p><h2>AY2024–25 Lab Test 1</h2><p class="muted" style="margin:0">Best estimate in this set. Q1 and Q2 are solid; ordering and diagonal handling account for most losses.</p></div>
         <div class="attempt-meta"><div class="attempt-mark">23<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">92% · likely 22.5 to 23.5</div></div>
       </div>
       <div class="attempt-body">
@@ -348,7 +364,7 @@ return None</code></pre>
 
     <section class="card attempt" id="ay2425-lt2">
       <div class="attempt-head">
-        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 4 of 5</p><h2>AY2024–25 Lab Test 2</h2><p class="muted" style="margin:0">Q1–Q3 work on the supplied data. Both Q4 coin problems need substantial completion.</p></div>
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 4 of 6</p><h2>AY2024–25 Lab Test 2</h2><p class="muted" style="margin:0">Q1–Q3 work on the supplied data. Both Q4 coin problems need substantial completion.</p></div>
         <div class="attempt-meta"><div class="attempt-mark">18<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">72% · likely 18 to 19.5</div></div>
       </div>
       <div class="attempt-body">
@@ -408,7 +424,7 @@ return list(set(invalid_trans))</code></pre>
 
     <section class="card attempt" id="ay2526-lt1">
       <div class="attempt-head">
-        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 5 of 5</p><h2>AY2025–26 Lab Test 1</h2><p class="muted" style="margin:0">Q1–Q3 are strong; Q4(a) breaks on downhill runs and Q4(b) is unfinished.</p></div>
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 5 of 6</p><h2>AY2025–26 Lab Test 1</h2><p class="muted" style="margin:0">Q1–Q3 are strong; Q4(a) breaks on downhill runs and Q4(b) is unfinished.</p></div>
         <div class="attempt-meta"><div class="attempt-mark">21.5<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">86% · likely 20.5 to 22.5</div></div>
       </div>
       <div class="attempt-body">
@@ -459,18 +475,513 @@ elif current_rating &gt; right_n:
       </div>
     </section>
 
+    <section class="card attempt" id="ay2526-lt2">
+      <div class="attempt-head">
+        <div><p class="eyebrow" style="color:#315fe8;margin-bottom:7px">Attempt 6 of 6</p><h2>AY2025–26 Lab Test 2</h2><p class="muted" style="margin:0">Q1 and Q2 are solid. Q3(b) passes the sample dates but misses cross-month ranges; Q4(a) and Q4(b) do not produce route lists.</p></div>
+        <div class="attempt-meta"><div class="attempt-mark">17<span style="font-size:16px;color:#758198"> / 25</span></div><div class="attempt-pct">68% · likely 16 to 18</div></div>
+      </div>
+      <div class="attempt-body">
+        <div class="subgrid">
+          <div class="mini"><h4>Estimated question marks</h4><p>Q1 8/8 · Q2 6/6 · Q3 about 3/5 · Q4 about 0/6</p></div>
+          <div class="mini"><h4>Test evidence</h4><p>20/26 supplied output/type comparisons matched. All Q1–Q3 sample scripts match; all Q4(a)/(b) examples fail required return shape or route content.</p></div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3(b): component-wise date comparisons reject dates inside a valid range</h3><span class="pill warn">Extra case fails</span></div>
+          <div class="issue-body">
+            <p>The year, month, and day are compared separately. Calendar dates must be compared lexicographically as full tuples. For October 25 through November 10, valid records on October 26 and November 5 are both rejected.</p>
+            <div class="codehead"><span>q3b.py, lines 7–15 and call at line 40</span><span>Source excerpt below</span></div>
+            <pre><code>def compare_date(start_date, end_date, check_date):
+    valid = True
+    if start_date[0] &gt; check_date[0] or check_date[0] &gt; end_date[0]:
+        valid = False
+    if start_date[1] &gt; check_date[1] or check_date[1] &gt; end_date[1]:
+        valid = False
+    if start_date[2] &gt; check_date[2] or check_date[2] &gt; end_date[2]:
+        valid = False
+    return valid</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Include both 2023-10-26 and 2023-11-05 in (2023, 10, 25) to (2023, 11, 10).</div><div class="actual"><strong>Actual</strong>Returns no records because day 26 is greater than the end day 10, and day 5 is less than the start day 25.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q3(b): average maximum temperature is not rounded to one decimal place</h3><span class="pill warn">Extra case fails</span></div>
+          <div class="issue-body">
+            <p>The paper asks for one decimal place. The count and precipitation aggregation are otherwise fine on the sample records.</p>
+            <div class="codehead"><span>q3b.py, line 47</span><span>Source excerpt below</span></div>
+            <pre><code>computed_dict[city] = (
+    no_of_reading,
+    total_temp / no_of_reading,
+    round(total_preciptation, 1)
+)</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong>Average of 1.0, 1.0, and 2.0 is returned as 1.3.</div><div class="actual"><strong>Actual</strong>Returns 1.333333….</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(a): route search is incomplete and returns the wrong type</h3><span class="pill bad">No valid route output</span></div>
+          <div class="issue-body">
+            <p>The function scans the string once and returns <code>None</code> for an all-safe path. Its special no-route branch returns <code>[0, []]</code>, a list instead of the required tuple, and it never enumerates jump sequences. The supplied test harness also fails to detect some of these mismatches because its result check is nested under an empty route loop.</p>
+            <div class="codehead"><span>q4a.py, lines 11–27</span><span>Source excerpt below</span></div>
+            <pre><code>if nest_sq and move_coutner == 2:
+    return [0, []]
+...
+safe_moves.append(move_coutner)
+print(safe_moves)
+return None</code></pre>
+            <div class="case"><div class="expected"><strong>Expected</strong><code>help_frog_against_snakes("A0000B")</code> returns a tuple with 13 safe sequences.</div><div class="actual"><strong>Actual</strong><code>None</code>. On the no-route example it returns a list, not a tuple.</div></div>
+          </div>
+        </div>
+        <div class="issue">
+          <div class="issue-title"><h3>Q4(b): two-dimensional route search is unanswered</h3><span class="pill bad">All 3 cases fail</span></div>
+          <div class="issue-body">
+            <p>The function is a stub. It returns <code>None</code> instead of a tuple containing the count and every safe combination of right/down jumps.</p>
+            <div class="codehead"><span>q4b.py, lines 4–6</span><span>Source excerpt below</span></div>
+            <pre><code>def help_frog_against_snakes_2(map_lines):
+    # Modify the code below.
+    return None</code></pre>
+          </div>
+        </div>
+        <div class="solution-callout"><strong>Worked solutions are below.</strong> The report includes full route-search functions for Q4(a) and Q4(b), with 1D and 2D diagrams. It also includes the corrected date-range and rounding code.</div>
+      </div>
+    </section>
+
+    <section class="card card-pad method" id="corrections">
+      <h2>Corrected code and worked solutions</h2>
+      <p class="muted">Use these as study notes. The snippets repair the partial errors found in your submissions; the longer functions provide complete answers where the original function was missing or did not meet the required behavior. They are not copied into your attempt folders.</p>
+
+      <details class="solution-group" open>
+        <summary>AY2023–24 Lab Test 1 · internship years and robot schedule</summary>
+        <div class="solution-content">
+          <h3>Q3(a) and Q3(b): validate the whole year range</h3>
+          <p>There can be no more than two distinct years, and when there are two, they must be consecutive. Use the minimum and maximum across the whole table, not a baseline derived from the first student.</p>
+          <pre><code>years = [student[1] for student in table]
+if len(set(years)) &gt; 2 or max(years) - min(years) &gt; 1:
+    return False</code></pre>
+
+          <h3>Q4: schedule deliveries using minutes from midnight</h3>
+          <p>For each sorted delivery, choose the later of the allowed earliest arrival (deadline minus 30 minutes) and the earliest arrival after the robot returns to the center. Compare against the deadline with a strict <code>&gt;</code> test.</p>
+          <pre><code>def to_minutes(clock):
+    hour, minute = map(int, clock.split(":"))
+    return hour * 60 + minute
+
+def to_clock(value):
+    return f"{value // 60:02d}:{value % 60:02d}"
+
+def schedule_delivery(items):
+    items = list(items)
+    sort_by_latest_delivery_time(items)  # provided stable sort
+    result = []
+    robot_free_at_center = None
+
+    for name, destination, latest, travel in items:
+        deadline = to_minutes(latest)
+        earliest_allowed = deadline - 30
+        if robot_free_at_center is None:
+            actual = earliest_allowed
+        else:
+            earliest_possible = robot_free_at_center + travel
+            actual = max(earliest_allowed, earliest_possible)
+
+        actual_text = to_clock(actual)
+        if actual &gt; deadline:
+            actual_text += "*"
+        result.append((name, destination, latest, actual_text))
+        robot_free_at_center = actual + travel  # return trip
+
+    return result</code></pre>
+          <div class="solution-callout">The initial delivery is exactly 30 minutes early. Later deliveries cannot begin until the robot has returned and traveled to the next destination. The stable provided sort preserves input order for equal deadlines.</div>
+        </div>
+      </details>
+
+      <details class="solution-group" open>
+        <summary>AY2023–24 Lab Test 2 · exact string matching, data parsing, query results, and traffic timing</summary>
+        <div class="solution-content">
+          <h3>Q2(b): match the bank prefix only</h3>
+          <pre><code>if branch_id[:3] == bank_code:
+    return_list.append((nric, branch_id, loan_type, int(amount.strip("$"))))</code></pre>
+
+          <h3>Q3(a): convert only values that really parse as numbers</h3>
+          <p>Try integer, then decimal. Leave any other non-empty value as text.</p>
+          <pre><code>if detail == "":
+    detail = None
+else:
+    try:
+        detail = int(detail)
+    except ValueError:
+        try:
+            detail = float(detail)
+        except ValueError:
+            pass  # keep ordinary text such as "version1.2"</code></pre>
+
+          <h3>Q3(b): omit rows with no selected fields</h3>
+          <pre><code>if return_pokemon:
+    return_list.append(return_pokemon)</code></pre>
+          <p>Keep the existing field-copy loop, then append only non-empty results.</p>
+
+          <h3>Q4: simulate each lane against the full green/red cycle</h3>
+          <p>For a car ready at time <code>clear</code>, find its phase in the cycle. It can start now only if it is green and its whole crossing fits before green ends. Otherwise wait to the next green. Lanes run independently, so the final count is the latest green interval any lane needs.</p>
+          <pre><code>def calculate_actual_delays(list_cars, traffic_lights):
+    green, red = traffic_lights
+    cycle = green + red
+    result = []
+    green_count = 1
+
+    for lane in list_cars:
+        clear = 0
+        lane_result = []
+        for car_id, duration in lane:
+            period = clear // cycle
+            phase = clear % cycle
+            if phase &gt;= green or phase + duration &gt; green:
+                period += 1
+                start = period * cycle
+            else:
+                start = clear
+
+            clear = start + duration
+            green_count = max(green_count, period + 1)
+            lane_result.append((car_id, clear))
+        result.append(lane_result)
+
+    return (result, green_count)</code></pre>
+          <figure class="diagram">
+            <svg viewBox="0 0 720 116" role="img" aria-labelledby="traffic-title traffic-desc" style="width:100%;min-width:560px;height:auto">
+              <title id="traffic-title">Two green periods with a red wait</title>
+              <desc id="traffic-desc">A car clears during the first green. A later car that does not fit waits through the remaining green and red, then clears during the next green.</desc>
+              <defs><marker id="arrow-traffic" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#315fe8"/></marker></defs>
+              <text x="20" y="22" font-size="13" fill="#43516a">Time →</text>
+              <rect x="20" y="37" width="225" height="32" rx="7" fill="#d9f3e8"/><text x="108" y="58" font-size="13" fill="#176b51">Green 0–10</text>
+              <rect x="245" y="37" width="112" height="32" fill="#ffe8e5"/><text x="276" y="58" font-size="13" fill="#a53636">Red 10–15</text>
+              <rect x="357" y="37" width="225" height="32" rx="7" fill="#d9f3e8"/><text x="438" y="58" font-size="13" fill="#176b51">Green 15–25</text>
+              <line x1="150" y1="91" x2="200" y2="91" stroke="#315fe8" stroke-width="3" marker-end="url(#arrow-traffic)"/><text x="157" y="111" font-size="12" fill="#334158">car clears</text>
+              <line x1="210" y1="82" x2="459" y2="82" stroke="#315fe8" stroke-width="3" marker-end="url(#arrow-traffic)"/><text x="280" y="101" font-size="12" fill="#334158">remaining green + red wait, then next green</text>
+            </svg>
+            <figcaption>Example with green = 10 and red = 5. If a car needs six seconds and becomes ready at t=6, only four green seconds remain, so it starts at t=15.</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <details class="solution-group" open>
+        <summary>AY2024–25 Lab Test 1 · ordered unique ailments and winner detection</summary>
+        <div class="solution-content">
+          <h3>Q3: deduplicate without changing first-seen order</h3>
+          <pre><code>seen = set()
+unique_ailments = []
+for ailment in return_values[3]:
+    if ailment not in seen:
+        seen.add(ailment)
+        unique_ailments.append(ailment)
+
+return (
+    round(total_age / len(patients), 2),
+    return_values[0], return_values[1], return_values[2],
+    unique_ailments
+)</code></pre>
+
+          <h3>Q4(c): check rows, columns, both diagonals, then ties</h3>
+          <p>Try every cell as the start of a length-<code>M</code> run in four directions. Only report a tie after checking that no player has won.</p>
+          <pre><code>def get_who_won(M, board):
+    n = len(board)
+    directions = ((0, 1), (1, 0), (1, 1), (1, -1))
+
+    for row in range(n):
+        for col in range(n):
+            player = board[row][col]
+            if player not in "xo":
+                continue
+            for dr, dc in directions:
+                end_row = row + (M - 1) * dr
+                end_col = col + (M - 1) * dc
+                if not (0 &lt;= end_row &lt; n and 0 &lt;= end_col &lt; n):
+                    continue
+                if all(board[row + k * dr][col + k * dc] == player
+                       for k in range(M)):
+                    return player
+
+    if all("-" not in row for row in board):
+        return "tie"
+    return None</code></pre>
+          <div class="solution-callout">The four direction vectors cover horizontal, vertical, down-right, and down-left lines. A full board is only a tie if none of those checks found a winner.</div>
+        </div>
+      </details>
+
+      <details class="solution-group" open>
+        <summary>AY2024–25 Lab Test 2 · leftover strings and coin ledger</summary>
+        <div class="solution-content">
+          <h3>Q1(b): slice the suffix at the shared length</h3>
+          <pre><code>def alternate_and_reverse(s1, s2):
+    shared = min(len(s1), len(s2))
+    interleaved = "".join(
+        s1[i] + s2[i] for i in range(shared)
+    )
+    if len(s1) &gt; shared:
+        tail = s1[shared:][::-1]
+    else:
+        tail = s2[shared:][::-1]
+    return interleaved + tail</code></pre>
+          <p>The same slice handles equal lengths, empty inputs, and either string being longer.</p>
+
+          <h3>Q4(a): validate exact coin denominations before applying a transaction</h3>
+          <p>Work on a copy of the wallet. Remove one matching coin for every input. Commit the copy and add outputs only if every input exists. This prevents invalid transactions from changing balances.</p>
+          <pre><code>def get_invalid_transactions(filename):
+    wallets = {}
+    invalid_ids = []
+
+    with open(filename, "r") as file:
+        for line in file:
+            tx_id, *fields = line.strip().split("|")
+            inputs = []
+            outputs = []
+            for field in fields:
+                kind, address, raw_value = field.split(":")
+                pair = (address, int(raw_value))
+                if kind == "IN":
+                    inputs.append(pair)
+                else:
+                    outputs.append(pair)
+
+            candidate = {address: coins.copy()
+                         for address, coins in wallets.items()}
+            valid = True
+            for address, value in inputs:
+                if address == "COINBASE":
+                    continue
+                coins = candidate.get(address, [])
+                if value not in coins:
+                    valid = False
+                    break
+                coins.remove(value)
+
+            if not valid:
+                invalid_ids.append(tx_id)
+                continue
+
+            wallets = candidate
+            for address, value in outputs:
+                wallets.setdefault(address, []).append(value)
+
+    return invalid_ids</code></pre>
+          <div class="solution-callout">A transaction input means “spend one coin of exactly this value,” not “spend any set of coins whose total is large enough.” The copied wallet also makes repeated inputs from the same address consume separate coins safely.</div>
+
+          <h3>Q4(b): enumerate combinations and keep only the smallest sufficient sum</h3>
+          <p>The transactions in this question are guaranteed valid. First reconstruct the wallet using the same exact-coin rule, then enumerate combinations. Keep every unique combination whose sum is the smallest sum at least the target.</p>
+          <pre><code>from itertools import combinations
+
+def get_coins(filename, address, target):
+    wallets = {}
+    with open(filename, "r") as file:
+        for line in file:
+            _, *fields = line.strip().split("|")
+            inputs = []
+            outputs = []
+            for field in fields:
+                kind, owner, raw_value = field.split(":")
+                pair = (owner, int(raw_value))
+                if kind == "IN":
+                    inputs.append(pair)
+                else:
+                    outputs.append(pair)
+            for owner, value in inputs:
+                if owner != "COINBASE":
+                    wallets[owner].remove(value)
+            for owner, value in outputs:
+                wallets.setdefault(owner, []).append(value)
+
+    coins = wallets.get(address, [])
+    best_sum = None
+    best_combinations = set()
+    for size in range(1, len(coins) + 1):
+        for choice in combinations(coins, size):
+            total = sum(choice)
+            if total &lt; target:
+                continue
+            canonical = tuple(sorted(choice))
+            if best_sum is None or total &lt; best_sum:
+                best_sum = total
+                best_combinations = {canonical}
+            elif total == best_sum:
+                best_combinations.add(canonical)
+
+    return sorted(best_combinations)</code></pre>
+        </div>
+      </details>
+
+      <details class="solution-group" open>
+        <summary>AY2025–26 Lab Test 1 · inclusive food boundary and minimum neighbor points</summary>
+        <div class="solution-content">
+          <h3>Q1(a): include exactly 60°C</h3>
+          <pre><code>if 75 &lt;= temp &lt;= 100:
+    return True
+if 60 &lt;= temp &lt; 75 and holding_time &gt;= 2:
+    return True
+return False</code></pre>
+
+          <h3>Q4(a): two passes handle rising and falling runs</h3>
+          <pre><code>def get_min_allocation(rating):
+    bonus = [1] * len(rating)
+    for i in range(1, len(rating)):
+        if rating[i] &gt; rating[i - 1]:
+            bonus[i] = bonus[i - 1] + 1
+
+    for i in range(len(rating) - 2, -1, -1):
+        if rating[i] &gt; rating[i + 1]:
+            bonus[i] = max(bonus[i], bonus[i + 1] + 1)
+    return bonus</code></pre>
+          <p>The first pass enforces every rising edge. The right-to-left pass enforces falling edges without undoing a larger value already needed by the first pass.</p>
+
+          <h3>Q4(b): process cells from lower ratings to higher ratings</h3>
+          <p>Strictly increasing rating edges form a directed acyclic graph. Start every cell at one point. In ascending rating order, propagate “neighbor bonus + 1” to each higher-rated neighbor. That gives the shortest valid allocation for each cell.</p>
+          <pre><code>def get_min_allocation_grid(rating_grid):
+    rows = len(rating_grid)
+    cols = len(rating_grid[0])
+    bonus = [[1] * cols for _ in range(rows)]
+    cells = sorted(
+        (rating_grid[r][c], r, c)
+        for r in range(rows)
+        for c in range(cols)
+    )
+    directions = ((0, 1), (0, -1), (1, 0), (-1, 0))
+
+    for rating, row, col in cells:
+        for dr, dc in directions:
+            nr, nc = row + dr, col + dc
+            if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols:
+                if rating_grid[nr][nc] &gt; rating:
+                    bonus[nr][nc] = max(
+                        bonus[nr][nc], bonus[row][col] + 1
+                    )
+    return bonus</code></pre>
+          <figure class="diagram">
+            <div style="display:flex;flex-wrap:wrap;gap:25px;align-items:center;justify-content:center">
+              <div><div class="muted" style="font-size:12px;text-align:center">Ratings</div><table style="width:auto;border-collapse:separate;border-spacing:5px"><tr><td style="background:#eaf0ff;padding:8px 13px">1</td><td style="background:#eaf0ff;padding:8px 13px">2</td><td style="background:#eaf0ff;padding:8px 13px">3</td></tr><tr><td style="background:#eaf0ff;padding:8px 13px">0</td><td style="background:#eaf0ff;padding:8px 13px">1</td><td style="background:#eaf0ff;padding:8px 13px">2</td></tr></table></div>
+              <div aria-hidden="true" style="font-size:26px;color:#315fe8">→</div>
+              <div><div class="muted" style="font-size:12px;text-align:center">Minimum bonus points</div><table style="width:auto;border-collapse:separate;border-spacing:5px"><tr><td style="background:#e8f7f0;padding:8px 13px">2</td><td style="background:#e8f7f0;padding:8px 13px">3</td><td style="background:#e8f7f0;padding:8px 13px">4</td></tr><tr><td style="background:#e8f7f0;padding:8px 13px">1</td><td style="background:#e8f7f0;padding:8px 13px">2</td><td style="background:#e8f7f0;padding:8px 13px">3</td></tr></table></div>
+            </div>
+            <figcaption>Each higher cell needs one more point than every lower-rated edge-neighbor. Equal ratings do not constrain one another.</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <details class="solution-group" open>
+        <summary>AY2025–26 Lab Test 2 · date ranges and complete frog route solutions</summary>
+        <div class="solution-content">
+          <h3>Q3(b): compare date tuples and round both statistics</h3>
+          <pre><code>def compare_date(start_date, end_date, check_date):
+    return start_date &lt;= check_date &lt;= end_date
+
+# In the result tuple:
+average_max = round(total_temp / no_of_reading, 1)
+total_precipitation = round(total_preciptation, 1)</code></pre>
+          <p>Python compares tuples left to right, so <code>(year, month, day)</code> order matches calendar order.</p>
+
+          <h3>Q4(a): enumerate safe 1D jumps</h3>
+          <p>At each position, try jumps of 1, 2, and 3. A jump is legal when its landing position is inside the map and is not a nest. The examples confirm that the frog may jump over a nest as long as it does not land on it.</p>
+          <pre><code>from functools import lru_cache
+
+def help_frog_against_snakes(map):
+    goal = len(map) - 1
+
+    @lru_cache(maxsize=None)
+    def routes_from(position):
+        if position == goal:
+            return ((),)
+        routes = []
+        for jump in (1, 2, 3):
+            landing = position + jump
+            if landing &lt;= goal and map[landing] != "*":
+                for suffix in routes_from(landing):
+                    routes.append((jump,) + suffix)
+        return tuple(routes)
+
+    sequences = [list(route) for route in routes_from(0)]
+    return (len(sequences), sequences)</code></pre>
+          <figure class="diagram">
+            <svg viewBox="0 0 740 120" role="img" aria-labelledby="frog1-title frog1-desc" style="width:100%;min-width:620px;height:auto">
+              <title id="frog1-title">Safe one-dimensional frog route</title>
+              <desc id="frog1-desc">The map A, zero, zero, snake, snake, zero, snake, zero, zero, B. The displayed route jumps 2, 3, 2, and 2 cells, landing only on safe cells.</desc>
+              <defs><marker id="frog1-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#315fe8"/></marker></defs>
+              <g font-family="system-ui" font-size="15" text-anchor="middle">
+                <rect x="15" y="48" width="48" height="38" rx="8" fill="#dce7ff"/><text x="39" y="72" fill="#1c3f9c">A</text>
+                <rect x="87" y="48" width="48" height="38" rx="8" fill="#e8f7f0"/><text x="111" y="72" fill="#176b51">0</text>
+                <rect x="159" y="48" width="48" height="38" rx="8" fill="#e8f7f0"/><text x="183" y="72" fill="#176b51">0</text>
+                <rect x="231" y="48" width="48" height="38" rx="8" fill="#fff0ee"/><text x="255" y="72" fill="#a53636">*</text>
+                <rect x="303" y="48" width="48" height="38" rx="8" fill="#fff0ee"/><text x="327" y="72" fill="#a53636">*</text>
+                <rect x="375" y="48" width="48" height="38" rx="8" fill="#e8f7f0"/><text x="399" y="72" fill="#176b51">0</text>
+                <rect x="447" y="48" width="48" height="38" rx="8" fill="#fff0ee"/><text x="471" y="72" fill="#a53636">*</text>
+                <rect x="519" y="48" width="48" height="38" rx="8" fill="#e8f7f0"/><text x="543" y="72" fill="#176b51">0</text>
+                <rect x="591" y="48" width="48" height="38" rx="8" fill="#e8f7f0"/><text x="615" y="72" fill="#176b51">0</text>
+                <rect x="663" y="48" width="48" height="38" rx="8" fill="#d9f3e8"/><text x="687" y="72" fill="#176b51">B</text>
+              </g>
+              <g stroke="#315fe8" stroke-width="2.5" fill="none" marker-end="url(#frog1-arrow)">
+                <path d="M40 40 Q110 3 180 40"/><path d="M184 40 Q292 -4 400 40"/><path d="M400 40 Q470 3 544 40"/><path d="M544 40 Q615 3 688 40"/>
+              </g>
+              <g font-family="system-ui" font-size="12" fill="#244fce" text-anchor="middle"><text x="110" y="15">jump 2</text><text x="292" y="11">jump 3</text><text x="472" y="15">jump 2</text><text x="616" y="15">jump 2</text></g>
+            </svg>
+            <figcaption>One safe path for <code>A00**0*00B</code>: <code>[2, 3, 2, 2]</code>. Each arrow lands on a safe cell; some arrows skip over nests.</figcaption>
+          </figure>
+
+          <h3>Q4(b): enumerate safe right/down jumps in 2D</h3>
+          <p>From each cell, try each allowed jump distance to the right and then down. Keep moves whose landing cell is safe. Since every move increases the row or column, the search cannot cycle.</p>
+          <pre><code>from functools import lru_cache
+
+def help_frog_against_snakes_2(map_lines):
+    rows = len(map_lines)
+    cols = len(map_lines[0])
+    goal = (rows - 1, cols - 1)
+
+    @lru_cache(maxsize=None)
+    def routes_from(row, col):
+        if (row, col) == goal:
+            return ((),)
+        routes = []
+        for step in (1, 2, 3):
+            moves = (
+                (row, col + step, "r"),
+                (row + step, col, "d"),
+            )
+            for next_row, next_col, direction in moves:
+                if next_row &lt; rows and next_col &lt; cols:
+                    if map_lines[next_row][next_col] != "*":
+                        move = (step, direction)
+                        for suffix in routes_from(next_row, next_col):
+                            routes.append((move,) + suffix)
+        return tuple(routes)
+
+    sequences = [list(route) for route in routes_from(0, 0)]
+    return (len(sequences), sequences)</code></pre>
+          <figure class="diagram">
+            <svg viewBox="0 0 360 245" role="img" aria-labelledby="frog2-title frog2-desc" style="width:100%;max-width:420px;height:auto;display:block;margin:auto">
+              <title id="frog2-title">Safe two-dimensional frog route</title>
+              <desc id="frog2-desc">A 3 by 4 map. The route goes down one from A, right three to a safe cell while jumping over a nest, then down one to B.</desc>
+              <defs><marker id="frog2-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#315fe8"/></marker></defs>
+              <g font-family="system-ui" font-size="17" text-anchor="middle">
+                <g fill="#e8f7f0" stroke="#c7dfd3"><rect x="24" y="20" width="54" height="48" rx="8"/><rect x="94" y="20" width="54" height="48" rx="8"/><rect x="164" y="20" width="54" height="48" rx="8"/></g><rect x="234" y="20" width="54" height="48" rx="8" fill="#fff0ee" stroke="#f1c7c1"/>
+                <g fill="#e8f7f0" stroke="#c7dfd3"><rect x="24" y="88" width="54" height="48" rx="8"/><rect x="94" y="88" width="54" height="48" rx="8"/></g><rect x="164" y="88" width="54" height="48" rx="8" fill="#fff0ee" stroke="#f1c7c1"/><rect x="234" y="88" width="54" height="48" rx="8" fill="#e8f7f0" stroke="#c7dfd3"/>
+                <rect x="24" y="156" width="54" height="48" rx="8" fill="#fff0ee" stroke="#f1c7c1"/><rect x="94" y="156" width="54" height="48" rx="8" fill="#fff0ee" stroke="#f1c7c1"/><rect x="164" y="156" width="54" height="48" rx="8" fill="#e8f7f0" stroke="#c7dfd3"/><rect x="234" y="156" width="54" height="48" rx="8" fill="#d9f3e8" stroke="#b9ddcc"/>
+                <text x="51" y="50" fill="#1c3f9c">A</text><text x="121" y="50" fill="#176b51">0</text><text x="191" y="50" fill="#176b51">0</text><text x="261" y="50" fill="#a53636">*</text>
+                <text x="51" y="118" fill="#176b51">0</text><text x="121" y="118" fill="#176b51">0</text><text x="191" y="118" fill="#a53636">*</text><text x="261" y="118" fill="#176b51">0</text>
+                <text x="51" y="186" fill="#a53636">*</text><text x="121" y="186" fill="#a53636">*</text><text x="191" y="186" fill="#176b51">0</text><text x="261" y="186" fill="#176b51">B</text>
+              </g>
+              <g stroke="#315fe8" stroke-width="3" fill="none" marker-end="url(#frog2-arrow)"><path d="M51 55 L51 98"/><path d="M62 112 L249 112"/><path d="M261 123 L261 166"/></g>
+              <g font-family="system-ui" font-size="12" fill="#244fce"><text x="61" y="82">d1</text><text x="151" y="105">r3</text><text x="270" y="150">d1</text></g>
+            </svg>
+            <figcaption>One path on the first 2D sample: <code>[(1, 'd'), (3, 'r'), (1, 'd')]</code>. It jumps over the nest at row 1, column 2 and lands safely at column 3.</figcaption>
+          </figure>
+          <div class="solution-callout">The route functions return tuples of <code>(count, sequences)</code>, including the no-route result <code>(0, [])</code>. The sample maps produce 6, 13, 0 safe 1D routes and 5, 0, 14 safe 2D routes.</div>
+        </div>
+      </details>
+    </section>
+
     <section class="card card-pad method" id="method">
       <h2>Testing and grading notes</h2>
       <ul>
-        <li>Each attempt was reviewed by a separate Luna max reviewer, then compared with direct runs of the supplied scripts and additional boundary or adversarial cases.</li>
+        <li>Each of the six attempts was reviewed by a separate Luna max reviewer, then compared with direct runs of the supplied scripts and additional boundary or adversarial cases.</li>
         <li>The reference folders named <code>LT1-solution</code> or <code>LT2-solution</code> were not graded as submissions.</li>
         <li>Supplied scripts mostly print expected and actual values rather than using assertions. Counts above are observed output matches.</li>
         <li>Additional tests were run from temporary inputs or direct function calls; no submission source files were changed.</li>
-        <li>All five folders retain blank <code># Name:</code> and <code># Email ID:</code> headers. The papers say to include author details, but do not define the deduction, so the mark estimates exclude it.</li>
+        <li>All six folders retain blank <code># Name:</code> and <code># Email ID:</code> headers. The papers say to include author details, but do not define the deduction, so the mark estimates exclude it.</li>
         <li>For an official mark, use your instructor's partial-credit rubric. These estimates grade behavior, including cases that the supplied examples do not cover.</li>
       </ul>
     </section>
-    <p class="footer">Prepared from the five lab papers, submitted Python files, supplied test scripts, and additional targeted cases.</p>
+    <p class="footer">Prepared from the six lab papers, submitted Python files, supplied test scripts, and additional targeted cases.</p>
   </main>
 </body>
 </html>

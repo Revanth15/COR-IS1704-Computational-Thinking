@@ -5,14 +5,7 @@
 from q3a import read_weather_data
 
 def compare_date(start_date, end_date, check_date):
-    valid = True
-    if start_date[0] > check_date[0] or check_date[0] > end_date[0]:
-        valid = False
-    if start_date[1] > check_date[1] or check_date[1] > end_date[1]:
-        valid = False
-    if start_date[2] > check_date[2] or check_date[2] > end_date[2]:
-        valid = False
-    return valid
+    return start_date <= check_date <= end_date
 
 def analyze_weather_patterns(filename, start_date, end_date):
     """
